@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>أستاذ الشارع | فضاء التلميذ</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#121212;--card:#1e1e1e;--card2:#262626;--pink:#ff007f;--txt:#fff;--muted:#a9a9a9;--ok:#28a745;--bad:#dc3545;--warn:#ffb020;--line:#333}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Tajawal','Segoe UI',Tahoma,sans-serif;-webkit-tap-highlight-color:transparent}
+html,body{background:var(--bg)}
+body{color:var(--txt);min-height:100vh;padding-bottom:calc(30px + env(safe-area-inset-bottom))}
+button{border:none;border-radius:10px;cursor:pointer;font-weight:700;font-size:15px;padding:12px 14px;color:#fff;background:#333;transition:.15s}
+button:active{transform:scale(.97)}
+.btn-pink{background:var(--pink);box-shadow:0 0 10px rgba(255,0,127,.35)}
+.btn-ok{background:rgba(40,167,69,.18);color:var(--ok);border:1px solid var(--ok)}
+.btn-line{background:transparent;border:1px solid #444;color:var(--muted)}
+.w100{width:100%}
+a{color:var(--pink)}
+.ltr{direction:ltr;unicode-bidi:isolate;display:inline-block}
+
+/* Top bar */
+.top{position:sticky;top:0;z-index:20;background:#000;border-bottom:2px solid var(--pink);display:flex;align-items:center;gap:10px;padding:10px 12px;padding-top:calc(10px + env(safe-area-inset-top))}
+.top img{width:40px;height:40px;border-radius:50%;box-shadow:0 0 10px rgba(255,0,127,.4)}
+.top .t1{font-weight:900;color:var(--pink);font-size:18px;line-height:1.1}
+.top .t2{font-size:12px;color:var(--muted)}
+.top .back{background:transparent;font-size:22px;padding:4px 8px;color:#fff}
+.top .grow{flex:1;min-width:0}
+.top .grow div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#installBtn{display:none;background:var(--pink);font-size:12px;padding:8px 10px}
+
+.wrap{max-width:640px;margin:auto;padding:14px 12px}
+.hero{text-align:center;padding:18px 10px 8px}
+.hero img{width:110px;height:110px;border-radius:50%;box-shadow:0 0 22px rgba(255,0,127,.5)}
+.hero h1{font-size:26px;font-weight:900;color:var(--pink);margin-top:10px}
+.hero p{color:var(--muted);margin-top:4px}
+.count{margin:14px 0;background:linear-gradient(135deg,#2a0016,#1e1e1e);border:1px solid var(--pink);border-radius:14px;padding:14px;text-align:center}
+.count b{font-size:34px;color:var(--pink);display:block}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:12px;cursor:pointer;display:block;width:100%;text-align:right;color:#fff}
+.card h3{font-size:18px;margin-bottom:4px}
+.card .muted{color:var(--muted);font-size:13px}
+.card.soon{opacity:.45;cursor:default}
+.unit-num{display:inline-block;background:var(--pink);color:#fff;border-radius:8px;padding:2px 8px;font-size:12px;margin-bottom:6px}
+.bar{height:8px;background:#333;border-radius:9px;margin-top:10px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--pink);border-radius:9px}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 10px;text-align:center;cursor:pointer;color:#fff;font-size:15px;font-weight:700}
+.tile span{display:block;font-size:30px;margin-bottom:6px}
+.tile small{display:block;color:var(--muted);font-weight:400;font-size:12px;margin-top:3px}
+
+h2.sec{font-size:16px;color:var(--pink);margin:18px 2px 10px}
+.exgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.exbtn{background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:12px 0;text-align:center;font-weight:700;font-size:17px;cursor:pointer;position:relative;color:#fff}
+.exbtn.done{border-color:var(--ok);color:var(--ok)}
+.exbtn.done::after{content:'✓';position:absolute;top:2px;left:6px;font-size:11px}
+.exbtn small{display:block;font-size:10px;color:var(--muted);font-weight:400}
+
+.paper{background:#fff;border-radius:10px;overflow:hidden;margin:10px 0}
+.paper img{display:block;width:100%;height:auto}
+.hint{color:var(--muted);font-size:13px;text-align:center;margin:6px 0}
+.row{display:flex;gap:8px}
+.row>*{flex:1}
+.nav{display:flex;gap:8px;margin-top:12px}
+.nav button{flex:1}
+.empty{color:var(--muted);text-align:center;padding:20px}
+.tag{display:inline-block;font-size:11px;border:1px solid #555;border-radius:20px;padding:1px 8px;color:#ccc;margin:2px}
+.list-item{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:8px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.list-item.done{border-color:var(--ok)}
+
+/* Zoom overlay */
+#zoom{display:none;position:fixed;inset:0;background:#000;z-index:100;overflow:auto}
+#zoom.open{display:block}
+#zoom img{display:block;background:#fff}
+#zoom .zbar{position:fixed;bottom:calc(14px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:101}
+#zoom .zbar button{background:rgba(40,40,40,.92);font-size:20px;padding:10px 16px}
+
+/* Quiz */
+.q-head{display:flex;justify-content:space-between;color:var(--muted);font-size:13px;margin-bottom:8px}
+.q-text{font-size:18px;font-weight:700;line-height:1.6;margin-bottom:14px}
+.opt{display:block;width:100%;text-align:right;background:var(--card);border:1px solid #444;margin-bottom:8px;font-weight:400;font-size:16px;line-height:1.5}
+.opt.right{border-color:var(--ok);background:rgba(40,167,69,.18)}
+.opt.wrong{border-color:var(--bad);background:rgba(220,53,69,.18)}
+.explain{background:var(--card2);border-right:4px solid var(--pink);border-radius:8px;padding:12px;margin:10px 0;line-height:1.7;font-size:14px}
+
+/* Forms & calc */
+label.f{display:block;font-size:13px;color:var(--muted);margin:10px 0 5px}
+input,select{width:100%;padding:12px;border-radius:10px;border:1px solid #444;background:#111;color:#fff;font-size:16px}
+.res{margin-top:16px}
+.formula{background:var(--card2);border-radius:10px;padding:12px;line-height:1.9;font-size:14px;margin-bottom:10px}
+.formula .ltr{font-family:Consolas,Menlo,monospace;font-size:14px}
+.tbl-wrap{overflow-x:auto;background:#fff;border-radius:10px;margin:10px 0}
+table.acc{border-collapse:collapse;width:100%;min-width:480px;color:#000;font-size:13px}
+table.acc th,table.acc td{border:1px solid #999;padding:7px 6px;text-align:center}
+table.acc th{background:#f3d1e3;font-weight:700}
+table.acc td.lbl{text-align:right}
+table.acc tr.datebar td{border-left:none;border-right:none;font-weight:700}
+table.acc .sw{background:#fff4d6}
+.verdict{border-radius:10px;padding:12px;margin:10px 0;font-weight:700}
+.verdict.ok{background:rgba(40,167,69,.18);color:#6fe08b}
+.verdict.bad{background:rgba(220,53,69,.18);color:#ff8a95}
+.verdict.info{background:rgba(255,176,32,.14);color:var(--warn)}
+.toast{position:fixed;bottom:calc(24px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);background:#fff;color:#000;padding:10px 16px;border-radius:10px;font-weight:700;display:none;z-index:200;max-width:92%}
+.toast.show{display:block}
+.foot{color:#666;font-size:12px;text-align:center;margin-top:24px}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <button class="back" id="backBtn" onclick="goBack()" style="display:none">→</button>
+  <img src="icon-192.png" alt="">
+  <div class="grow"><div class="t1" id="topTitle">أستاذ الشارع</div><div class="t2" id="topSub">تسيير واقتصاد · BAC 2027</div></div>
+  <button id="installBtn" onclick="installApp()">📲 تثبيت</button>
+</div>
+
+<div class="wrap" id="view"></div>
+
+<div id="zoom" onclick="if(event.target===this)closeZoom()">
+  <img id="zoomImg" alt="">
+  <div class="zbar"><button onclick="zoomBy(1.4)">＋</button><button onclick="zoomBy(1/1.4)">－</button><button onclick="closeZoom()">✕</button></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   CONTENU — c'est ici qu'on ajoute les unités, les exercices…
+   ============================================================ */
+const CONFIG = {
+  bacDate: null,            // ex: '2027-06-13' quand la date est annoncée
+  facebook: 'https://www.facebook.com/share/1X6UDnnCWY/', // page Facebook
+  tiktok: '',               // lien du compte TikTok
+};
+
+const UNITS = [
+ {
+  id: 'u02', num: '02', title: 'الاهتلاكات ونقص قيمة التثبيتات',
+  sub: 'التسيير المحاسبي والمالي',
+  axes: [
+    { title: 'المحور الأول: أساسيات الاهتلاك الخطي', from: 1, to: 12 },
+    { title: 'المحور الثاني: الاهتلاك المتناقص والمتزايد', from: 13, to: 24 },
+    { title: 'المحور الثالث: خسارة القيمة والتنازل', from: 25, to: 36 },
+    { title: 'المحور الرابع: مواضيع البكالوريات السابقة', from: 37, to: 48 },
+  ],
+  // exercice -> image du corrigé (pack, clé)
+  corr: (n => { const m = {}; for (let i = 1; i <= 36; i++) { const k = String(i).padStart(2, '0'); m[k] = ['u02-co', 'co' + k]; }
+                Object.assign(m, { '37': ['u02-bac','bc01'], '38': ['u02-bac','bc04'], '39': ['u02-bac','bc05'], '40': ['u02-bac','bc06'], '41': ['u02-bac','bc09'] }); return m; })(),
+  exLabels: { '37':'بكالوريا 2026 · م1','38':'بكالوريا 2025 · م2','39':'بكالوريا 2024 · م2','40':'بكالوريا 2023 · م1','41':'بكالوريا 2022 · م2','42':'بكالوريا 2020 · م1',
+              '43':'بكالوريا 2019 · م1','44':'بكالوريا 2019 · م2','45':'بكالوريا 2017 · م1','46':'بكالوريا 2017 · استثنائية','47':'بكالوريا 2016 · م1','48':'بكالوريا 2013 · م1' },
+  videos: {},  // ex: { '07': 'https://www.tiktok.com/@.../video/...' }
+  bac: [
+    { k:'01', year:2026, subj:'الموضوع الأول',  topics:'اهتلاك خطي – تنازل – خسارة قيمة' },
+    { k:'02', year:2026, subj:'الموضوع الثاني', topics:'اهتلاك خطي – خسارة قيمة – تعديل المخطط' },
+    { k:'03', year:2025, subj:'الموضوع الأول',  topics:'اهتلاك خطي – خسارة قيمة – تنازل' },
+    { k:'04', year:2025, subj:'الموضوع الثاني', topics:'اهتلاك خطي بعد خسارة قيمة' },
+    { k:'05', year:2024, subj:'الموضوع الثاني', topics:'اهتلاك متزايد' },
+    { k:'06', year:2023, subj:'الموضوع الأول',  topics:'تعريف – تنازل – خسارة قيمة' },
+    { k:'07', year:2023, subj:'الموضوع الثاني', topics:'اهتلاك متناقص' },
+    { k:'08', year:2022, subj:'الموضوع الأول',  topics:'اهتلاك خطي – إيجاد القسط' },
+    { k:'09', year:2022, subj:'الموضوع الثاني', topics:'إيجاد التكلفة – خسارة قيمة – تنازل' },
+    { k:'10', year:2021, subj:'الموضوع الأول',  topics:'إيجاد MA – خسارة قيمة' },
+    { k:'11', year:2021, subj:'الموضوع الثاني', topics:'تنازل جزئي – خسارة قيمة' },
+  ],
+  resPages: ['rs00','rs01','rs02','rs03','rs04','rs05','rs06','rs07','rs08'],
+  quiz: [
+    { q:'يُحسب قسط الاهتلاك الخطي السنوي بالعلاقة:', o:['An = MA / N','An = MA × N','An = VNC × N','An = N / MA'], a:0, e:'في الاهتلاك الخطي نوزّع المبلغ القابل للاهتلاك MA بالتساوي على المدة النفعية N، أو An = MA × t.' },
+    { q:'تثبيت مدته النفعية 8 سنوات، معدل اهتلاكه الخطي هو:', o:['8%','10%','12.5%','20%'], a:2, e:'t = 100% / N = 100 / 8 = 12.5%' },
+    { q:'اقتنت مؤسسة آلة بتاريخ 10 مارس. بالنسبة لحساب الاهتلاك، شهر مارس:', o:['يُحسب كاملاً','لا يُحسب','يُحسب نصفه','يُحسب حسب الأيام'], a:0, e:'عند الحيازة: إذا كان التاريخ من 1 إلى 15 يُحسب الشهر كاملاً، ومن 16 إلى آخر الشهر لا يُحسب.' },
+    { q:'تنازلت مؤسسة عن آلة بتاريخ 20 أكتوبر. شهر أكتوبر في سنة التنازل:', o:['لا يُحسب','يُحسب كاملاً','يُحسب نصفه','لا علاقة له بالاهتلاك'], a:1, e:'عند التنازل: من 1 إلى 15 لا يُحسب الشهر، ومن 16 إلى آخر الشهر يُحسب كاملاً.' },
+    { q:'قيد قسط الاهتلاك في 31/12 يكون:', o:['من حـ/ 28xx إلى حـ/ 681','من حـ/ 681 إلى حـ/ 28xx','من حـ/ 681 إلى حـ/ 29xx','من حـ/ 2xx إلى حـ/ 28xx'], a:1, e:'نجعل حـ/681 (مخصصات الاهتلاكات والمؤونات وخسائر القيمة) مديناً، وحـ/28xx (اهتلاك التثبيت) دائناً.' },
+    { q:'رصيد حـ/28xx في ميزان المراجعة قبل الجرد في 2024/12/31 يمثل:', o:['قسط سنة 2024 فقط','الأقساط من تاريخ الحيازة إلى 2023/12/31','الأقساط من تاريخ الحيازة إلى 2024/12/31','القيمة المحاسبية الصافية'], a:1, e:'الميزان قبل الجرد لا يتضمن بعد قسط السنة الحالية، فـ ΣA يمثل الأقساط إلى 31/12 من السنة السابقة.' },
+    { q:'في ميزان المراجعة قبل الجرد: ΣA = 180,000 دج لتثبيت مقتنى منذ 3 سنوات كاملة. قسط السنة:', o:['180,000 دج','90,000 دج','60,000 دج','45,000 دج'], a:2, e:'An = ΣA / n = 180,000 / 3 = 60,000 دج' },
+    { q:'MA = 1,000,000 دج، t = 10%، ΣA = 250,000 دج. المدة المنقضية n تساوي:', o:['25 شهراً','30 شهراً','36 شهراً','24 شهراً'], a:1, e:'n = (ΣA × 12) / (MA × t) = (250,000 × 12) / (1,000,000 × 0.10) = 30 شهراً' },
+    { q:'القيمة المحاسبية الصافية لتثبيت سبق أن سُجلت له خسارة قيمة:', o:['VNC = MA − ΣA','VNC = MA − ΣA − PV','VNC = MA + PV − ΣA','VNC = ΣA − PV'], a:1, e:'VNC = MA − ΣA − PV (نطرح خسارة القيمة السابقة إن وُجدت).' },
+    { q:'تظهر خسارة القيمة عندما:', o:['PVN > VNC','PVN = VNC','PVN < VNC','ΣA > MA'], a:2, e:'إذا كانت القيمة القابلة للتحصيل PVN أقل من VNC: PV = VNC − PVN. وإذا كانت PVN ≥ VNC فلا يُسجّل شيء.' },
+    { q:'VNC = 500,000 دج و PVN = 420,000 دج. خسارة القيمة:', o:['لا توجد خسارة','80,000 دج','420,000 دج','920,000 دج'], a:1, e:'PV = VNC − PVN = 500,000 − 420,000 = 80,000 دج' },
+    { q:'قيد معاينة خسارة القيمة:', o:['من حـ/ 681 إلى حـ/ 29xx','من حـ/ 29xx إلى حـ/ 681','من حـ/ 681 إلى حـ/ 28xx','من حـ/ 652 إلى حـ/ 29xx'], a:0, e:'حـ/681 مدين، وحـ/29xx (خسائر القيمة عن التثبيت) دائن.' },
+    { q:'بعد تسجيل خسارة قيمة، يصبح القسط للسنوات المتبقية:', o:['An = MA / N','An = VNC / Nr','An = PV / Nr','لا يتغير'], a:1, e:'يُعدّل المخطط: الأساس الجديد هو VNC بعد الخسارة، مقسوماً على عدد السنوات المتبقية Nr.' },
+    { q:'المعامل الجبائي لتثبيت مدته النفعية 5 سنوات:', o:['1.5','2','2.5','3'], a:1, e:'3 أو 4 سنوات ← 1.5 | 5 أو 6 سنوات ← 2 | أكثر من 6 سنوات ← 2.5' },
+    { q:'تثبيت مدته 4 سنوات يُهتلك بطريقة متناقصة. المعدل المتناقص t′:', o:['25%','37.5%','40%','50%'], a:1, e:'t = 100/4 = 25%، المعامل = 1.5 ← t′ = 25% × 1.5 = 37.5%' },
+    { q:'في الاهتلاك المتناقص، يُطبَّق المعدل t′ على:', o:['MA الأصلي كل سنة','VNC في بداية السنة','ΣA','القسط السابق'], a:1, e:'القسط = VNC بداية السنة × t′، لذلك تتناقص الأقساط.' },
+    { q:'ننتقل من المتناقص إلى الخطي ابتداءً من السنة التي يكون فيها:', o:['100% / السنوات المتبقية ≥ t′','100% / السنوات المتبقية < t′','VNC = 0','ΣA ≥ MA / 2'], a:0, e:'مثال (N=5، t′=40%): السنة 4 ← 100/2 = 50% ≥ 40% فننتقل للخطي ونقسم VNC على السنتين الأخيرتين.' },
+    { q:'في الاهتلاك المتزايد لمدة 5 سنوات، مجموع أرقام السنوات (المقام):', o:['5','10','15','25'], a:2, e:'S = N × (N + 1) / 2 = 5 × 6 / 2 = 15' },
+    { q:'MA = 2,400,000 دج، اهتلاك متزايد لمدة 5 سنوات. قسط السنة الثالثة:', o:['160,000 دج','320,000 دج','480,000 دج','640,000 دج'], a:2, e:'A3 = MA × 3/15 = 2,400,000 × 3/15 = 480,000 دج' },
+    { q:'نتيجة التنازل عن تثبيت تساوي:', o:['سعر التنازل − MA','سعر التنازل − VNC بتاريخ التنازل','سعر التنازل − ΣA','VNC − PV'], a:1, e:'R = سعر التنازل − VNC، أي: سعر التنازل + ΣA + PV − MA' },
+    { q:'إذا كانت نتيجة التنازل موجبة تُسجل في:', o:['الجانب المدين لـ حـ/652','الجانب الدائن لـ حـ/752','الجانب الدائن لـ حـ/681','الجانب المدين لـ حـ/752'], a:1, e:'فائض قيمة ← دائن حـ/752. ناقص قيمة (نتيجة سالبة) ← مدين حـ/652.' },
+    { q:'قبل تسجيل قيد التنازل يجب أولاً:', o:['تسجيل خسارة قيمة','تسوية قسط الاهتلاك لسنة التنازل إلى تاريخ التنازل','إلغاء كل الاهتلاكات','لا شيء'], a:1, e:'نُسجّل قسط الاهتلاك من 01/01 (أو من تاريخ الحيازة) إلى تاريخ التنازل، ثم نحسب ΣA بتاريخ التنازل.' },
+  ],
+ },
+];
+
+/* ============================================================
+   Outils
+   ============================================================ */
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt = n => { const r = Math.round(n * 100) / 100; const [i, d] = Math.abs(r).toFixed(2).split('.'); const s = i.replace(/\B(?=(\d{3})+(?!\d))/g, ','); return (r < 0 ? '-' : '') + s + (d === '00' ? '' : '.' + d); };
+const L = s => `<span class="ltr">${s}</span>`;
+const pct = x => fmt(x * 100) + '%';
+const num = id => { const v = String($(id).value).replace(/[\s,]/g, '').replace('٫', '.'); return v === '' ? NaN : +v; };
+const unit = id => UNITS.find(u => u.id === id);
+const store = {
+  get(k, d) { try { const v = localStorage.getItem('elv_' + k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem('elv_' + k, JSON.stringify(v)); } catch (e) {} },
+};
+function toast(t) { const el = $('toast'); el.innerText = t; el.classList.add('show'); clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove('show'), 2200); }
+
+/* Chargement des fichiers de contenu (images) */
+const loading = {};
+function loadPack(name) {
+  if (window.PACKS && PACKS[name]) return Promise.resolve(PACKS[name]);
+  if (!loading[name]) loading[name] = new Promise((res, rej) => {
+    const s = document.createElement('script');
+    s.src = name + '.js';
+    s.onload = () => res(PACKS[name]);
+    s.onerror = () => { delete loading[name]; s.remove(); rej(); };
+    document.head.appendChild(s);
+  });
+  return loading[name];
+}
+async function img(pack, key, alt) {
+  try { const p = await loadPack(pack); return p[key] ? `<div class="paper"><img src="${p[key]}" alt="${esc(alt || '')}" onclick="openZoom(this.src)"></div>` : ''; }
+  catch (e) { return '<p class="empty">⚠️ تعذّر التحميل. تحقق من الاتصال بالإنترنت ثم أعد المحاولة.</p>'; }
+}
+
+/* Progression */
+const doneSet = uid => new Set(store.get('done_' + uid, []));
+function toggleDone(uid, k) {
+  const s = doneSet(uid); s.has(k) ? s.delete(k) : s.add(k);
+  store.set('done_' + uid, [...s]);
+  return s.has(k);
+}
+
+/* ============================================================
+   Navigation (le bouton retour d'Android fonctionne)
+   ============================================================ */
+function go(h) { location.hash = h; }
+function goBack() { history.length > 1 ? history.back() : go('#/'); }
+window.addEventListener('hashchange', () => { if (zoomOpen) { hideZoom(); } render(); });
+
+function setTop(title, sub, back) {
+  $('topTitle').innerText = title; $('topSub').innerText = sub || '';
+  $('backBtn').style.display = back ? 'block' : 'none';
+}
+
+async function render() {
+  const parts = (location.hash || '#/').slice(2).split('/').filter(Boolean);
+  const v = $('view');
+  window.scrollTo(0, 0);
+  if (!parts.length) return renderHome(v);
+  const u = unit(parts[0]);
+  if (!u) return go('#/');
+  if (!parts[1]) return renderUnit(v, u);
+  if (parts[1] === 'ex') return parts[2] ? renderExercise(v, u, parts[2]) : renderExList(v, u);
+  if (parts[1] === 'bac') return parts[2] ? renderBac(v, u, parts[2]) : renderBacList(v, u);
+  if (parts[1] === 'res') return renderRes(v, u);
+  if (parts[1] === 'quiz') return renderQuiz(v, u);
+  if (parts[1] === 'calc') return renderCalc(v, u, parts[2]);
+  go('#/');
+}
+
+/* ---------- Accueil ---------- */
+function renderHome(v) {
+  setTop('أستاذ الشارع', 'تسيير واقتصاد · BAC 2027', false);
+  let count = '';
+  if (CONFIG.bacDate) {
+    const days = Math.ceil((new Date(CONFIG.bacDate) - new Date()) / 86400000);
+    if (days > 0) count = `<div class="count"><b>${days}</b>يوم متبقي على البكالوريا 💪</div>`;
+  }
+  const units = UNITS.map(u => {
+    const total = u.axes[u.axes.length - 1].to, d = doneSet(u.id).size;
+    return `<button class="card" onclick="go('#/${u.id}')">
+      <span class="unit-num">الوحدة ${u.num}</span>
+      <h3>${esc(u.title)}</h3>
+      <div class="muted">${esc(u.sub)} · ${total} تمرين · ${u.bac.length} بكالوريا</div>
+      <div class="bar"><i style="width:${Math.round(d / total * 100)}%"></i></div>
+      <div class="muted" style="margin-top:6px">أنجزت ${d} / ${total}</div>
+    </button>`;
+  }).join('');
+    v.innerHTML = `
+    <div class="hero"><img src="icon-512.png" alt=""><h1>أستاذ الشارع</h1><p>تمارين، حلول نموذجية، بكالوريات واختبارات — في جيبك</p></div>
+    ${count}
+    <h2 class="sec">📚 الوحدات</h2>
+    ${units}
+    <div class="card soon"><h3>وحدات أخرى</h3><div class="muted">قريباً إن شاء الله…</div></div>
+    ${CONFIG.facebook ? `<a href="${CONFIG.facebook}" target="_blank" style="text-decoration:none"><div class="card" style="display:flex;align-items:center;gap:12px;border-color:#1877f2"><span style="font-size:30px">📘</span><div><h3 style="margin:0">تابع صفحتنا على فيسبوك</h3><div class="muted">أستاذ الشارع - Gestion · ملخصات وتمارين — بكالوريا 2027</div></div></div></a>` : ''}
+    ${CONFIG.tiktok ? `<p class="foot" style="font-size:14px"><a href="${CONFIG.tiktok}" target="_blank">🎵 تيك توك</a></p>` : ''}
+    <div class="foot" style="margin-top:20px">إعداد</div>
+    <div style="background:#fff;border-radius:12px;padding:10px 14px;margin:6px auto 0;max-width:280px"><img src="data:image/jpeg;base64,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w8UyBlP4GgD5t8O/HbxLo9sltqEMGqxoMLJMSkuPdh1+pBPvV7Vf2hdcurdo9M0q0sXYY813MzL7jIAz9Qa7vVfgL4SvpWltHvtPJP3IZQyfk4J/Wq1j+z54YglD3d/qV0Afub1RT9cLn8iKAPB7Sz17xx4j8uIXGo6ndNud2Oce7Hoqj8hX1T4A8FW3gfw4lhGyy3cp8y6nA/1j+3+yOg/Pua1tD8OaP4as/suj6fDaRH72wfM/uzHlj9TWpQAV87fGT4aXNhqNx4n0e3aSxuCZLuKMZMDnq+P7p6n0Oe1fRNBAIwRkGgD5F8G/FDxD4Lj+zWkkd1YZz9luQSqk9dpByv8AL2rtbr9orVHtitpoFpDOR/rJZ2kUf8BAX+dejeIPg34Q1+Z7j7JJp9w5yz2LhAT/ALpBX8gK56H9njw8su6bVtTkjB+6pjU/ntNAHg+t67rHivVnvtTuJbu6ZTjA4RRk4VRwFAyfzNanw1/5KT4f/wCvxK+l7D4ceG9J0K/0zTLFbZr22ktpbo/PNtdSp+ZvrnA49q5jw/8AA7SvD+v2Orw6veyyWkolVHRcMR2OKQHqlFFFMAooooA5OTwrdv8AFKLxUJ4fsiab9jMXO/duJz0xjn1rrKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKoXGi6ddTtNPZwySN95mXk1fooKjOUXeLsZqaBpSOrrYQBlOQQvQ1pUUUBKcpfE7hRRRQSFFFFAHMH4deDScnw1puT/0wFXNN8H+HNHvVvNN0WytblQQssUQVgDwea26KACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooA//Z" alt="SeXou · التسيير المالي المحاسبي" style="width:100%;display:block"></div>`;
+}
+
+/* ---------- Unité ---------- */
+function renderUnit(v, u) {
+  setTop('الوحدة ' + u.num, u.title, true);
+  const total = u.axes[u.axes.length - 1].to, d = doneSet(u.id).size;
+  const best = store.get('quiz_' + u.id, null);
+  v.innerHTML = `
+    <div class="card" style="cursor:default"><span class="unit-num">الوحدة ${u.num}</span><h3>${esc(u.title)}</h3>
+      <div class="bar"><i style="width:${Math.round(d / total * 100)}%"></i></div><div class="muted" style="margin-top:6px">أنجزت ${d} / ${total} تمرين</div></div>
+    <div class="grid">
+      <div class="tile" onclick="go('#/${u.id}/res')"><span>📖</span>الملخص<small>القوانين والقواعد</small></div>
+      <div class="tile" onclick="go('#/${u.id}/ex')"><span>✏️</span>التمارين<small>${total} تمرين مع الحل</small></div>
+      <div class="tile" onclick="go('#/${u.id}/bac')"><span>🎓</span>البكالوريات<small>${u.bac.length} موضوع مع التصحيح</small></div>
+      <div class="tile" onclick="go('#/${u.id}/quiz')"><span>❓</span>اختبر نفسك<small>${best ? 'أفضل نتيجة: ' + best + '/' + u.quiz.length : u.quiz.length + ' سؤال'}</small></div>
+      <div class="tile" style="grid-column:1/-1" onclick="go('#/${u.id}/calc')"><span>🧮</span>الحاسبات<small>تحقق من جداول الاهتلاك، خسارة القيمة والتنازل</small></div>
+    </div>
+    <button class="btn-line w100" style="margin-top:16px" id="dlBtn" onclick="downloadUnit('${u.id}')">⬇️ تحميل الوحدة للاستعمال بدون إنترنت</button>`;
+}
+async function downloadUnit(uid) {
+  const b = $('dlBtn'); b.disabled = true;
+  const packs = [uid + '-res', uid + '-ex', uid + '-co', uid + '-bac'];
+  try {
+    for (let i = 0; i < packs.length; i++) { b.innerText = `⏳ جاري التحميل ${i + 1}/${packs.length}…`; await loadPack(packs[i]); }
+    b.innerText = '✅ الوحدة متوفرة بدون إنترنت';
+  } catch (e) { b.disabled = false; b.innerText = '⚠️ فشل التحميل، أعد المحاولة'; }
+}
+
+/* ---------- Résumé ---------- */
+async function renderRes(v, u) {
+  setTop('📖 الملخص', 'الوحدة ' + u.num, true);
+  v.innerHTML = '<p class="empty">⏳ جاري التحميل…</p>';
+  let html = '<p class="hint">اضغط على أي صفحة لتكبيرها 🔍</p>';
+  for (const k of u.resPages) html += await img(u.id + '-res', k, 'ملخص');
+  v.innerHTML = html;
+}
+
+/* ---------- Exercices ---------- */
+function renderExList(v, u) {
+  setTop('✏️ التمارين', 'الوحدة ' + u.num, true);
+  const done = doneSet(u.id);
+  v.innerHTML = '<p class="hint">✓ = تمرين أنجزته</p>' + u.axes.map(a => {
+    let b = '';
+    for (let i = a.from; i <= a.to; i++) {
+      const k = String(i).padStart(2, '0');
+      const lbl = u.exLabels[k] ? `<small>${u.exLabels[k].replace('بكالوريا ', '')}</small>` : '';
+      b += `<div class="exbtn ${done.has(k) ? 'done' : ''}" onclick="go('#/${u.id}/ex/${k}')">${k}${lbl}</div>`;
+    }
+    return `<h2 class="sec">${esc(a.title)}</h2><div class="exgrid">${b}</div>`;
+  }).join('');
+}
+async function renderExercise(v, u, k) {
+  const n = +k, total = u.axes[u.axes.length - 1].to;
+  const axis = u.axes.find(a => n >= a.from && n <= a.to);
+  setTop('التمرين ' + k, axis ? axis.title.split(':')[0] : '', true);
+  v.innerHTML = '<p class="empty">⏳ جاري التحميل…</p>';
+  const exHtml = await img(u.id + '-ex', 'ex' + k, 'التمرين ' + k);
+  const c = u.corr[k];
+  const done = doneSet(u.id).has(k);
+  const prev = n > 1 ? String(n - 1).padStart(2, '0') : null, next = n < total ? String(n + 1).padStart(2, '0') : null;
+  const video = u.videos[k] ? `<a href="${u.videos[k]}" target="_blank"><button class="btn-line w100" style="margin-top:8px">🎬 شاهد شرح التمرين</button></a>` : '';
+  v.innerHTML = `
+    ${u.exLabels[k] ? `<p class="hint"><span class="tag">${u.exLabels[k]}</span></p>` : ''}
+    ${exHtml}
+    <p class="hint">حاول تحل وحدك قبل ما تشوف الحل 💪 · اضغط على الصورة لتكبيرها</p>
+    ${c ? `<button class="btn-pink w100" id="solBtn" onclick="showSol('${u.id}','${k}')">💡 اظهر الحل النموذجي</button>`
+        : `<div class="verdict info">الحل النموذجي لهذا التمرين غير متوفر حالياً، سيُضاف قريباً.</div>`}
+    <div id="sol"></div>
+    ${video}
+    <button class="${done ? 'btn-ok' : 'btn-line'} w100" style="margin-top:10px" id="doneBtn" onclick="markDone('${u.id}','${k}')">${done ? '✅ أنجزت هذا التمرين' : '☐ علّم هذا التمرين كمُنجز'}</button>
+    <div class="nav">
+      <button ${prev ? `onclick="go('#/${u.id}/ex/${prev}')"` : 'disabled style="opacity:.3"'}>→ السابق</button>
+      <button onclick="go('#/${u.id}/ex')">☰ القائمة</button>
+      <button ${next ? `onclick="go('#/${u.id}/ex/${next}')"` : 'disabled style="opacity:.3"'}>التالي ←</button>
+    </div>`;
+}
+async function showSol(uid, k) {
+  const u = unit(uid), [pack, key] = u.corr[k];
+  $('solBtn').style.display = 'none';
+  $('sol').innerHTML = '<p class="empty">⏳ جاري تحميل الحل…</p>';
+  const note = pack.endsWith('bac') ? '<p class="hint">التصحيح من ملف البكالوريات (نفس الموضوع)</p>' : '';
+  $('sol').innerHTML = '<h2 class="sec">💡 الحل النموذجي</h2>' + note + await img(pack, key, 'الحل') + '<p class="hint">اضغط على الحل لتكبيره وقراءة الجداول 🔍</p>';
+}
+function markDone(uid, k) {
+  const on = toggleDone(uid, k), b = $('doneBtn');
+  b.className = (on ? 'btn-ok' : 'btn-line') + ' w100';
+  b.innerText = on ? '✅ أنجزت هذا التمرين' : '☐ علّم هذا التمرين كمُنجز';
+  if (on) toast('أحسنت! 👏');
+}
+
+/* ---------- Bacs ---------- */
+function renderBacList(v, u) {
+  setTop('🎓 البكالوريات', 'الوحدة ' + u.num, true);
+  const done = new Set(store.get('bac_' + u.id, []));
+  v.innerHTML = '<p class="hint">مواضيع شعبة تسيير واقتصاد مع التصحيح النموذجي المفصّل</p>' + u.bac.map(b => `
+    <div class="list-item ${done.has(b.k) ? 'done' : ''}" onclick="go('#/${u.id}/bac/${b.k}')">
+      <div><b>بكالوريا ${b.year}</b> · ${b.subj}<div class="hint" style="text-align:right;margin:4px 0 0">${b.topics}</div></div>
+      <span>${done.has(b.k) ? '✅' : '‹'}</span></div>`).join('');
+}
+async function renderBac(v, u, k) {
+  const b = u.bac.find(x => x.k === k); if (!b) return go('#/' + u.id + '/bac');
+  setTop('بكالوريا ' + b.year, b.subj, true);
+  v.innerHTML = '<p class="empty">⏳ جاري التحميل…</p>';
+  const s = await img(u.id + '-bac', 'bs' + k, 'الموضوع');
+  const done = new Set(store.get('bac_' + u.id, [])).has(k);
+  const i = u.bac.indexOf(b), prev = u.bac[i - 1], next = u.bac[i + 1];
+  v.innerHTML = `<p class="hint">${b.topics}</p>${s}
+    <button class="btn-pink w100" id="solBtn" onclick="showBacSol('${u.id}','${k}')">💡 اظهر التصحيح النموذجي</button><div id="sol"></div>
+    <button class="${done ? 'btn-ok' : 'btn-line'} w100" style="margin-top:10px" id="doneBtn" onclick="markBac('${u.id}','${k}')">${done ? '✅ أنجزت هذا الموضوع' : '☐ علّم هذا الموضوع كمُنجز'}</button>
+    <div class="nav">
+      <button ${prev ? `onclick="go('#/${u.id}/bac/${prev.k}')"` : 'disabled style="opacity:.3"'}>→ السابق</button>
+      <button onclick="go('#/${u.id}/bac')">☰ القائمة</button>
+      <button ${next ? `onclick="go('#/${u.id}/bac/${next.k}')"` : 'disabled style="opacity:.3"'}>التالي ←</button>
+    </div>`;
+}
+async function showBacSol(uid, k) {
+  $('solBtn').style.display = 'none';
+  $('sol').innerHTML = '<p class="empty">⏳ جاري التحميل…</p>';
+  $('sol').innerHTML = '<h2 class="sec">💡 التصحيح النموذجي</h2>' + await img(uid + '-bac', 'bc' + k, 'التصحيح') + '<p class="hint">اضغط على التصحيح لتكبيره 🔍</p>';
+}
+function markBac(uid, k) {
+  const s = new Set(store.get('bac_' + uid, [])); s.has(k) ? s.delete(k) : s.add(k); store.set('bac_' + uid, [...s]);
+  const on = s.has(k), b = $('doneBtn');
+  b.className = (on ? 'btn-ok' : 'btn-line') + ' w100'; b.innerText = on ? '✅ أنجزت هذا الموضوع' : '☐ علّم هذا الموضوع كمُنجز';
+}
+
+/* ---------- Zoom ---------- */
+let zoomOpen = false, zoomW = 1;
+function openZoom(src) {
+  $('zoomImg').src = src; zoomW = 2; applyZoom(); $('zoom').classList.add('open'); $('zoom').scrollTo(0, 0);
+  zoomOpen = true; history.pushState({ zoom: 1 }, '');
+}
+function applyZoom() { $('zoomImg').style.width = (zoomW * 100) + 'vw'; }
+function zoomBy(f) { zoomW = Math.min(5, Math.max(1, zoomW * f)); applyZoom(); }
+function hideZoom() { zoomOpen = false; $('zoom').classList.remove('open'); }
+function closeZoom() { if (history.state && history.state.zoom) history.back(); else hideZoom(); }
+window.addEventListener('popstate', () => { if (zoomOpen) hideZoom(); });
+
+/* ---------- Quiz ---------- */
+let Q = null;
+function renderQuiz(v, u) {
+  setTop('❓ اختبر نفسك', 'الوحدة ' + u.num, true);
+  const order = u.quiz.map((_, i) => i).sort(() => Math.random() - .5);
+  Q = { u, order, i: 0, score: 0, answered: false };
+  quizStep();
+}
+function quizStep() {
+  const v = $('view'), { u, order, i } = Q;
+  if (i >= order.length) return quizEnd();
+  const q = u.quiz[order[i]];
+  const opts = q.o.map((t, j) => ({ t, j })).sort(() => Math.random() - .5);
+  Q.answered = false;
+  v.innerHTML = `
+    <div class="q-head"><span>السؤال ${i + 1} / ${order.length}</span><span>النتيجة: ${Q.score}</span></div>
+    <div class="bar" style="margin:0 0 16px"><i style="width:${i / order.length * 100}%"></i></div>
+    <div class="q-text">${esc(q.q)}</div>
+    ${opts.map(o => `<button class="opt" data-j="${o.j}" onclick="quizAnswer(this,${o.j})">${esc(o.t)}</button>`).join('')}
+    <div id="qx"></div>`;
+}
+function quizAnswer(btn, j) {
+  if (Q.answered) return; Q.answered = true;
+  const q = Q.u.quiz[Q.order[Q.i]], ok = j === q.a;
+  if (ok) Q.score++;
+  document.querySelectorAll('.opt').forEach(b => { if (+b.dataset.j === q.a) b.classList.add('right'); });
+  if (!ok) btn.classList.add('wrong');
+  $('qx').innerHTML = `<div class="explain">${ok ? '✅ إجابة صحيحة!' : '❌ إجابة خاطئة.'}<br>${esc(q.e)}</div>
+    <button class="btn-pink w100" onclick="Q.i++;quizStep();window.scrollTo(0,0)">${Q.i + 1 < Q.order.length ? 'السؤال التالي ←' : 'النتيجة النهائية 🏁'}</button>`;
+}
+function quizEnd() {
+  const { u, score, order } = Q, total = order.length;
+  const best = Math.max(score, store.get('quiz_' + u.id, 0)); store.set('quiz_' + u.id, best);
+  const r = score / total;
+  const msg = r >= .9 ? 'ممتاز! أنت جاهز للبكالوريا 🏆' : r >= .7 ? 'جيد جداً! راجع الأخطاء وستصل للعلامة الكاملة 💪' : r >= .5 ? 'لا بأس، راجع الملخص ثم أعد المحاولة 📖' : 'راجع الملخص جيداً ثم أعد الاختبار، ستتحسن 💪';
+  $('view').innerHTML = `<div class="count"><b>${score} / ${total}</b>${msg}</div>
+    <p class="hint">أفضل نتيجة لك: ${best} / ${total}</p>
+    <button class="btn-pink w100" onclick="renderQuiz($('view'), unit('${u.id}'))">🔄 أعد الاختبار</button>
+    <button class="btn-line w100" style="margin-top:8px" onclick="go('#/${u.id}/res')">📖 راجع الملخص</button>`;
+}
+
+/* ============================================================
+   Calculatrices
+   ============================================================ */
+const ASSETS = [
+  ['213', 'البنايات'], ['215', 'المنشآت التقنية، المعدات والأدوات الصناعية'], ['2182', 'معدات النقل'],
+  ['2183', 'معدات المكتب ومعدات الإعلام الآلي'], ['2184', 'الأثاث'], ['204', 'برمجيات المعلوماتية وما شابهها'],
+];
+const amortAcc = c => '28' + c.slice(1), lossAcc = c => '29' + c.slice(1);
+const assetName = c => (ASSETS.find(a => a[0] === c) || [, 'التثبيت'])[1];
+const CALCS = [
+  ['lin', '📏', 'الاهتلاك الخطي', 'مخطط الاهتلاك مع التناسب الزمني'],
+  ['deg', '📉', 'الاهتلاك المتناقص', 'المعامل الجبائي والتحول للخطي'],
+  ['pro', '📈', 'الاهتلاك المتزايد', 'الرتبة ÷ مجموع أرقام السنوات'],
+  ['pv', '⚠️', 'خسارة القيمة', 'PV وتعديل المخطط'],
+  ['ces', '🤝', 'التنازل', 'نتيجة التنازل والقيد'],
+];
+function renderCalc(v, u, which) {
+  if (!which) {
+    setTop('🧮 الحاسبات', 'الوحدة ' + u.num, true);
+    v.innerHTML = '<p class="hint">حل التمرين في كراسك أولاً، ثم استعمل الحاسبة للتحقق من نتائجك ✔</p>' +
+      CALCS.map(c => `<div class="list-item" onclick="go('#/${u.id}/calc/${c[0]}')"><div><b>${c[1]} ${c[2]}</b><div class="hint" style="text-align:right;margin:4px 0 0">${c[3]}</div></div><span>‹</span></div>`).join('');
+    return;
+  }
+  const c = CALCS.find(x => x[0] === which); if (!c) return go('#/' + u.id + '/calc');
+  setTop(c[1] + ' ' + c[2], 'الحاسبات', true);
+  const assetSel = `<label class="f">نوع التثبيت</label><select id="c-asset">${ASSETS.map(a => `<option value="${a[0]}" ${a[0] === '215' ? 'selected' : ''}>${a[0]} — ${a[1]}</option>`).join('')}</select>`;
+  const dateIn = (id, lbl, val) => `<label class="f">${lbl}</label><input type="date" id="${id}" value="${val}">`;
+  const numIn = (id, lbl, ph) => `<label class="f">${lbl}</label><input type="text" inputmode="decimal" id="${id}" placeholder="${ph || ''}">`;
+  let form = '';
+  if (which === 'lin') form = numIn('c-ma', 'المبلغ القابل للاهتلاك MA (دج)', 'مثال: 1000000') + `<div class="row"><div>${numIn('c-n', 'المدة النفعية N (سنوات)', '5')}</div><div>${numIn('c-t', 'أو المعدل t (%)', '20')}</div></div>` + dateIn('c-date', 'تاريخ الحيازة', '2024-01-02') + assetSel;
+  if (which === 'deg') form = numIn('c-ma', 'المبلغ القابل للاهتلاك MA (دج)', '3600000') + numIn('c-n', 'المدة النفعية N (سنوات)', '5') + dateIn('c-date', 'تاريخ الحيازة', '2024-01-02') + assetSel;
+  if (which === 'pro') form = numIn('c-ma', 'المبلغ القابل للاهتلاك MA (دج)', '2400000') + numIn('c-n', 'المدة النفعية N (سنوات)', '5') + numIn('c-y', 'سنة الحيازة', '2024') + assetSel + '<p class="hint" style="text-align:right">الحاسبة تفترض الحيازة في بداية السنة (سنوات كاملة).</p>';
+  if (which === 'pv') form = numIn('c-ma', 'المبلغ القابل للاهتلاك MA (دج)') + numIn('c-sa', 'مجموع الاهتلاكات ΣA بعد تسجيل قسط السنة (دج)') + numIn('c-pv0', 'خسارة قيمة سابقة (دج) — اتركها فارغة إن لم توجد', '0') + numIn('c-pvn', 'القيمة القابلة للتحصيل PVN (دج)') + `<div class="row"><div>${numIn('c-nr', 'السنوات المتبقية Nr (اختياري)')}</div><div>${numIn('c-y', 'السنة', '2024')}</div></div>` + assetSel;
+  if (which === 'ces') form = numIn('c-ma', 'المبلغ القابل للاهتلاك MA (دج)') + numIn('c-sa', 'مجموع الاهتلاكات ΣA إلى تاريخ التنازل (دج)') + numIn('c-pv0', 'خسائر القيمة المسجلة (دج) — 0 إن لم توجد', '0') + numIn('c-price', 'سعر التنازل (دج)') + dateIn('c-date', 'تاريخ التنازل', '2024-06-30') + `<label class="f">طريقة التحصيل</label><select id="c-pay"><option value="512">512 — البنوك، الحسابات الجارية</option><option value="53">53 — الصندوق</option><option value="462">462 — حسابات دائنة عن عمليات التنازل (على الحساب)</option></select>` + assetSel;
+  v.innerHTML = `<div class="card" style="cursor:default">${form}<button class="btn-pink w100" style="margin-top:16px" onclick="calc_${which}()">احسب ✔</button></div><div class="res" id="out"></div>`;
+}
+function need(...vals) { if (vals.some(x => !isFinite(x) || x < 0)) { $('out').innerHTML = '<div class="verdict bad">⚠️ تأكد من إدخال كل القيم بشكل صحيح.</div>'; return false; } return true; }
+function dmy(y, m, d) { return L(`${y}/${String(m).padStart(2, '0')}/${String(d).padStart(2, '0')}`); }
+function yEnd(y) { return dmy(y, 12, 31); }
+// Règle du mois : acquisition du 1 au 15 → mois compté ; du 16 à la fin → non compté
+function firstMonths(dateStr) { const [y, m, d] = dateStr.split('-').map(Number); return { y, m, d, months: d <= 15 ? 13 - m : 12 - m }; }
+
+function planTable(rows, extra) {
+  const head = extra === 'deg'
+    ? '<tr><th>السنة (N)</th><th>أساس الحساب</th><th>المعدل المطبق</th><th>قسط الاهتلاك (An)</th><th>الاهتلاك المتراكم</th><th>القيمة المحاسبية الصافية (VNC)</th><th>الطريقة</th></tr>'
+    : '<tr><th>السنة (N)</th><th>المبلغ القابل للاهتلاك (MA)</th><th>قسط الاهتلاك (An)</th><th>الاهتلاك المتراكم</th><th>القيمة المحاسبية الصافية (VNC)</th></tr>';
+  return `<div class="tbl-wrap"><table class="acc">${head}${rows.join('')}</table></div><p class="hint">اسحب الجدول يميناً ويساراً إذا لزم الأمر ↔</p>`;
+}
+function journal(date, debits, credits, note) {
+  const dl = debits.map(([acc, name, amt], i) => `<tr><td>${acc}</td><td></td><td class="lbl">${i ? '' : 'من '}حـ/ ${name}</td><td>${fmt(amt)}</td><td></td></tr>`).join('');
+  const cl = credits.map(([acc, name, amt], i) => `<tr><td></td><td>${acc}</td><td class="lbl" style="padding-right:${i ? 26 : 18}px">${i ? '' : 'إلى '}حـ/ ${name}</td><td></td><td>${fmt(amt)}</td></tr>`).join('');
+  return `<div class="tbl-wrap"><table class="acc"><tr><th>مدين</th><th>دائن</th><th>البيان</th><th>مبالغ مدينة</th><th>مبالغ دائنة</th></tr>
+    <tr class="datebar"><td colspan="5">———— ${date} ————</td></tr>${dl}${cl}
+    <tr><td colspan="5" style="color:#555">(${note})</td></tr></table></div>`;
+}
+
+function calc_lin() {
+  const MA = num('c-ma'); let N = num('c-n'); const t0 = num('c-t');
+  if (!isFinite(N) && isFinite(t0) && t0 > 0) N = 100 / t0;
+  if (!need(MA, N) || !$('c-date').value || N <= 0) return need(NaN);
+  const t = 1 / N, An = MA * t, f = firstMonths($('c-date').value), code = $('c-asset').value;
+  const rows = []; let sa = 0, y = f.y, left = N * 12, firstAmt = 0;
+  while (left > 0.0001 && rows.length < 60) {
+    const m = rows.length === 0 ? Math.min(f.months, left) : Math.min(12, left);
+    let a = An * m / 12; if (left - m <= 0.0001) a = MA - sa;
+    sa += a; left -= m; if (!rows.length) firstAmt = a;
+    rows.push(`<tr><td>${yEnd(y)}${m < 12 ? `<br><small>(${m} أشهر)</small>` : ''}</td><td>${fmt(MA)}</td><td>${fmt(a)}</td><td>${fmt(sa)}</td><td>${fmt(MA - sa)}</td></tr>`);
+    y++;
+  }
+  $('out').innerHTML = `<div class="formula">
+      المعدل: ${L(`t = 100% / N = 100 / ${fmt(N)} = ${pct(t)}`)}<br>
+      القسط السنوي: ${L(`An = MA × t = ${fmt(MA)} × ${fmt(t)} = ${fmt(An)} DA`)}<br>
+      ${f.months < 12 ? `السنة الأولى (${f.months} أشهر): ${L(`A(${f.y}) = ${fmt(MA)} × ${fmt(t)} × (${f.months}/12) = ${fmt(firstAmt)} DA`)}` : 'السنة الأولى كاملة (12 شهراً).'}
+    </div>${planTable(rows)}
+    <h2 class="sec">قيد قسط السنة الأولى</h2>
+    ${journal(yEnd(f.y), [['681', 'مخصصات الاهتلاكات والمؤونات وخسائر القيمة – الأصول غير الجارية', firstAmt]], [[amortAcc(code), 'اهتلاك ' + assetName(code), firstAmt]], 'إثبات قسط اهتلاك دورة ' + f.y)}`;
+}
+
+function calc_deg() {
+  const MA = num('c-ma'), N = num('c-n');
+  if (!need(MA, N) || !$('c-date').value || N < 3) { $('out').innerHTML = '<div class="verdict bad">⚠️ تأكد من القيم. الاهتلاك المتناقص يخص التثبيتات التي مدتها 3 سنوات فأكثر.</div>'; return; }
+  const coef = N <= 4 ? 1.5 : N <= 6 ? 2 : 2.5, t = 1 / N, td = t * coef;
+  const f = firstMonths($('c-date').value), code = $('c-asset').value;
+  const rows = []; let vnc = MA, sa = 0, y = f.y, left = N * 12, linear = false, linAnnual = 0, linRateFix = 0, firstAmt = 0, switchYear = null;
+  while (left > 0.0001 && rows.length < 60) {
+    const m = rows.length === 0 ? Math.min(f.months, left) : Math.min(12, left);
+    const linRate = 12 / left;
+    if (!linear && linRate >= td - 1e-9) { linear = true; linAnnual = vnc * 12 / left; linRateFix = linRate; switchYear = y; }
+    const base = vnc;
+    let a = linear ? linAnnual * m / 12 : vnc * td * m / 12;
+    if (left - m <= 0.0001) a = vnc;
+    sa += a; vnc -= a; left -= m; if (!rows.length) firstAmt = a;
+    rows.push(`<tr class="${y === switchYear ? 'sw' : ''}"><td>${yEnd(y)}${m < 12 ? `<br><small>(${m} أشهر)</small>` : ''}</td><td>${fmt(base)}</td><td>${linear ? pct(linRateFix) : pct(td)}${m < 12 ? ` × ${m}/12` : ''}</td><td>${fmt(a)}</td><td>${fmt(sa)}</td><td>${fmt(Math.max(vnc, 0))}</td><td>${linear ? 'خطي' : 'متناقص'}</td></tr>`);
+    y++;
+  }
+  $('out').innerHTML = `<div class="formula">
+      المعدل الخطي: ${L(`t = 100 / ${fmt(N)} = ${pct(t)}`)}<br>
+      المعامل الجبائي (${N <= 4 ? '3 أو 4 سنوات' : N <= 6 ? '5 أو 6 سنوات' : 'أكثر من 6 سنوات'}) = ${L(coef)}<br>
+      المعدل المتناقص: ${L(`t′ = ${pct(t)} × ${coef} = ${pct(td)}`)}<br>
+      ${switchYear ? `التحول للخطي ابتداءً من سنة ${switchYear} (المعدل الخطي للمدة المتبقية ≥ ${pct(td)}) — السطر الملوّن.` : ''}
+    </div>${planTable(rows, 'deg')}
+    <h2 class="sec">قيد قسط السنة الأولى</h2>
+    ${journal(yEnd(f.y), [['681', 'مخصصات الاهتلاكات والمؤونات وخسائر القيمة – الأصول غير الجارية', firstAmt]], [[amortAcc(code), 'اهتلاك ' + assetName(code), firstAmt]], 'إثبات قسط اهتلاك دورة ' + f.y)}`;
+}
+
+function calc_pro() {
+  const MA = num('c-ma'), N = Math.round(num('c-n')), y0 = Math.round(num('c-y'));
+  if (!need(MA, N, y0) || N < 1) return;
+  const S = N * (N + 1) / 2, code = $('c-asset').value, rows = []; let sa = 0;
+  for (let k = 1; k <= N; k++) {
+    const a = k === N ? MA - sa : MA * k / S; sa += a;
+    rows.push(`<tr><td>${y0 + k - 1} ${L(`(${k}/${S})`)}</td><td>${fmt(MA)}</td><td>${fmt(a)}</td><td>${fmt(sa)}</td><td>${fmt(MA - sa)}</td></tr>`);
+  }
+  $('out').innerHTML = `<div class="formula">
+      مجموع أرقام السنوات: ${L(`S = N × (N + 1) / 2 = ${N} × ${N + 1} / 2 = ${S}`)}<br>
+      قسط السنة k: ${L(`Ak = MA × k / ${S}`)}<br>
+      السنة الأولى: ${L(`A1 = ${fmt(MA)} × 1/${S} = ${fmt(MA / S)} DA`)}
+    </div>${planTable(rows)}
+    <h2 class="sec">قيد قسط السنة الأولى</h2>
+    ${journal(yEnd(y0), [['681', 'مخصصات الاهتلاكات والمؤونات وخسائر القيمة – الأصول غير الجارية', MA / S]], [[amortAcc(code), 'اهتلاك ' + assetName(code), MA / S]], 'إثبات قسط اهتلاك دورة ' + y0)}`;
+}
+
+function calc_pv() {
+  const MA = num('c-ma'), SA = num('c-sa'), PV0 = isFinite(num('c-pv0')) ? num('c-pv0') : 0, PVN = num('c-pvn'), Nr = num('c-nr'), y = isFinite(num('c-y')) ? num('c-y') : '';
+  if (!need(MA, SA, PVN)) return;
+  const code = $('c-asset').value, vnc = MA - SA - PV0;
+  let html = `<div class="formula">${L(`VNC = MA − ΣA${PV0 ? ' − PV' : ''} = ${fmt(MA)} − ${fmt(SA)}${PV0 ? ' − ' + fmt(PV0) : ''} = ${fmt(vnc)} DA`)}<br>${L(`PVN = ${fmt(PVN)} DA`)}</div>`;
+  if (PVN >= vnc) {
+    html += `<div class="verdict ok">✔ ${L('PVN ≥ VNC')} ← لا توجد خسارة قيمة، ولا يُسجَّل أي قيد.</div>`;
+  } else {
+    const pv = vnc - PVN, newVnc = PVN;
+    html += `<div class="verdict bad">${L('PVN < VNC')} ← توجد خسارة قيمة:<br>${L(`PV = VNC − PVN = ${fmt(vnc)} − ${fmt(PVN)} = ${fmt(pv)} DA`)}</div>`;
+    html += '<h2 class="sec">قيد معاينة خسارة القيمة</h2>' + journal(y ? yEnd(y) : '31/12', [['681', 'مخصصات الاهتلاكات والمؤونات وخسائر القيمة – الأصول غير الجارية', pv]], [[lossAcc(code), 'خسائر القيمة عن ' + assetName(code), pv]], 'إثبات خسارة القيمة للدورة');
+    html += `<div class="formula">القيمة المحاسبية الصافية الجديدة: ${L(`VNC = ${fmt(newVnc)} DA`)}`;
+    if (isFinite(Nr) && Nr > 0) html += `<br>القسط المعدّل للسنوات المتبقية: ${L(`An = VNC / Nr = ${fmt(newVnc)} / ${fmt(Nr)} = ${fmt(newVnc / Nr)} DA`)}`;
+    else html += '<br>أدخل Nr (السنوات المتبقية) لحساب القسط المعدّل.';
+    html += '</div>';
+  }
+  $('out').innerHTML = html;
+}
+
+function calc_ces() {
+  const MA = num('c-ma'), SA = num('c-sa'), PV0 = isFinite(num('c-pv0')) ? num('c-pv0') : 0, P = num('c-price');
+  if (!need(MA, SA, P) || !$('c-date').value) return;
+  const code = $('c-asset').value, pay = $('c-pay'), payName = pay.options[pay.selectedIndex].text.split('— ')[1];
+  const [y, m, d] = $('c-date').value.split('-').map(Number);
+  const vnc = MA - SA - PV0, R = P - vnc;
+  const debits = [[pay.value, payName, P], [amortAcc(code), 'اهتلاك ' + assetName(code), SA]];
+  if (PV0) debits.push([lossAcc(code), 'خسائر القيمة عن ' + assetName(code), PV0]);
+  if (R < 0) debits.push(['652', 'نواقص القيمة عن خروج الأصول المثبتة غير المالية', -R]);
+  const credits = [[code, assetName(code), MA]];
+  if (R > 0) credits.push(['752', 'فوائض القيمة عن خروج الأصول المثبتة غير المالية', R]);
+  $('out').innerHTML = `<div class="formula">
+      ${L(`VNC = MA − ΣA${PV0 ? ' − PV' : ''} = ${fmt(MA)} − ${fmt(SA)}${PV0 ? ' − ' + fmt(PV0) : ''} = ${fmt(vnc)} DA`)}<br>
+      ${L(`R = ${fmt(P)} − ${fmt(vnc)} = ${fmt(R)} DA`)}</div>
+    <div class="verdict ${R > 0 ? 'ok' : R < 0 ? 'bad' : 'info'}">${R > 0 ? `فائض قيمة ${fmt(R)} دج ← دائن حـ/752` : R < 0 ? `ناقص قيمة ${fmt(-R)} دج ← مدين حـ/652` : 'نتيجة معدومة: لا فائض ولا ناقص قيمة.'}</div>
+    <div class="verdict info">⚠️ تذكير: قبل قيد التنازل، سجّل قسط اهتلاك سنة التنازل إلى تاريخ التنازل، وأدخل ΣA متضمناً هذا القسط.</div>
+    <h2 class="sec">قيد التنازل</h2>
+    ${journal(dmy(y, m, d), debits, credits, 'تسجيل عملية التنازل عن التثبيت')}`;
+}
+
+/* ============================================================
+   Installation & hors ligne
+   ============================================================ */
+let installEvent = null;
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEvent = e; $('installBtn').style.display = 'block'; });
+window.addEventListener('appinstalled', () => $('installBtn').style.display = 'none');
+async function installApp() { if (!installEvent) return; installEvent.prompt(); await installEvent.userChoice; installEvent = null; $('installBtn').style.display = 'none'; }
+if ('serviceWorker' in navigator && location.protocol.startsWith('http')) window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {}));
+if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
+
+render();
+</script>
+</body>
+</html>
