@@ -295,8 +295,37 @@ function setTop(title, sub, back) {
   $('backBtn').style.display = back ? 'block' : 'none';
 }
 
+/* ============================================================
+   Statistiques (GoatCounter : anonyme, sans cookies)
+   ============================================================ */
+window.goatcounter = { no_onload: true };
+const gcQueue = [];
+function track(path, title, event) {
+  const v = { path, title: title || path, event: !!event };
+  if (window.goatcounter && typeof goatcounter.count === 'function') { try { goatcounter.count(v); } catch (e) {} }
+  else gcQueue.push(v);
+}
+(() => {
+  const s = document.createElement('script');
+  s.async = true; s.src = 'https://gc.zgo.at/count.js';
+  s.dataset.goatcounter = 'https://sexou-bac.goatcounter.com/count';
+  s.onload = () => { while (gcQueue.length) { try { goatcounter.count(gcQueue.shift()); } catch (e) {} } };
+  document.head.appendChild(s);
+})();
+const PAGE_NAMES = { ex: 'التمارين', bac: 'البكالوريات', res: 'الملخص', quiz: 'الاختبار', calc: 'الحاسبات' };
+function trackRoute(parts) {
+  if (!parts.length) return track('/', 'الصفحة الرئيسية');
+  const u = unit(parts[0]); if (!u) return;
+  let title = 'الوحدة ' + u.num;
+  if (parts[1]) title += ' · ' + (PAGE_NAMES[parts[1]] || parts[1]);
+  if (parts[2]) title += ' · ' + parts[2];
+  track('/' + parts.join('/'), title);
+}
+let lastTracked = null;
+
 async function render() {
   const parts = (location.hash || '#/').slice(2).split('/').filter(Boolean);
+  const key = parts.join('/'); if (key !== lastTracked) { lastTracked = key; trackRoute(parts); }
   const v = $('view');
   window.scrollTo(0, 0);
   if (!parts.length) return renderHome(v);
@@ -348,6 +377,7 @@ function renderHome(v) {
 const APP_URL = 'https://sexou-compta.github.io/Bac/';
 const SHARE_TEXT = '📲 تطبيق أستاذ الشارع المجاني لتلاميذ تسيير واقتصاد: تمارين مع الحلول النموذجية، بكالوريات مع التصحيح، ملخصات واختبارات 👇';
 async function shareApp() {
+  track('share-click', 'ضغط على زر المشاركة', true);
   if (navigator.share) {
     try { await navigator.share({ title: 'أستاذ الشارع', text: SHARE_TEXT, url: APP_URL }); return; }
     catch (e) { if (e.name === 'AbortError') return; }
@@ -459,6 +489,7 @@ async function renderExercise(v, u, k) {
     </div>`;
 }
 async function showSol(uid, k) {
+  track('solution/' + uid + '/' + k, 'عرض الحل · الوحدة ' + unit(uid).num + ' · ' + k, true);
   const u = unit(uid), [pack, key] = u.corr[k];
   $('solBtn').style.display = 'none';
   $('sol').innerHTML = '<p class="empty">⏳ جاري تحميل الحل…</p>';
@@ -801,11 +832,12 @@ function calc_achat() {
    ============================================================ */
 let installEvent = null;
 window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEvent = e; $('installBtn').style.display = 'block'; });
-window.addEventListener('appinstalled', () => $('installBtn').style.display = 'none');
+window.addEventListener('appinstalled', () => { $('installBtn').style.display = 'none'; track('install', 'تثبيت التطبيق', true); });
 async function installApp() { if (!installEvent) return; installEvent.prompt(); await installEvent.userChoice; installEvent = null; $('installBtn').style.display = 'none'; }
 if ('serviceWorker' in navigator && location.protocol.startsWith('http')) window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {}));
 if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
 
+if (isInstalled()) track('open-app', 'فتح التطبيق من الأيقونة', true);
 render();
 </script>
 </body>
