@@ -168,6 +168,7 @@ const UNITS = [
     { k:'11', year:2021, subj:'الموضوع الثاني', topics:'تنازل جزئي – خسارة قيمة' },
   ],
   resPages: ['rs00','rs01','rs02','rs03','rs04','rs05','rs06','rs07','rs08'],
+  calcs: ['lin','deg','pro','pv','ces'], calcHint: 'تحقق من جداول الاهتلاك، خسارة القيمة والتنازل',
   quiz: [
     { q:'يُحسب قسط الاهتلاك الخطي السنوي بالعلاقة:', o:['An = MA / N','An = MA × N','An = VNC × N','An = N / MA'], a:0, e:'في الاهتلاك الخطي نوزّع المبلغ القابل للاهتلاك MA بالتساوي على المدة النفعية N، أو An = MA × t.' },
     { q:'تثبيت مدته النفعية 8 سنوات، معدل اهتلاكه الخطي هو:', o:['8%','10%','12.5%','20%'], a:2, e:'t = 100% / N = 100 / 8 = 12.5%' },
@@ -193,6 +194,49 @@ const UNITS = [
     { q:'قبل تسجيل قيد التنازل يجب أولاً:', o:['تسجيل خسارة قيمة','تسوية قسط الاهتلاك لسنة التنازل إلى تاريخ التنازل','إلغاء كل الاهتلاكات','لا شيء'], a:1, e:'نُسجّل قسط الاهتلاك من 01/01 (أو من تاريخ الحيازة) إلى تاريخ التنازل، ثم نحسب ΣA بتاريخ التنازل.' },
   ],
  },
+ {
+  id: 'u03', num: '03', title: 'تسوية المخزونات',
+  sub: 'التسيير المحاسبي والمالي',
+  axes: [ { title: 'تمارين تطبيقية مع التصحيح النموذجي', from: 1, to: 9 } ],
+  corr: (() => { const m = {}; for (let i = 1; i <= 9; i++) { const k = String(i).padStart(2, '0'); m[k] = ['u03-co', 'co' + k]; } return m; })(),
+  exLabels: {},
+  videos: {},
+  bac: [
+    { k:'01', year:2026, subj:'الموضوع الأول',  topics:'جرد دائم + خسارة قيمة' },
+    { k:'02', year:2026, subj:'الموضوع الثاني', topics:'جرد متناوب + إلغاء خسارة قيمة' },
+    { k:'03', year:2025, subj:'الموضوع الأول',  topics:'جرد متناوب' },
+    { k:'04', year:2025, subj:'الموضوع الثاني', topics:'جرد دائم + خسارة قيمة' },
+    { k:'05', year:2024, subj:'الموضوع الأول',  topics:'جرد متناوب' },
+    { k:'06', year:2024, subj:'الموضوع الثاني', topics:'فارق جرد' },
+    { k:'07', year:2023, subj:'الموضوع الثاني', topics:'جرد متناوب' },
+    { k:'08', year:2022, subj:'الموضوع الأول',  topics:'فارق جرد + ح/380' },
+    { k:'09', year:2022, subj:'الموضوع الثاني', topics:'فارق جرد + خسارة قيمة' },
+    { k:'10', year:2021, subj:'الموضوع الأول',  topics:'تعديل خسارة قيمة' },
+    { k:'11', year:2020, subj:'الموضوع الثاني', topics:'جرد متناوب + خسارة قيمة' },
+    { k:'12', year:2019, subj:'الموضوع الأول',  topics:'فارق جرد' },
+    { k:'13', year:2019, subj:'الموضوع الثاني', topics:'فوارق + خسارة قيمة + ح/380' },
+  ],
+  resPages: Array.from({ length: 16 }, (_, i) => 'rs' + String(i + 1).padStart(2, '0')),
+  calcs: ['ecart','dep','inter','achat'], calcHint: 'فوارق الجرد، خسارة القيمة، الجرد المتناوب وح/38',
+  quiz: [
+    { q:'فارق الجرد يُحسب بالعلاقة:', o:['الجرد المادي − الجرد المحاسبي','الجرد المحاسبي − الجرد المادي','الجرد المادي − سعر السوق','مخ1 − مخ2'], a:0, e:'فارق الجرد = الجرد المادي − الجرد المحاسبي. نتيجة سالبة ← نقص، نتيجة موجبة ← زيادة.' },
+    { q:'الجرد المحاسبي للبضائع 450,000 دج والجرد المادي 432,000 دج. فارق الجرد:', o:['+18,000 دج (زيادة)','−18,000 دج (نقص)','882,000 دج','لا يوجد فارق'], a:1, e:'432,000 − 450,000 = −18,000 دج ← فارق سالب (نقص في المخزون).' },
+    { q:'فارق جرد مبرر سالب للبضائع يُسجّل:', o:['من حـ/600 إلى حـ/30','من حـ/30 إلى حـ/600','من حـ/657 إلى حـ/30','من حـ/30 إلى حـ/757'], a:0, e:'الإشارة سالبة ← حـ/30 دائن. الطبيعة مبرر ← المقابل حـ/600 (المشتريات المستهلكة).' },
+    { q:'فارق جرد غير مبرر سالب يُعالَج في حساب:', o:['600','657','757','724'], a:1, e:'غير مبرر سالب ← ناقص قيمة استثنائي ← حـ/657 الأعباء الاستثنائية للتسيير الجاري (مدين).' },
+    { q:'فارق جرد غير مبرر موجب يُعالَج في حساب:', o:['757','657','785','601'], a:0, e:'غير مبرر موجب ← فائض قيمة استثنائي ← حـ/757 المنتوجات الاستثنائية للتسيير الجاري (دائن).' },
+    { q:'فارق الجرد المبرر للمنتجات المصنعة (حـ/355) يُعالَج في:', o:['حـ/600','حـ/603','حـ/724','حـ/60X'], a:2, e:'المنتجات المصنعة لا تُشترى، فلا يوجد لها حساب 60X. تغيراتها تمر عبر حـ/724 تغيرات المخزونات من المنتجات.' },
+    { q:'في الجرد الدائم، حـ/381 له رصيد دائن في الميزان قبل الجرد. هذا يعني:', o:['استُلم المخزون ولم تُستلم الفاتورة','استُلمت الفاتورة ولم يُستلم المخزون','خسارة قيمة','فارق جرد'], a:0, e:'رصيد دائن ← الفاتورة ناقصة ← القيد: من حـ/381 إلى حـ/408 موردو الفواتير التي لم تصل إلى أصحابها.' },
+    { q:'حـ/382 له رصيد مدين قبل الجرد (جرد دائم). قيد التسوية:', o:['من حـ/382 إلى حـ/408','من حـ/372 إلى حـ/382','من حـ/602 إلى حـ/382','من حـ/408 إلى حـ/382'], a:1, e:'رصيد مدين ← استُلمت الفاتورة ولم يُستلم المخزون ← من حـ/372 (التموينات الأخرى بالخارج) إلى حـ/382.' },
+    { q:'خسارة قيمة المخزونات تُحسب على أساس:', o:['الجرد المحاسبي','الجرد المادي','مخزون أول المدة','رصيد حـ/38'], a:1, e:'خ ق = الجرد المادي − سعر السوق (بعد تسوية فوارق الجرد)، وتُحسب فقط إذا كان سعر السوق أقل من الجرد المادي.' },
+    { q:'الجرد المادي 260,000، سعر السوق 245,000، خ ق السنة السابقة 10,000. التسوية:', o:['إثبات 15,000','زيادة 5,000: من حـ/685 إلى حـ/392','إنقاص 5,000: من حـ/392 إلى حـ/785','لا قيد'], a:1, e:'خ ق الحالية = 260,000 − 245,000 = 15,000. التعديل = 15,000 − 10,000 = +5,000 ← زيادة ← من حـ/685 إلى حـ/392.' },
+    { q:'سعر السوق أكبر من الجرد المادي، وتوجد خ ق سابقة 18,000 دج. التسوية:', o:['إثبات 18,000','زيادة 18,000','إلغاء 18,000: من حـ/39X إلى حـ/785','لا قيد'], a:2, e:'خ ق الحالية = 0، فنلغي كل الخسارة السابقة: من حـ/39X إلى حـ/785 بمبلغ 18,000 دج.' },
+    { q:'قيد إنقاص أو إلغاء خسارة قيمة المخزونات:', o:['من حـ/685 إلى حـ/39X','من حـ/39X إلى حـ/785','من حـ/39X إلى حـ/685','من حـ/785 إلى حـ/39X'], a:1, e:'الإنقاص والإلغاء: حـ/39X مدين و حـ/785 (الاسترجاعات عن المؤونات وخسائر القيمة – أ ج) دائن.' },
+    { q:'في الجرد المتناوب، رصيد حـ/3X في ميزان المراجعة قبل الجرد يمثل:', o:['الجرد المحاسبي','مخزون أول المدة (مخ1)','مخزون آخر المدة (مخ2)','فارق الجرد'], a:1, e:'في الجرد المتناوب لا تُسجل أي حركة في حـ/3X خلال السنة، فرصيده = مخزون أول المدة.' },
+    { q:'في الجرد المتناوب، رصيد حـ/38X يُرصَّد في:', o:['حـ/408','حـ/37X','حـ/60X','حـ/603'], a:2, e:'المرحلة 3: من حـ/60X (المشتريات المستهلكة) إلى حـ/38X.' },
+    { q:'جرد متناوب: مخ1 = 810,000 دج و مخ2 = 575,000 دج. رصيد حـ/603:', o:['235,000 دائن (زيادة)','235,000 مدين (نقص)','1,385,000 مدين','575,000 دائن'], a:1, e:'810,000 − 575,000 = 235,000 دج ← مخ1 > مخ2 ← رصيد مدين ← نقص في المخزونات.' },
+    { q:'في الميزانية الختامية، المبلغ الصافي للمخزون يساوي:', o:['الإجمالي − خ ق السنة الحالية','الإجمالي + خ ق','الجرد المحاسبي','سعر السوق دائماً'], a:0, e:'الإجمالي = الجرد المادي، والصافي = الإجمالي − خسارة القيمة للسنة الحالية (حـ/39 في خانة «اهتلاك و خ ق»).' },
+  ],
+ },
 ];
 
 /* ============================================================
@@ -205,6 +249,7 @@ const L = s => `<span class="ltr">${s}</span>`;
 const pct = x => fmt(x * 100) + '%';
 const num = id => { const v = String($(id).value).replace(/[\s,]/g, '').replace('٫', '.'); return v === '' ? NaN : +v; };
 const unit = id => UNITS.find(u => u.id === id);
+const nEx = n => n + (n >= 3 && n <= 10 ? ' تمارين' : ' تمرين');
 const store = {
   get(k, d) { try { const v = localStorage.getItem('elv_' + k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
   set(k, v) { try { localStorage.setItem('elv_' + k, JSON.stringify(v)); } catch (e) {} },
@@ -278,7 +323,7 @@ function renderHome(v) {
     return `<button class="card" onclick="go('#/${u.id}')">
       <span class="unit-num">الوحدة ${u.num}</span>
       <h3>${esc(u.title)}</h3>
-      <div class="muted">${esc(u.sub)} · ${total} تمرين · ${u.bac.length} بكالوريا</div>
+      <div class="muted">${esc(u.sub)} · ${nEx(total)} · ${u.bac.length} بكالوريا</div>
       <div class="bar"><i style="width:${Math.round(d / total * 100)}%"></i></div>
       <div class="muted" style="margin-top:6px">أنجزت ${d} / ${total}</div>
     </button>`;
@@ -302,13 +347,13 @@ function renderUnit(v, u) {
   const best = store.get('quiz_' + u.id, null);
   v.innerHTML = `
     <div class="card" style="cursor:default"><span class="unit-num">الوحدة ${u.num}</span><h3>${esc(u.title)}</h3>
-      <div class="bar"><i style="width:${Math.round(d / total * 100)}%"></i></div><div class="muted" style="margin-top:6px">أنجزت ${d} / ${total} تمرين</div></div>
+      <div class="bar"><i style="width:${Math.round(d / total * 100)}%"></i></div><div class="muted" style="margin-top:6px">أنجزت ${d} / ${nEx(total)}</div></div>
     <div class="grid">
       <div class="tile" onclick="go('#/${u.id}/res')"><span>📖</span>الملخص<small>القوانين والقواعد</small></div>
-      <div class="tile" onclick="go('#/${u.id}/ex')"><span>✏️</span>التمارين<small>${total} تمرين مع الحل</small></div>
+      <div class="tile" onclick="go('#/${u.id}/ex')"><span>✏️</span>التمارين<small>${nEx(total)} مع الحل</small></div>
       <div class="tile" onclick="go('#/${u.id}/bac')"><span>🎓</span>البكالوريات<small>${u.bac.length} موضوع مع التصحيح</small></div>
       <div class="tile" onclick="go('#/${u.id}/quiz')"><span>❓</span>اختبر نفسك<small>${best ? 'أفضل نتيجة: ' + best + '/' + u.quiz.length : u.quiz.length + ' سؤال'}</small></div>
-      <div class="tile" style="grid-column:1/-1" onclick="go('#/${u.id}/calc')"><span>🧮</span>الحاسبات<small>تحقق من جداول الاهتلاك، خسارة القيمة والتنازل</small></div>
+      <div class="tile" style="grid-column:1/-1" onclick="go('#/${u.id}/calc')"><span>🧮</span>الحاسبات<small>${u.calcHint}</small></div>
     </div>
     <button class="btn-line w100" style="margin-top:16px" id="dlBtn" onclick="downloadUnit('${u.id}')">⬇️ تحميل الوحدة للاستعمال بدون إنترنت</button>`;
 }
@@ -487,26 +532,43 @@ const CALCS = [
   ['pro', '📈', 'الاهتلاك المتزايد', 'الرتبة ÷ مجموع أرقام السنوات'],
   ['pv', '⚠️', 'خسارة القيمة', 'PV وتعديل المخطط'],
   ['ces', '🤝', 'التنازل', 'نتيجة التنازل والقيد'],
+  ['ecart', '⚖️', 'فارق الجرد', 'الإشارة، الطبيعة والقيد'],
+  ['dep', '⚠️', 'خسارة قيمة المخزونات', 'إثبات، زيادة، إنقاص أو إلغاء'],
+  ['inter', '🔄', 'الجرد المتناوب', 'مخ1، مخ2 وترصيد ح/38'],
+  ['achat', '📦', 'تسوية ح/38', 'عدم استلام الفاتورة أو المخزون'],
 ];
+const STOCKS = {
+  '30':  { name: 'مخزونات البضائع', p60: ['600', 'مشتريات البضائع المبيعة'], p38: ['380', 'البضائع المخزنة'], p37: ['370', 'البضائع بالخارج'], p39: ['390', 'خسائر القيمة عن مخزونات البضائع'] },
+  '31':  { name: 'المواد الأولية واللوازم', p60: ['601', 'المواد الأولية'], p38: ['381', 'المواد الأولية واللوازم المخزنة'], p37: ['371', 'المواد الأولية واللوازم بالخارج'], p39: ['391', 'خسائر القيمة عن المواد الأولية واللوازم'] },
+  '32':  { name: 'التموينات الأخرى', p60: ['602', 'التموينات الأخرى'], p38: ['382', 'التموينات الأخرى المخزنة'], p37: ['372', 'التموينات الأخرى بالخارج'], p39: ['392', 'خسائر القيمة عن التموينات الأخرى'] },
+  '355': { name: 'المنتجات المصنعة', p39: ['395', 'خسائر القيمة عن المنتجات المصنعة'] },
+};
+const stockSel = (withProducts) => `<label class="f">نوع المخزون</label><select id="c-stock">${Object.entries(STOCKS).filter(([k]) => withProducts || k !== '355').map(([k, v]) => `<option value="${k}">${k} — ${v.name}</option>`).join('')}</select>`;
 function renderCalc(v, u, which) {
   if (!which) {
     setTop('🧮 الحاسبات', 'الوحدة ' + u.num, true);
     v.innerHTML = '<p class="hint">حل التمرين في كراسك أولاً، ثم استعمل الحاسبة للتحقق من نتائجك ✔</p>' +
-      CALCS.map(c => `<div class="list-item" onclick="go('#/${u.id}/calc/${c[0]}')"><div><b>${c[1]} ${c[2]}</b><div class="hint" style="text-align:right;margin:4px 0 0">${c[3]}</div></div><span>‹</span></div>`).join('');
+      CALCS.filter(c => u.calcs.includes(c[0])).map(c => `<div class="list-item" onclick="go('#/${u.id}/calc/${c[0]}')"><div><b>${c[1]} ${c[2]}</b><div class="hint" style="text-align:right;margin:4px 0 0">${c[3]}</div></div><span>‹</span></div>`).join('');
     return;
   }
-  const c = CALCS.find(x => x[0] === which); if (!c) return go('#/' + u.id + '/calc');
+  const c = CALCS.find(x => x[0] === which && u.calcs.includes(x[0])); if (!c) return go('#/' + u.id + '/calc');
   setTop(c[1] + ' ' + c[2], 'الحاسبات', true);
   const assetSel = `<label class="f">نوع التثبيت</label><select id="c-asset">${ASSETS.map(a => `<option value="${a[0]}" ${a[0] === '215' ? 'selected' : ''}>${a[0]} — ${a[1]}</option>`).join('')}</select>`;
   const dateIn = (id, lbl, val) => `<label class="f">${lbl}</label><input type="date" id="${id}" value="${val}">`;
   const numIn = (id, lbl, ph) => `<label class="f">${lbl}</label><input type="text" inputmode="decimal" id="${id}" placeholder="${ph || ''}">`;
   let form = '';
+  const yearIn = numIn('c-y', 'سنة الجرد', String(new Date().getFullYear() - 1));
+  if (which === 'ecart') form = stockSel(true) + `<div class="row"><div>${numIn('c-cpt', 'الجرد المحاسبي (دج)', '450000')}</div><div>${numIn('c-phy', 'الجرد المادي (دج)', '432000')}</div></div>` + `<label class="f">طبيعة الفرق</label><select id="c-nat"><option value="j">مبرر</option><option value="n">غير مبرر</option></select>` + yearIn;
+  if (which === 'dep') form = stockSel(true) + `<div class="row"><div>${numIn('c-phy', 'الجرد المادي (دج)', '260000')}</div><div>${numIn('c-mkt', 'سعر السوق (دج)', '245000')}</div></div>` + numIn('c-prev', 'خ ق السنة السابقة (رصيد ح/39X) — 0 إن لم توجد', '0') + yearIn;
+  if (which === 'inter') form = stockSel(true) + `<div class="row"><div>${numIn('c-s1', 'مخزون أول المدة مخ1 (دج)', '600000')}</div><div>${numIn('c-s2', 'مخزون آخر المدة مخ2 (دج)', '450000')}</div></div>` + `<div id="buyWrap">${numIn('c-buy', 'رصيد ح/38X — مشتريات الفترة (دج)', '1600000')}</div>` + yearIn;
+  if (which === 'achat') form = stockSel(false) + numIn('c-bal', 'رصيد ح/38X في ميزان المراجعة قبل الجرد (دج)', '228000') + `<label class="f">جهة الرصيد</label><select id="c-side"><option value="c">دائن — استُلم المخزون ولم تُستلم الفاتورة</option><option value="d">مدين — استُلمت الفاتورة ولم يُستلم المخزون</option></select>` + yearIn + '<p class="hint" style="text-align:right">هذه التسوية تخص الجرد الدائم. في الجرد المتناوب يُرصَّد ح/38 في ح/60X (حاسبة الجرد المتناوب).</p>';
   if (which === 'lin') form = numIn('c-ma', 'المبلغ القابل للاهتلاك MA (دج)', 'مثال: 1000000') + `<div class="row"><div>${numIn('c-n', 'المدة النفعية N (سنوات)', '5')}</div><div>${numIn('c-t', 'أو المعدل t (%)', '20')}</div></div>` + dateIn('c-date', 'تاريخ الحيازة', '2024-01-02') + assetSel;
   if (which === 'deg') form = numIn('c-ma', 'المبلغ القابل للاهتلاك MA (دج)', '3600000') + numIn('c-n', 'المدة النفعية N (سنوات)', '5') + dateIn('c-date', 'تاريخ الحيازة', '2024-01-02') + assetSel;
   if (which === 'pro') form = numIn('c-ma', 'المبلغ القابل للاهتلاك MA (دج)', '2400000') + numIn('c-n', 'المدة النفعية N (سنوات)', '5') + numIn('c-y', 'سنة الحيازة', '2024') + assetSel + '<p class="hint" style="text-align:right">الحاسبة تفترض الحيازة في بداية السنة (سنوات كاملة).</p>';
   if (which === 'pv') form = numIn('c-ma', 'المبلغ القابل للاهتلاك MA (دج)') + numIn('c-sa', 'مجموع الاهتلاكات ΣA بعد تسجيل قسط السنة (دج)') + numIn('c-pv0', 'خسارة قيمة سابقة (دج) — اتركها فارغة إن لم توجد', '0') + numIn('c-pvn', 'القيمة القابلة للتحصيل PVN (دج)') + `<div class="row"><div>${numIn('c-nr', 'السنوات المتبقية Nr (اختياري)')}</div><div>${numIn('c-y', 'السنة', '2024')}</div></div>` + assetSel;
   if (which === 'ces') form = numIn('c-ma', 'المبلغ القابل للاهتلاك MA (دج)') + numIn('c-sa', 'مجموع الاهتلاكات ΣA إلى تاريخ التنازل (دج)') + numIn('c-pv0', 'خسائر القيمة المسجلة (دج) — 0 إن لم توجد', '0') + numIn('c-price', 'سعر التنازل (دج)') + dateIn('c-date', 'تاريخ التنازل', '2024-06-30') + `<label class="f">طريقة التحصيل</label><select id="c-pay"><option value="512">512 — البنوك، الحسابات الجارية</option><option value="53">53 — الصندوق</option><option value="462">462 — حسابات دائنة عن عمليات التنازل (على الحساب)</option></select>` + assetSel;
   v.innerHTML = `<div class="card" style="cursor:default">${form}<button class="btn-pink w100" style="margin-top:16px" onclick="calc_${which}()">احسب ✔</button></div><div class="res" id="out"></div>`;
+  if (which === 'inter') { const t = () => $('buyWrap').style.display = $('c-stock').value === '355' ? 'none' : 'block'; $('c-stock').onchange = t; }
 }
 function need(...vals) { if (vals.some(x => !isFinite(x) || x < 0)) { $('out').innerHTML = '<div class="verdict bad">⚠️ تأكد من إدخال كل القيم بشكل صحيح.</div>'; return false; } return true; }
 function dmy(y, m, d) { return L(`${y}/${String(m).padStart(2, '0')}/${String(d).padStart(2, '0')}`); }
@@ -631,6 +693,63 @@ function calc_ces() {
     <div class="verdict info">⚠️ تذكير: قبل قيد التنازل، سجّل قسط اهتلاك سنة التنازل إلى تاريخ التنازل، وأدخل ΣA متضمناً هذا القسط.</div>
     <h2 class="sec">قيد التنازل</h2>
     ${journal(dmy(y, m, d), debits, credits, 'تسجيل عملية التنازل عن التثبيت')}`;
+}
+
+/* ---------- Unité 03 : stocks ---------- */
+const A685 = ['685', 'المخصصات للاهتلاكات والمؤونات وخسائر القيمة – الأصول الجارية'];
+const A785 = ['785', 'الاسترجاعات عن المؤونات وخسائر القيمة – الأصول الجارية'];
+function calc_ecart() {
+  const k = $('c-stock').value, st = STOCKS[k], cpt = num('c-cpt'), phy = num('c-phy'), y = num('c-y'), just = $('c-nat').value === 'j';
+  if (!need(cpt, phy, y)) return;
+  const d = phy - cpt;
+  let html = `<div class="formula">فارق الجرد = الجرد المادي − الجرد المحاسبي<br>${L(`${fmt(phy)} − ${fmt(cpt)} = ${d > 0 ? '+' : ''}${fmt(d)} DA`)}</div>`;
+  if (!d) { $('out').innerHTML = html + '<div class="verdict ok">لا يوجد فارق جرد ← لا يُسجَّل أي قيد.</div>'; return; }
+  const neg = d < 0, amt = Math.abs(d);
+  const other = just ? (k === '355' ? ['724', 'تغيرات المخزونات من المنتجات'] : st.p60) : (neg ? ['657', 'الأعباء الاستثنائية للتسيير الجاري'] : ['757', 'المنتوجات الاستثنائية للتسيير الجاري']);
+  html += `<div class="verdict ${neg ? 'bad' : 'ok'}">فارق ${neg ? 'سالب (نقص)' : 'موجب (زيادة)'} ${just ? 'مبرر' : 'غير مبرر'} = ${fmt(amt)} دج<br>
+    <span style="font-weight:400">الإشارة ${neg ? 'سالبة ← ح/' + k + ' دائن' : 'موجبة ← ح/' + k + ' مدين'} · الطبيعة ${just ? 'مبرر ← ح/' + other[0] : (neg ? 'غير مبرر سالب ← ح/657' : 'غير مبرر موجب ← ح/757')}</span></div>`;
+  const stock = [k, st.name, amt], cp = [other[0], other[1], amt];
+  html += '<h2 class="sec">قيد التسوية</h2>' + journal(yEnd(y), [neg ? cp : stock], [neg ? stock : cp], `تسجيل فارق الجرد ${just ? 'المبرر' : 'غير المبرر'} ${neg ? 'السالب' : 'الموجب'} – ${st.name}`);
+  $('out').innerHTML = html;
+}
+function calc_dep() {
+  const k = $('c-stock').value, st = STOCKS[k], phy = num('c-phy'), mkt = num('c-mkt'), prev = isFinite(num('c-prev')) ? num('c-prev') : 0, y = num('c-y');
+  if (!need(phy, mkt, prev, y)) return;
+  const cur = mkt < phy ? phy - mkt : 0, adj = cur - prev;
+  let html = `<div class="formula">خ ق ${y} = الجرد المادي − سعر السوق ${mkt < phy ? `= ${L(`${fmt(phy)} − ${fmt(mkt)} = ${fmt(cur)} DA`)}` : `← سعر السوق (${fmt(mkt)}) ≥ الجرد المادي ← ${L('خ ق = 0')}`}<br>
+    التعديل = خ ق ${y} − خ ق ${y - 1} = ${L(`${fmt(cur)} − ${fmt(prev)} = ${adj > 0 ? '+' : ''}${fmt(adj)} DA`)}</div>`;
+  let kind;
+  if (!adj) kind = 'لا تغيير ← لا يُسجَّل أي قيد';
+  else if (adj > 0) kind = prev ? `زيادة خسارة القيمة بـ ${fmt(adj)} دج` : `إثبات خسارة القيمة لأول مرة بـ ${fmt(adj)} دج`;
+  else kind = cur ? `إنقاص خسارة القيمة بـ ${fmt(-adj)} دج` : `إلغاء خسارة القيمة بـ ${fmt(-adj)} دج`;
+  html += `<div class="verdict ${adj > 0 ? 'bad' : adj < 0 ? 'ok' : 'info'}">${kind}</div>`;
+  if (adj > 0) html += '<h2 class="sec">قيد التسوية</h2>' + journal(yEnd(y), [[...A685, adj]], [[...st.p39, adj]], (prev ? 'زيادة' : 'إثبات') + ' خسارة القيمة – ' + st.name);
+  if (adj < 0) html += '<h2 class="sec">قيد التسوية</h2>' + journal(yEnd(y), [[...st.p39, -adj]], [[...A785, -adj]], (cur ? 'إنقاص' : 'إلغاء') + ' خسارة القيمة – ' + st.name);
+  html += `<h2 class="sec">في الميزانية الختامية</h2><div class="tbl-wrap"><table class="acc"><tr><th>الأصول</th><th>إجمالي ${y}</th><th>اهتلاك و خ ق</th><th>صافي ${y}</th></tr>
+    <tr><td class="lbl">${st.name}</td><td>${fmt(phy)}</td><td>${cur ? fmt(cur) : '-'}</td><td>${fmt(phy - cur)}</td></tr></table></div>`;
+  $('out').innerHTML = html;
+}
+function calc_inter() {
+  const k = $('c-stock').value, st = STOCKS[k], s1 = num('c-s1'), s2 = num('c-s2'), y = num('c-y'), prod = k === '355';
+  const buy = prod ? 0 : num('c-buy');
+  if (!need(s1, s2, y, buy)) return;
+  const v = prod ? ['724', 'تغيرات المخزونات من المنتجات'] : ['603', 'تغيرات المخزونات'];
+  let html = '<h2 class="sec">المرحلة 1: إلغاء مخزون أول المدة</h2>' + journal(yEnd(y), [[...v, s1]], [[k, st.name, s1]], 'إلغاء مخزون أول المدة – ' + st.name);
+  html += '<h2 class="sec">المرحلة 2: إثبات مخزون آخر المدة</h2>' + journal(yEnd(y), [[k, st.name, s2]], [[...v, s2]], 'إثبات مخزون آخر المدة – ' + st.name);
+  if (!prod && buy) html += '<h2 class="sec">المرحلة 3: ترصيد ح/38</h2>' + journal(yEnd(y), [[...st.p60, buy]], [[...st.p38, buy]], 'ترصيد ح/' + st.p38[0]);
+  if (prod) html += '<p class="hint">المنتجات المصنعة: مرحلتان فقط (لا توجد مشتريات).</p>';
+  const d = s1 - s2;
+  html = `<div class="formula">رصيد ح/${v[0]} = مخ1 − مخ2 = ${L(`${fmt(s1)} − ${fmt(s2)} = ${fmt(Math.abs(d))} DA`)}</div>
+    <div class="verdict ${d > 0 ? 'bad' : d < 0 ? 'ok' : 'info'}">${d > 0 ? `رصيد مدين ← نقص في المخزون` : d < 0 ? `رصيد دائن ← زيادة في المخزون` : 'رصيد معدوم ← لا تغير في المخزون'}</div>` + html;
+  $('out').innerHTML = html;
+}
+function calc_achat() {
+  const k = $('c-stock').value, st = STOCKS[k], bal = num('c-bal'), y = num('c-y'), credit = $('c-side').value === 'c';
+  if (!need(bal, y) || !bal) return need(NaN);
+  const html = credit
+    ? `<div class="verdict info">رصيد ح/${st.p38[0]} دائن ← الفاتورة لم تصل ← نستعمل ح/408 (يظهر في الخصوم)</div>` + journal(yEnd(y), [[...st.p38, bal]], [['408', 'موردو الفواتير التي لم تصل إلى أصحابها', bal]], `تسوية ح/${st.p38[0]} – عدم استلام الفاتورة`)
+    : `<div class="verdict info">رصيد ح/${st.p38[0]} مدين ← المخزون لم يُستلم ← نستعمل ح/${st.p37[0]} (يظهر في سطر «مخزونات في الخارج»)</div>` + journal(yEnd(y), [[...st.p37, bal]], [[...st.p38, bal]], `تسوية ح/${st.p38[0]} – عدم استلام المخزون`);
+  $('out').innerHTML = html;
 }
 
 /* ============================================================
