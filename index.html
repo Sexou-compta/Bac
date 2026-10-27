@@ -301,8 +301,29 @@ function setTop(title, sub, back) {
    ============================================================ */
 window.goatcounter = { no_onload: true };
 const gcQueue = [];
+// ?moi=1 → ne plus compter les visites de cet appareil (?moi=0 pour réactiver)
+let GC_SKIP = false;
+try {
+  const q = new URLSearchParams(location.search);
+  if (q.get('moi') === '1') { localStorage.setItem('skipgc', 't'); alert('✅ زياراتك ما تتحسبش في الإحصائيات من هذا التيليفون'); }
+  if (q.get('moi') === '0') { localStorage.removeItem('skipgc'); alert('✅ زياراتك ترجع تتحسب'); }
+  GC_SKIP = localStorage.getItem('skipgc') === 't';
+} catch (e) {}
+// ?ref=… compté une seule fois (1re page), puis retiré de l'adresse
+let GC_REF = null;
+try {
+  const q = new URLSearchParams(location.search);
+  GC_REF = q.get('ref');
+  if (location.search) history.replaceState(null, '', location.pathname + location.hash);
+} catch (e) {}
 function track(path, title, event) {
+  if (GC_SKIP) return;
   const v = { path, title: title || path, event: !!event };
+  if (!event) {
+    if (!track.first) { track.first = true; if (GC_REF) v.referrer = GC_REF; }  // 1re page : vraie provenance
+    else v.referrer = '';                                                      // pages suivantes : navigation interne
+  }
+  else v.referrer = '';
   if (window.goatcounter && typeof goatcounter.count === 'function') { try { goatcounter.count(v); } catch (e) {} }
   else gcQueue.push(v);
 }
