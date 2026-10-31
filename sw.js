@@ -1,5 +1,5 @@
 // Service worker : app utilisable sans internet, ouverture rapide même avec une connexion faible
-const CACHE = 'eleves-v7';
+const CACHE = 'eleves-v8';
 const CORE = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png', './icon-maskable.png'];
 
 self.addEventListener('install', e => {
