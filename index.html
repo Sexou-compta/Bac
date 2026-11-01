@@ -64,6 +64,9 @@ h2.sec{font-size:16px;color:var(--pink);margin:18px 2px 10px}
 
 .paper{background:#fff;border-radius:10px;overflow:hidden;margin:10px 0}
 .paper img{display:block;width:100%;height:auto}
+.paper.ld{min-height:160px;position:relative}
+.paper.ld::before{content:'⏳ جاري التحميل…';position:absolute;top:60px;left:0;right:0;text-align:center;color:#777}
+.paper-err{background:#1e1e1e;border:1px dashed var(--warn);border-radius:10px;margin:10px 0;padding:18px;text-align:center;color:var(--muted)}
 .hint{color:var(--muted);font-size:13px;text-align:center;margin:6px 0}
 .row{display:flex;gap:8px}
 .row>*{flex:1}
@@ -317,22 +320,39 @@ const store = {
 };
 function toast(t) { const el = $('toast'); el.innerText = t; el.classList.add('show'); clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove('show'), 2200); }
 
-/* Chargement des fichiers de contenu (images) */
+/* Chargement des images : une image = un petit fichier img/<pack>/<clé>.webp (généré par tools/split-packs.js) */
+const IMGS = /*IMGS*/{"ft-01":["ts1","ts2","tc1a","tc1b","tc1c","tc2a","tc2b","tc2c"],"u02-bac":["bs01","bs02","bs03","bs04","bs05","bs06","bs07","bs08","bs09","bs10","bs11","bc01","bc02","bc03","bc04","bc05","bc06","bc07","bc08","bc09","bc10","bc11"],"u02-co":["co01","co02","co03","co04","co05","co06","co07","co08","co09","co10","co11","co12","co13","co14","co15","co16","co17","co18","co19","co20","co21","co22","co23","co24","co25","co26","co27","co28","co29","co30","co31","co32","co33","co34","co35","co36","co42","co43","co44","co45","co46","co47","co48"],"u02-ex":["ex01","ex02","ex03","ex04","ex05","ex06","ex07","ex08","ex09","ex10","ex11","ex12","ex13","ex14","ex15","ex16","ex17","ex18","ex19","ex20","ex21","ex22","ex23","ex24","ex25","ex26","ex27","ex28","ex29","ex30","ex31","ex32","ex33","ex34","ex35","ex36","ex37","ex38","ex39","ex40","ex41","ex42","ex43","ex44","ex45","ex46","ex47","ex48"],"u02-res":["rs00","rs01","rs02","rs03","rs04","rs05","rs06","rs07","rs08"],"u03-bac":["bs01","bs02","bs03","bs04","bs05","bs06","bs07","bs08","bs09","bs10","bs11","bs12","bs13","bc01","bc02","bc03","bc04","bc05","bc06","bc07","bc08","bc09","bc10","bc11","bc12","bc13"],"u03-co":["co01","co02","co03","co04","co05","co06","co07","co08","co09"],"u03-ex":["ex01","ex02","ex03","ex04","ex05","ex06","ex07","ex08","ex09"],"u03-res":["rs01","rs02","rs03","rs04","rs05","rs06","rs07","rs08","rs09","rs10","rs11","rs12","rs13","rs14","rs15","rs16"],"u04-bac":["bs01","bs02","bs03","bs04","bs05","bs06","bs07","bs08","bs09","bs10","bs11","bs12","bs13","bc01","bc02","bc03","bc04","bc05","bc06","bc07","bc08","bc09","bc10","bc11","bc12","bc13"],"u04-co":["co01","co02","co03","co04","co05","co06","co07","co08","co09","co10","co11","co12"],"u04-ex":["ex01","ex02","ex03","ex04","ex05","ex06","ex07","ex08","ex09","ex10","ex11","ex12"],"u04-res":["rs01","rs02","rs03","rs04","rs05"]}/*/IMGS*/;
+const imgUrl = (pack, key) => 'img/' + pack + '/' + key + '.webp';
+const hasImg = (pack, key) => !!(IMGS[pack] && IMGS[pack].includes(key));
+function imgOk(el) { el.parentNode.classList.remove('ld'); }
+function imgErr(el) {
+  const box = el.parentNode;
+  box.className = 'paper-err';
+  box.innerHTML = '⚠️ تعذّر تحميل الصورة. تحقق من الإنترنت.<br><button class="btn-line" style="margin-top:8px" onclick="imgRetry(this)" data-src="' + el.getAttribute('src') + '" data-alt="' + esc(el.alt) + '">🔄 أعد المحاولة</button>';
+}
+function imgRetry(b) {
+  const box = b.parentNode, src = b.dataset.src.split('?')[0] + '?r=' + Date.now();
+  box.className = 'paper ld';
+  box.innerHTML = `<img src="${src}" alt="${b.dataset.alt}" onload="imgOk(this)" onerror="imgErr(this)" onclick="openZoom(this.src)">`;
+}
+// Ancien format (un gros fichier .js par pack) : gardé pour les packs pas encore découpés
 const loading = {};
 function loadPack(name) {
   if (window.PACKS && PACKS[name]) return Promise.resolve(PACKS[name]);
   if (!loading[name]) loading[name] = new Promise((res, rej) => {
     const s = document.createElement('script');
+    const t = setTimeout(() => { delete loading[name]; s.remove(); rej(); }, 45000);
     s.src = name + '.js';
-    s.onload = () => res(PACKS[name]);
-    s.onerror = () => { delete loading[name]; s.remove(); rej(); };
+    s.onload = () => { clearTimeout(t); PACKS && PACKS[name] ? res(PACKS[name]) : (delete loading[name], rej()); };
+    s.onerror = () => { clearTimeout(t); delete loading[name]; s.remove(); rej(); };
     document.head.appendChild(s);
   });
   return loading[name];
 }
 async function img(pack, key, alt) {
+  if (hasImg(pack, key)) return `<div class="paper ld"><img src="${imgUrl(pack, key)}" alt="${esc(alt || '')}" onload="imgOk(this)" onerror="imgErr(this)" onclick="openZoom(this.src)"></div>`;
   try { const p = await loadPack(pack); return p[key] ? `<div class="paper"><img src="${p[key]}" alt="${esc(alt || '')}" onclick="openZoom(this.src)"></div>` : ''; }
-  catch (e) { return '<p class="empty">⚠️ تعذّر التحميل. تحقق من الاتصال بالإنترنت ثم أعد المحاولة.</p>'; }
+  catch (e) { return '<p class="empty">⚠️ تعذّر التحميل. تحقق من الاتصال بالإنترنت ثم أعد المحاولة.<br><button class="btn-line" style="margin-top:8px" onclick="render()">🔄 أعد المحاولة</button></p>'; }
 }
 
 /* Progression */
@@ -528,7 +548,15 @@ async function downloadUnit(uid) {
   const b = $('dlBtn'); b.disabled = true;
   const packs = [uid + '-res', uid + '-ex', uid + '-co', uid + '-bac'];
   try {
-    for (let i = 0; i < packs.length; i++) { b.innerText = `⏳ جاري التحميل ${i + 1}/${packs.length}…`; await loadPack(packs[i]); }
+    const urls = [], old = [];
+    for (const p of packs) IMGS[p] ? IMGS[p].forEach(k => urls.push(imgUrl(p, k))) : old.push(p);
+    let n = 0; const tot = urls.length + old.length;
+    const step = () => { b.innerText = `⏳ جاري التحميل ${Math.round(++n / tot * 100)}%…`; };
+    const q = urls.slice();
+    await Promise.all([0, 1, 2, 3].map(async () => {
+      while (q.length) { const r = await fetch(q.shift()); if (!r.ok) throw 0; await r.blob(); step(); }
+    }));
+    for (const p of old) { await loadPack(p); step(); }
     b.innerText = '✅ الوحدة متوفرة بدون إنترنت';
   } catch (e) { b.disabled = false; b.innerText = '⚠️ فشل التحميل، أعد المحاولة'; }
 }
