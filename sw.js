@@ -1,5 +1,5 @@
 // Service worker : app utilisable sans internet, ouverture rapide même avec une connexion faible
-const CACHE = 'eleves-v9';
+const CACHE = 'eleves-v10';
 const CORE = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png', './icon-maskable.png'];
 
 self.addEventListener('install', e => {
@@ -12,7 +12,7 @@ self.addEventListener('activate', e => {
     for (const k of keys.filter(k => k !== CACHE)) {
       const old = await caches.open(k);
       for (const req of await old.keys()) {
-        if (/\/u\d+-[a-z]+\.js$/.test(new URL(req.url).pathname) && !(await cur.match(req))) await cur.put(req, await old.match(req));
+        if (/\/(u\d+-[a-z]+|ft-\d+)\.js$/.test(new URL(req.url).pathname) && !(await cur.match(req))) await cur.put(req, await old.match(req));
       }
       await caches.delete(k);
     }
@@ -37,7 +37,7 @@ self.addEventListener('fetch', e => {
     return;
   }
   // Fichiers de contenu (u02-ex.js…) : copie locale tout de suite + mise à jour en arrière-plan
-  if (url.origin === location.origin && /\/u\d+-[a-z]+\.js$/.test(url.pathname)) {
+  if (url.origin === location.origin && /\/(u\d+-[a-z]+|ft-\d+)\.js$/.test(url.pathname)) {
     e.respondWith(caches.match(req).then(hit => {
       const net = fetch(req).then(res => put(req, res)).catch(() => hit);
       if (hit) { e.waitUntil(net); return hit; }

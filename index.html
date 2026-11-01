@@ -287,6 +287,19 @@ const UNITS = [
  },
 ];
 
+/* ---------- Devoirs et examens (فروض و اختبارات) ----------
+   Pour ajouter un devoir : un fichier ft-XX.js (images ts1, tc1a…) + un bloc ici */
+const TESTS = [
+ {
+  id: '01', title: 'Crash Test', units: 'الوحدة 02 + الوحدة 03', dur: 'ساعة واحدة', pts: 20, pack: 'ft-01',
+  subjects: [
+    { k:'1', subj:'الموضوع الأول',  code:'Crash Test 01', topics:'اهتلاك متناقص – تنازل – خسارة قيمة – فوارق الجرد – ح/381 – خ ق المخزونات', pages:['ts1'], corr:['tc1a','tc1b','tc1c'] },
+    { k:'2', subj:'الموضوع الثاني', code:'Crash Test 02', topics:'البرمجيات والأراضي – خسارة قيمة – تنازل – فوارق الجرد – ح/380 – خ ق المخزونات', pages:['ts2'], corr:['tc2a','tc2b','tc2c'] },
+  ],
+ },
+];
+const test = id => TESTS.find(t => t.id === id);
+
 /* ============================================================
    Outils
    ============================================================ */
@@ -383,6 +396,7 @@ function track(path, title, event) {
 const PAGE_NAMES = { ex: 'التمارين', bac: 'البكالوريات', res: 'الملخص', quiz: 'الاختبار', calc: 'الحاسبات' };
 function trackRoute(parts) {
   if (!parts.length) return track('/', 'الصفحة الرئيسية');
+  if (parts[0] === 'ft') { const t = test(parts[1]); if (t) track('/' + parts.join('/'), 'فروض · ' + t.title + ' ' + t.id + (parts[2] ? ' · الموضوع ' + parts[2] : '')); return; }
   const u = unit(parts[0]); if (!u) return;
   let title = 'الوحدة ' + u.num;
   if (parts[1]) title += ' · ' + (PAGE_NAMES[parts[1]] || parts[1]);
@@ -397,6 +411,7 @@ async function render() {
   const v = $('view');
   window.scrollTo(0, 0);
   if (!parts.length) return renderHome(v);
+  if (parts[0] === 'ft') { const t = test(parts[1]); if (!t) return go('#/'); return parts[2] ? renderTestSubj(v, t, parts[2]) : renderTest(v, t); }
   const u = unit(parts[0]);
   if (!u) return go('#/');
   if (!parts[1]) return renderUnit(v, u);
@@ -434,6 +449,14 @@ function renderHome(v) {
     <h2 class="sec">📚 الوحدات</h2>
     ${units}
     <div class="card soon"><h3>وحدات أخرى</h3><div class="muted">قريباً إن شاء الله…</div></div>
+    ${TESTS.length ? `<h2 class="sec">📝 فروض و اختبارات</h2>` + TESTS.map(t => {
+      const d = new Set(store.get('ft_' + t.id, [])).size;
+      return `<button class="card" onclick="go('#/ft/${t.id}')">
+      <span class="unit-num">${esc(t.title)}</span>
+      <h3>${esc(t.units)}</h3>
+      <div class="muted">${t.subjects.length} مواضيع اختيارية · ${esc(t.dur)} · ${t.pts} نقطة · مع التصحيح النموذجي</div>
+      ${d ? `<div class="muted" style="margin-top:6px">✅ أنجزت ${d} / ${t.subjects.length}</div>` : ''}
+    </button>`; }).join('') : ''}
     ${CONFIG.messenger ? `<a href="${CONFIG.messenger}?ref=inscription" target="_blank" style="text-decoration:none" onclick="track('contact-inscription','سجّل في الأفواج',true)"><div class="card" style="display:flex;align-items:center;gap:12px;border-color:var(--pink);background:linear-gradient(135deg,#2a0016,#1e1e1e)"><span style="font-size:30px">📩</span><div><h3 style="margin:0">سجّل في الأفواج الحضورية</h3><div class="muted">دروس دعم · تسيير واقتصاد · اكتبلنا على المسنجر</div></div></div></a>` : ''}
     ${CONFIG.facebook ? `<a href="${CONFIG.facebook}" target="_blank" style="text-decoration:none"><div class="card" style="display:flex;align-items:center;gap:12px;border-color:#1877f2"><span style="font-size:30px">📘</span><div><h3 style="margin:0">تابع صفحتنا على فيسبوك</h3><div class="muted">أستاذ الشارع - Gestion · ملخصات وتمارين — بكالوريا 2027</div></div></div></a>` : ''}
     ${CONFIG.tiktok ? `<p class="foot" style="font-size:14px"><a href="${CONFIG.tiktok}" target="_blank">🎵 تيك توك</a></p>` : ''}
@@ -605,6 +628,45 @@ async function showBacSol(uid, k) {
 }
 function markBac(uid, k) {
   const s = new Set(store.get('bac_' + uid, [])); s.has(k) ? s.delete(k) : s.add(k); store.set('bac_' + uid, [...s]);
+  const on = s.has(k), b = $('doneBtn');
+  b.className = (on ? 'btn-ok' : 'btn-line') + ' w100'; b.innerText = on ? '✅ أنجزت هذا الموضوع' : '☐ علّم هذا الموضوع كمُنجز';
+}
+
+/* ---------- Devoirs et examens ---------- */
+function renderTest(v, t) {
+  setTop('📝 ' + t.title, t.units, true);
+  const done = new Set(store.get('ft_' + t.id, []));
+  v.innerHTML = `<p class="hint">⏱️ ${esc(t.dur)} · ${t.pts} نقطة<br>اختار موضوع واحد وحلّو كيما في البكالوريا، ومن بعد قارن مع التصحيح النموذجي 💪</p>` + t.subjects.map(s => `
+    <div class="list-item ${done.has(s.k) ? 'done' : ''}" onclick="go('#/ft/${t.id}/${s.k}')">
+      <div><b>${s.subj}</b><div class="hint" style="text-align:right;margin:4px 0 0">${esc(s.topics)}</div></div>
+      <span>${done.has(s.k) ? '✅' : '‹'}</span></div>`).join('');
+}
+async function renderTestSubj(v, t, k) {
+  const s = t.subjects.find(x => x.k === k); if (!s) return go('#/ft/' + t.id);
+  setTop(t.title + ' · ' + s.subj, t.units, true);
+  v.innerHTML = '<p class="empty">⏳ جاري التحميل…</p>';
+  const pages = (await Promise.all(s.pages.map(p => img(t.pack, p, 'الموضوع')))).join('');
+  const done = new Set(store.get('ft_' + t.id, [])).has(k);
+  const i = t.subjects.indexOf(s), prev = t.subjects[i - 1], next = t.subjects[i + 1];
+  v.innerHTML = `<p class="hint">⏱️ ${esc(t.dur)} · ${t.pts} نقطة · ${esc(s.topics)}</p>${pages}
+    <button class="btn-pink w100" id="solBtn" onclick="showTestSol('${t.id}','${k}')">💡 اظهر التصحيح النموذجي</button><div id="sol"></div>
+    <button class="${done ? 'btn-ok' : 'btn-line'} w100" style="margin-top:10px" id="doneBtn" onclick="markTest('${t.id}','${k}')">${done ? '✅ أنجزت هذا الموضوع' : '☐ علّم هذا الموضوع كمُنجز'}</button>
+    <div class="nav">
+      <button ${prev ? `onclick="go('#/ft/${t.id}/${prev.k}')"` : 'disabled style="opacity:.3"'}>→ السابق</button>
+      <button onclick="go('#/ft/${t.id}')">☰ القائمة</button>
+      <button ${next ? `onclick="go('#/ft/${t.id}/${next.k}')"` : 'disabled style="opacity:.3"'}>التالي ←</button>
+    </div>`;
+}
+async function showTestSol(id, k) {
+  const t = test(id), s = t.subjects.find(x => x.k === k);
+  $('solBtn').style.display = 'none';
+  $('sol').innerHTML = '<p class="empty">⏳ جاري التحميل…</p>';
+  const pages = (await Promise.all(s.corr.map(p => img(t.pack, p, 'التصحيح')))).join('');
+  $('sol').innerHTML = '<h2 class="sec">💡 التصحيح النموذجي وسلم التنقيط</h2>' + pages + '<p class="hint">اضغط على التصحيح لتكبيره 🔍</p>';
+  track('ft-sol-' + id + '-' + k, 'فتح تصحيح ' + t.title + ' ' + id + ' · الموضوع ' + k, true);
+}
+function markTest(id, k) {
+  const s = new Set(store.get('ft_' + id, [])); s.has(k) ? s.delete(k) : s.add(k); store.set('ft_' + id, [...s]);
   const on = s.has(k), b = $('doneBtn');
   b.className = (on ? 'btn-ok' : 'btn-line') + ' w100'; b.innerText = on ? '✅ أنجزت هذا الموضوع' : '☐ علّم هذا الموضوع كمُنجز';
 }
