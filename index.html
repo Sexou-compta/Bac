@@ -491,7 +491,7 @@ function renderHome(v) {
 
 
 /* ---------- Partage & iPhone ---------- */
-const APP_URL = 'https://sexou-compta.github.io/Bac/';
+const APP_URL = 'https://sexou-compta.github.io/Bac/?ref=partage';
 const SHARE_TEXT = '📲 تطبيق أستاذ الشارع المجاني لتلاميذ تسيير واقتصاد: تمارين مع الحلول النموذجية، بكالوريات مع التصحيح، ملخصات واختبارات 👇';
 async function shareApp() {
   track('share-click', 'ضغط على زر المشاركة', true);
@@ -1070,6 +1070,7 @@ if ('serviceWorker' in navigator && location.protocol.startsWith('http')) window
 if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
 
 if (isInstalled()) track('open-app', 'فتح التطبيق من الأيقونة', true);
+if (GC_REF === 'partage') track('from-share', 'جا عن طريق زر المشاركة', true);
 render();
 </script>
 </body>
