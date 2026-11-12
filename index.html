@@ -288,6 +288,35 @@ const UNITS = [
     { q:'في الميزانية الختامية، ح/491 يظهر:', o:['في الخصوم','في الأصول مطروحاً من ح/416','في جدول حسابات النتائج فقط','لا يظهر'], a:1, e:'الزبائن المشكوك فيهم: الإجمالي = رصيد 416، خسائر القيمة = رصيد 491، الصافي = 416 − 491.' },
   ],
  },
+ {
+  // from = تاريخ ظهور الدرس للتلاميذ (قبل هذا التاريخ يبقى مخفياً)
+  id: 'u04b', num: '04', title: 'تسوية عناصر الأصول الأخرى', from: '2026-11-14T15:00:00+01:00',
+  sub: 'الدرس 02: التقارب البنكي',
+  axes: [ { title: 'سلسلة 03: التقارب البنكي', from: 1, to: 10 } ],
+  corr: (() => { const m = {}; for (let i = 1; i <= 10; i++) { const k = String(i).padStart(2, '0'); m[k] = ['u04b-co', 'co' + k]; } return m; })(),
+  exLabels: {},
+  videos: {},
+  bac: [
+    { k:'01', year:2026, subj:'الموضوع الأول',  topics:'حالة التقارب البنكي + قيود التسوية' },
+    { k:'02', year:2025, subj:'الموضوع الأول',  topics:'مقارنة ح/512 والكشف البنكي + قيود التسوية' },
+    { k:'03', year:2024, subj:'الموضوع الثاني', topics:'حالة التقارب مقتصرة على حساب البنك لدى المؤسسة' },
+    { k:'04', year:2023, subj:'الموضوع الأول',  topics:'حالة التقارب البنكي + قيود التسوية' },
+    { k:'05', year:2020, subj:'الموضوع الثاني', topics:'حالة التقارب + القيود مع العمليات الحسابية' },
+    { k:'06', year:2019, subj:'الموضوع الأول',  topics:'حالة التقارب + القيود مع العمليات الحسابية' },
+  ],
+  resPages: ['rs01','rs02','rs03','rs04'],
+  calcs: [], calcHint: '',
+  quiz: [
+    { q:'عملية تحصيل لصالح المؤسسة تسجّلها المؤسسة في الجانب المدين لـ ح/512. البنك يسجّلها في كشفه في الجانب:', o:['الدائن','المدين','لا يسجّلها','حسب المبلغ'], a:0, e:'الحسابان متقابلان: ما تسجّله المؤسسة في الجانب المدين يسجّله البنك في الجانب الدائن، والعكس.' },
+    { q:'الرصيد العادي لـ ح/512 (حساب البنك لدى المؤسسة) وللكشف البنكي (حساب المؤسسة لدى البنك):', o:['512 مدين / الكشف دائن','512 دائن / الكشف مدين','الاثنان مدينان','الاثنان دائنان'], a:0, e:'الرصيد قبل التسوية: مدين في حساب البنك لدى المؤسسة، ودائن في حساب المؤسسة لدى البنك.' },
+    { q:'قيود التسوية في دفتر المؤسسة نسجّلها للعمليات:', o:['التي سجّلها البنك ولم تسجّلها المؤسسة','التي سجّلتها المؤسسة ولم يسجّلها البنك','كل العمليات في جدول التقارب','لا نسجّل أي قيد'], a:0, e:'نسجّل فقط ما يوجد في الجانب الأيمن من جدول التقارب (حساب البنك لدى المؤسسة). العمليات التي لم يسجّلها البنك لا قيد لها.' },
+    { q:'خدمات مصرفية اقتطعها البنك ولم تسجّلها المؤسسة. قيد التسوية:', o:['من ح/627 إلى ح/512','من ح/512 إلى ح/627','من ح/661 إلى ح/512','من ح/512 إلى ح/768'], a:0, e:'ح/627 الخدمات المصرفية وما شابهها مدين، و ح/512 دائن.' },
+    { q:'فوائد بنكية لصالح المؤسسة سجّلها البنك فقط. قيد التسوية:', o:['من ح/512 إلى ح/768','من ح/661 إلى ح/512','من ح/768 إلى ح/512','من ح/512 إلى ح/661'], a:0, e:'نواتج مالية ← ح/512 مدين و ح/768 المنتوجات المالية الأخرى دائن. (الفوائد لصالح البنك ← ح/661 أعباء الفوائد).' },
+    { q:'زبون حوّل مبلغاً مباشرة إلى الحساب البنكي للمؤسسة دون إشعارها. قيد التسوية:', o:['من ح/512 إلى ح/411','من ح/411 إلى ح/512','من ح/512 إلى ح/401','لا قيد'], a:0, e:'سجّله البنك فقط ← في دفتر المؤسسة: ح/512 مدين و ح/411 الزبائن دائن.' },
+    { q:'شيك حرّرته المؤسسة لمورد ولم يتقدّم به المورد للبنك بعد:', o:['لا قيد، يظهر في جانب حساب المؤسسة لدى البنك فقط','من ح/401 إلى ح/512','من ح/512 إلى ح/401','من ح/627 إلى ح/512'], a:0, e:'سجّلته المؤسسة ولم يسجّله البنك ← نصحّحه في جدول الكشف البنكي (مدين)، ولا نسجّل له قيداً.' },
+    { q:'ح/512 قبل التسوية 467,000 دج مدين. البنك سجّل وحده: تحويل من زبون 17,000، نواتج مالية 12,000، خدمات مصرفية 5,000. الرصيد بعد التسوية:', o:['491,000 دج','501,000 دج','443,000 دج','467,000 دج'], a:0, e:'467,000 + 17,000 + 12,000 − 5,000 = 491,000 دج (مدين)، ويجب أن يساوي رصيد الكشف البنكي بعد التسوية.' },
+  ],
+ },
 ];
 
 /* ---------- Devoirs et examens (فروض و اختبارات) ----------
@@ -312,7 +341,11 @@ const fmt = n => { const r = Math.round(n * 100) / 100; const [i, d] = Math.abs(
 const L = s => `<span class="ltr">${s}</span>`;
 const pct = x => fmt(x * 100) + '%';
 const num = id => { const v = String($(id).value).replace(/[\s,]/g, '').replace('٫', '.'); return v === '' ? NaN : +v; };
-const unit = id => UNITS.find(u => u.id === id);
+// درس عنده تاريخ "from" يبقى مخفياً حتى يصل ذلك التاريخ
+// للأستاذ فقط: فتح التطبيق بـ ?preview يُظهر الدروس المخفية للمراجعة قبل موعدها
+const PREVIEW = /[?&]preview\b/.test(location.search);
+const visible = u => !u.from || PREVIEW || Date.now() >= Date.parse(u.from);
+const unit = id => UNITS.find(u => u.id === id && visible(u));
 const nEx = n => n + (n >= 3 && n <= 10 ? ' تمارين' : ' تمرين');
 const store = {
   get(k, d) { try { const v = localStorage.getItem('elv_' + k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
@@ -321,7 +354,7 @@ const store = {
 function toast(t) { const el = $('toast'); el.innerText = t; el.classList.add('show'); clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove('show'), 2200); }
 
 /* Chargement des images : une image = un petit fichier img/<pack>/<clé>.webp (généré par tools/split-packs.js) */
-const IMGS = /*IMGS*/{"ft-01":["ts1","ts2","tc1a","tc1b","tc1c","tc2a","tc2b","tc2c"],"u02-bac":["bs01","bs02","bs03","bs04","bs05","bs06","bs07","bs08","bs09","bs10","bs11","bc01","bc02","bc03","bc04","bc05","bc06","bc07","bc08","bc09","bc10","bc11"],"u02-co":["co01","co02","co03","co04","co05","co06","co07","co08","co09","co10","co11","co12","co13","co14","co15","co16","co17","co18","co19","co20","co21","co22","co23","co24","co25","co26","co27","co28","co29","co30","co31","co32","co33","co34","co35","co36","co42","co43","co44","co45","co46","co47","co48"],"u02-ex":["ex01","ex02","ex03","ex04","ex05","ex06","ex07","ex08","ex09","ex10","ex11","ex12","ex13","ex14","ex15","ex16","ex17","ex18","ex19","ex20","ex21","ex22","ex23","ex24","ex25","ex26","ex27","ex28","ex29","ex30","ex31","ex32","ex33","ex34","ex35","ex36","ex37","ex38","ex39","ex40","ex41","ex42","ex43","ex44","ex45","ex46","ex47","ex48"],"u02-res":["rs00","rs01","rs02","rs03","rs04","rs05","rs06","rs07","rs08"],"u03-bac":["bs01","bs02","bs03","bs04","bs05","bs06","bs07","bs08","bs09","bs10","bs11","bs12","bs13","bc01","bc02","bc03","bc04","bc05","bc06","bc07","bc08","bc09","bc10","bc11","bc12","bc13"],"u03-co":["co01","co02","co03","co04","co05","co06","co07","co08","co09"],"u03-ex":["ex01","ex02","ex03","ex04","ex05","ex06","ex07","ex08","ex09"],"u03-res":["rs01","rs02","rs03","rs04","rs05","rs06","rs07","rs08","rs09","rs10","rs11","rs12","rs13","rs14","rs15","rs16"],"u04-bac":["bs01","bs02","bs03","bs04","bs05","bs06","bs07","bs08","bs09","bs10","bs11","bs12","bs13","bc01","bc02","bc03","bc04","bc05","bc06","bc07","bc08","bc09","bc10","bc11","bc12","bc13"],"u04-co":["co01","co02","co03","co04","co05","co06","co07","co08","co09","co10","co11","co12"],"u04-ex":["ex01","ex02","ex03","ex04","ex05","ex06","ex07","ex08","ex09","ex10","ex11","ex12"],"u04-res":["rs01","rs02","rs03","rs04","rs05"]}/*/IMGS*/;
+const IMGS = /*IMGS*/{"ft-01":["ts1","ts2","tc1a","tc1b","tc1c","tc2a","tc2b","tc2c"],"u02-bac":["bs01","bs02","bs03","bs04","bs05","bs06","bs07","bs08","bs09","bs10","bs11","bc01","bc02","bc03","bc04","bc05","bc06","bc07","bc08","bc09","bc10","bc11"],"u02-co":["co01","co02","co03","co04","co05","co06","co07","co08","co09","co10","co11","co12","co13","co14","co15","co16","co17","co18","co19","co20","co21","co22","co23","co24","co25","co26","co27","co28","co29","co30","co31","co32","co33","co34","co35","co36","co42","co43","co44","co45","co46","co47","co48"],"u02-ex":["ex01","ex02","ex03","ex04","ex05","ex06","ex07","ex08","ex09","ex10","ex11","ex12","ex13","ex14","ex15","ex16","ex17","ex18","ex19","ex20","ex21","ex22","ex23","ex24","ex25","ex26","ex27","ex28","ex29","ex30","ex31","ex32","ex33","ex34","ex35","ex36","ex37","ex38","ex39","ex40","ex41","ex42","ex43","ex44","ex45","ex46","ex47","ex48"],"u02-res":["rs00","rs01","rs02","rs03","rs04","rs05","rs06","rs07","rs08"],"u03-bac":["bs01","bs02","bs03","bs04","bs05","bs06","bs07","bs08","bs09","bs10","bs11","bs12","bs13","bc01","bc02","bc03","bc04","bc05","bc06","bc07","bc08","bc09","bc10","bc11","bc12","bc13"],"u03-co":["co01","co02","co03","co04","co05","co06","co07","co08","co09"],"u03-ex":["ex01","ex02","ex03","ex04","ex05","ex06","ex07","ex08","ex09"],"u03-res":["rs01","rs02","rs03","rs04","rs05","rs06","rs07","rs08","rs09","rs10","rs11","rs12","rs13","rs14","rs15","rs16"],"u04-bac":["bs01","bs02","bs03","bs04","bs05","bs06","bs07","bs08","bs09","bs10","bs11","bs12","bs13","bc01","bc02","bc03","bc04","bc05","bc06","bc07","bc08","bc09","bc10","bc11","bc12","bc13"],"u04-co":["co01","co02","co03","co04","co05","co06","co07","co08","co09","co10","co11","co12"],"u04-ex":["ex01","ex02","ex03","ex04","ex05","ex06","ex07","ex08","ex09","ex10","ex11","ex12"],"u04-res":["rs01","rs02","rs03","rs04","rs05"],"u04b-bac":["bc01","bc02","bc03","bc04","bc05","bc06","bs01","bs02","bs03","bs04","bs05","bs06"],"u04b-co":["co01","co02","co03","co04","co05","co06","co07","co08","co09","co10"],"u04b-ex":["ex01","ex02","ex03","ex04","ex05","ex06","ex07","ex08","ex09","ex10"],"u04b-res":["rs01","rs02","rs03","rs04"]}/*/IMGS*/;
 const imgUrl = (pack, key) => 'img/' + pack + '/' + key + '.webp';
 const hasImg = (pack, key) => !!(IMGS[pack] && IMGS[pack].includes(key));
 function imgOk(el) { el.parentNode.classList.remove('ld'); }
@@ -455,7 +488,7 @@ function renderHome(v) {
     const days = Math.ceil((new Date(CONFIG.bacDate) - new Date()) / 86400000);
     if (days > 0) count = `<div class="count"><b>${days}</b>يوم متبقي على البكالوريا 💪</div>`;
   }
-  const units = UNITS.map(u => {
+  const units = UNITS.filter(visible).map(u => {
     const total = u.axes[u.axes.length - 1].to, d = doneSet(u.id).size;
     return `<button class="card" onclick="go('#/${u.id}')">
       <span class="unit-num">الوحدة ${u.num}</span>
@@ -537,14 +570,14 @@ function renderUnit(v, u) {
   const total = u.axes[u.axes.length - 1].to, d = doneSet(u.id).size;
   const best = store.get('quiz_' + u.id, null);
   v.innerHTML = `
-    <div class="card" style="cursor:default"><span class="unit-num">الوحدة ${u.num}</span><h3>${esc(u.title)}</h3>
+    <div class="card" style="cursor:default"><span class="unit-num">الوحدة ${u.num}</span><h3>${esc(u.title)}</h3>${u.sub.startsWith('الدرس') ? `<div class="muted">${esc(u.sub)}</div>` : ''}
       <div class="bar"><i style="width:${Math.round(d / total * 100)}%"></i></div><div class="muted" style="margin-top:6px">أنجزت ${d} / ${nEx(total)}</div></div>
     <div class="grid">
       <div class="tile" onclick="go('#/${u.id}/res')"><span>📖</span>الملخص<small>القوانين والقواعد</small></div>
       <div class="tile" onclick="go('#/${u.id}/ex')"><span>✏️</span>التمارين<small>${nEx(total)} مع الحل</small></div>
       <div class="tile" onclick="go('#/${u.id}/bac')"><span>🎓</span>البكالوريات<small>${u.bac.length} موضوع مع التصحيح</small></div>
       <div class="tile" onclick="go('#/${u.id}/quiz')"><span>❓</span>اختبر نفسك<small>${best ? 'أفضل نتيجة: ' + best + '/' + u.quiz.length : u.quiz.length + ' سؤال'}</small></div>
-      <div class="tile" style="grid-column:1/-1" onclick="go('#/${u.id}/calc')"><span>🧮</span>الحاسبات<small>${u.calcHint}</small></div>
+      ${u.calcs.length ? `<div class="tile" style="grid-column:1/-1" onclick="go('#/${u.id}/calc')"><span>🧮</span>الحاسبات<small>${u.calcHint}</small></div>` : ''}
     </div>
     <button class="btn-line w100" style="margin-top:16px" id="dlBtn" onclick="downloadUnit('${u.id}')">⬇️ تحميل الوحدة للاستعمال بدون إنترنت</button>`;
 }

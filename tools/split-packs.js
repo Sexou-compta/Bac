@@ -5,7 +5,7 @@ const fs = require('fs'), path = require('path');
 const root = path.join(__dirname, '..');
 global.window = global;
 const list = {};
-for (const f of fs.readdirSync(root).filter(f => /^(u\d+-[a-z]+|ft-\d+)\.js$/.test(f)).sort()) {
+for (const f of fs.readdirSync(root).filter(f => /^(u\d+[a-z]?-[a-z]+|ft-\d+)\.js$/.test(f)).sort()) {
   const name = f.replace('.js', '');
   require(path.join(root, f));
   const pack = PACKS[name], dir = path.join(root, 'img', name);
