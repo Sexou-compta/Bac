@@ -46,6 +46,12 @@ a{color:var(--pink)}
 .card h3{font-size:18px;margin-bottom:4px}
 .card .muted{color:var(--muted);font-size:13px}
 .card.soon{opacity:.45;cursor:default}
+.card.subj{border-right:5px solid var(--c)}
+.card.subj h3{color:var(--c)}
+.card.subj .bar i{background:var(--c)}
+.subj-ic{float:left;font-size:30px;margin-top:2px}
+.chip{display:inline-block;background:var(--c);color:#000;border-radius:8px;padding:2px 8px;font-size:12px;font-weight:700;margin-bottom:6px}
+.cont{margin:2px 0 6px;border-color:#555}.cont small{display:block;color:var(--muted);font-size:12px;font-weight:400;margin-top:3px}
 .new-tag{display:inline-block;background:#ff6a00;color:#fff;border-radius:8px;padding:2px 8px;font-size:12px;font-weight:700;margin-inline-start:6px;animation:newpulse 1.6s ease-in-out infinite}
 @keyframes newpulse{50%{opacity:.55}}
 .social{display:flex;gap:10px;margin:8px 0 6px}
@@ -143,7 +149,8 @@ table.acc .sw{background:#fff4d6}
    ============================================================ */
 const SOCIAL_ICONS = {"tiktok": "data:image/webp;base64,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", "instagram": "data:image/webp;base64,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", "facebook": "data:image/webp;base64,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"};
 const CONFIG = {
-  bacDate: null,            // ex: '2027-06-13' quand la date est annoncée
+  bacDate: null,
+  v2From: null,             // تاريخ ظهور المواد الجديدة (الرياضيات، الاقتصاد، القانون) — مثال: '2026-11-28T12:30:00'            // ex: '2027-06-13' quand la date est annoncée
   facebook: 'https://www.facebook.com/share/1X6UDnnCWY/', // page Facebook
   messenger: 'https://m.me/61595466450446',              // Messenger de la page (inscription + avis)
   tiktok: 'https://www.tiktok.com/@ostad_gestion', // lien du compte TikTok
@@ -398,6 +405,16 @@ const TESTS = [
 ];
 const test = id => TESTS.find(t => t.id === id);
 
+/* ---------- الرياضيات : تمارين BAC مقسومة على الدروس (الصور في img/ma-<عام>/) ---------- */
+const MATH = [{"id": "1", "title": "المتتاليات العددية", "sub": "كل السنوات", "items": ["2026-1-2", "2026-2-2", "2025-1-1", "2025-2-3", "2024-1-1", "2024-2-3", "2023-1-1", "2023-2-1", "2022-1-3", "2022-2-1", "2022-2-2", "2021-1-1", "2021-2-1", "2020-1-2", "2020-1-3", "2020-2-2", "2020-2-3", "2019-1-1", "2019-2-2", "2018-1-3", "2018-2-3", "2017-1-2", "2017-2-2"]}, {"id": "2", "title": "دراسة الدوال", "sub": "ناطقة · كثيرات حدود · قراءة بيانية", "items": ["2026-1-4", "2026-2-3", "2025-1-2", "2024-1-3", "2022-1-2", "2022-1-4", "2022-2-4", "2021-1-2", "2021-1-4", "2021-2-2", "2021-2-4", "2020-1-1", "2019-1-4"]}, {"id": "3", "title": "الدالة اللوغاريتمية", "sub": "دراسة دالة · معادلات ومتراجحات", "items": ["2026-1-3", "2025-1-3", "2025-2-4", "2024-1-4", "2024-2-2", "2023-1-2", "2023-2-3", "2023-2-4", "2020-1-4", "2020-2-4", "2018-1-4", "2017-1-4"]}, {"id": "4", "title": "الدالة الأسية", "sub": "دراسة دالة", "items": ["2026-2-4", "2025-1-4", "2025-2-2", "2024-2-4", "2023-1-4", "2019-2-4", "2018-2-4", "2017-2-4"]}, {"id": "5", "title": "QCM و صحيح / خطأ", "sub": "أسئلة متنوعة من كل الدروس", "items": ["2026-1-1", "2026-2-1", "2025-2-1", "2024-1-2", "2024-2-1", "2023-1-3", "2023-2-2", "2022-1-1", "2022-2-3", "2021-1-3", "2021-2-3", "2020-2-1"]}];
+const MATH_EQ = ['2023-1-2', '2023-2-3', '2024-2-2'];  // معادلات ومتراجحات
+// عدد الصفحات لكل عام: [الموضوع 1، الموضوع 2، تصحيح 1، تصحيح 2]
+const BACS = {
+  e: { name: 'الاقتصاد والمناجمنت', icon: '📕', color: '#ff007f', pack: 'ec', pages: {"2017": [2, 2, 3, 3], "2018": [2, 2, 2, 3], "2019": [2, 2, 3, 3], "2020": [2, 2, 4, 3], "2021": [2, 2, 3, 3], "2022": [2, 2, 4, 2], "2023": [2, 2, 4, 3], "2024": [2, 2, 2, 1], "2025": [2, 2, 3, 3], "2026": [2, 2, 3, 3]} },
+  d: { name: 'القانون', icon: '⚖️', color: '#a78bfa', pack: 'dr', pages: {"2017": [1, 1, 2, 2], "2018": [1, 1, 2, 2], "2019": [1, 1, 2, 3], "2020": [2, 2, 2, 2], "2021": [2, 2, 3, 2], "2022": [2, 2, 2, 3], "2023": [2, 2, 3, 3], "2024": [2, 2, 2, 2], "2025": [2, 2, 2, 2], "2026": [2, 2, 3, 3]} },
+};
+
+
 /* ============================================================
    Outils
    ============================================================ */
@@ -424,7 +441,7 @@ const store = {
 function toast(t) { const el = $('toast'); el.innerText = t; el.classList.add('show'); clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove('show'), 2200); }
 
 /* Chargement des images : une image = un petit fichier img/<pack>/<clé>.webp (généré par tools/split-packs.js) */
-const IMGS = /*IMGS*/{"ft-01":["ts1","ts2","tc1a","tc1b","tc1c","tc2a","tc2b","tc2c"],"u02-bac":["bs01","bs02","bs03","bs04","bs05","bs06","bs07","bs08","bs09","bs10","bs11","bc01","bc02","bc03","bc04","bc05","bc06","bc07","bc08","bc09","bc10","bc11"],"u02-co":["co01","co02","co03","co04","co05","co06","co07","co08","co09","co10","co11","co12","co13","co14","co15","co16","co17","co18","co19","co20","co21","co22","co23","co24","co25","co26","co27","co28","co29","co30","co31","co32","co33","co34","co35","co36","co42","co43","co44","co45","co46","co47","co48"],"u02-ex":["ex01","ex02","ex03","ex04","ex05","ex06","ex07","ex08","ex09","ex10","ex11","ex12","ex13","ex14","ex15","ex16","ex17","ex18","ex19","ex20","ex21","ex22","ex23","ex24","ex25","ex26","ex27","ex28","ex29","ex30","ex31","ex32","ex33","ex34","ex35","ex36","ex37","ex38","ex39","ex40","ex41","ex42","ex43","ex44","ex45","ex46","ex47","ex48"],"u02-res":["rs00","rs01","rs02","rs03","rs04","rs05","rs06","rs07","rs08"],"u02b-bac":["bc01","bc02","bc03","bc04","bc05","bc06","bc07","bc08","bs01","bs02","bs03","bs04","bs05","bs06","bs07","bs08"],"u02b-co":["co01","co02","co03","co04","co05","co06","co07"],"u02b-ex":["ex01","ex02","ex03","ex04","ex05","ex06","ex07"],"u02b-res":["rs01","rs02"],"u03-bac":["bs01","bs02","bs03","bs04","bs05","bs06","bs07","bs08","bs09","bs10","bs11","bs12","bs13","bc01","bc02","bc03","bc04","bc05","bc06","bc07","bc08","bc09","bc10","bc11","bc12","bc13"],"u03-co":["co01","co02","co03","co04","co05","co06","co07","co08","co09"],"u03-ex":["ex01","ex02","ex03","ex04","ex05","ex06","ex07","ex08","ex09"],"u03-res":["rs01","rs02","rs03","rs04","rs05","rs06","rs07","rs08","rs09","rs10","rs11","rs12","rs13","rs14","rs15","rs16"],"u04-bac":["bs01","bs02","bs03","bs04","bs05","bs06","bs07","bs08","bs09","bs10","bs11","bs12","bs13","bc01","bc02","bc03","bc04","bc05","bc06","bc07","bc08","bc09","bc10","bc11","bc12","bc13"],"u04-co":["co01","co02","co03","co04","co05","co06","co07","co08","co09","co10","co11","co12"],"u04-ex":["ex01","ex02","ex03","ex04","ex05","ex06","ex07","ex08","ex09","ex10","ex11","ex12"],"u04-res":["rs01","rs02","rs03","rs04","rs05"],"u04b-bac":["bc01","bc02","bc03","bc04","bc05","bc06","bs01","bs02","bs03","bs04","bs05","bs06"],"u04b-co":["co01","co02","co03","co04","co05","co06","co07","co08","co09","co10"],"u04b-ex":["ex01","ex02","ex03","ex04","ex05","ex06","ex07","ex08","ex09","ex10"],"u04b-res":["rs01","rs02","rs03","rs04"],"u04c-bac":["bc01","bc02","bc03","bc04","bc05","bc06","bs01","bs02","bs03","bs04","bs05","bs06"],"u04c-co":["co01","co02","co03","co04","co05","co06","co07"],"u04c-ex":["ex01","ex02","ex03","ex04","ex05","ex06","ex07"],"u04c-res":["rs01","rs02"]}/*/IMGS*/;
+const IMGS = /*IMGS*/{"ft-01":["ts1","ts2","tc1a","tc1b","tc1c","tc2a","tc2b","tc2c"],"u02-bac":["bs01","bs02","bs03","bs04","bs05","bs06","bs07","bs08","bs09","bs10","bs11","bc01","bc02","bc03","bc04","bc05","bc06","bc07","bc08","bc09","bc10","bc11"],"u02-co":["co01","co02","co03","co04","co05","co06","co07","co08","co09","co10","co11","co12","co13","co14","co15","co16","co17","co18","co19","co20","co21","co22","co23","co24","co25","co26","co27","co28","co29","co30","co31","co32","co33","co34","co35","co36","co42","co43","co44","co45","co46","co47","co48"],"u02-ex":["ex01","ex02","ex03","ex04","ex05","ex06","ex07","ex08","ex09","ex10","ex11","ex12","ex13","ex14","ex15","ex16","ex17","ex18","ex19","ex20","ex21","ex22","ex23","ex24","ex25","ex26","ex27","ex28","ex29","ex30","ex31","ex32","ex33","ex34","ex35","ex36","ex37","ex38","ex39","ex40","ex41","ex42","ex43","ex44","ex45","ex46","ex47","ex48"],"u02-res":["rs00","rs01","rs02","rs03","rs04","rs05","rs06","rs07","rs08"],"u02b-bac":["bc01","bc02","bc03","bc04","bc05","bc06","bc07","bc08","bs01","bs02","bs03","bs04","bs05","bs06","bs07","bs08"],"u02b-co":["co01","co02","co03","co04","co05","co06","co07"],"u02b-ex":["ex01","ex02","ex03","ex04","ex05","ex06","ex07"],"u02b-res":["rs01","rs02"],"u03-bac":["bs01","bs02","bs03","bs04","bs05","bs06","bs07","bs08","bs09","bs10","bs11","bs12","bs13","bc01","bc02","bc03","bc04","bc05","bc06","bc07","bc08","bc09","bc10","bc11","bc12","bc13"],"u03-co":["co01","co02","co03","co04","co05","co06","co07","co08","co09"],"u03-ex":["ex01","ex02","ex03","ex04","ex05","ex06","ex07","ex08","ex09"],"u03-res":["rs01","rs02","rs03","rs04","rs05","rs06","rs07","rs08","rs09","rs10","rs11","rs12","rs13","rs14","rs15","rs16"],"u04-bac":["bs01","bs02","bs03","bs04","bs05","bs06","bs07","bs08","bs09","bs10","bs11","bs12","bs13","bc01","bc02","bc03","bc04","bc05","bc06","bc07","bc08","bc09","bc10","bc11","bc12","bc13"],"u04-co":["co01","co02","co03","co04","co05","co06","co07","co08","co09","co10","co11","co12"],"u04-ex":["ex01","ex02","ex03","ex04","ex05","ex06","ex07","ex08","ex09","ex10","ex11","ex12"],"u04-res":["rs01","rs02","rs03","rs04","rs05"],"u04b-bac":["bc01","bc02","bc03","bc04","bc05","bc06","bs01","bs02","bs03","bs04","bs05","bs06"],"u04b-co":["co01","co02","co03","co04","co05","co06","co07","co08","co09","co10"],"u04b-ex":["ex01","ex02","ex03","ex04","ex05","ex06","ex07","ex08","ex09","ex10"],"u04b-res":["rs01","rs02","rs03","rs04"],"u04c-bac":["bc01","bc02","bc03","bc04","bc05","bc06","bs01","bs02","bs03","bs04","bs05","bs06"],"u04c-co":["co01","co02","co03","co04","co05","co06","co07"],"u04c-ex":["ex01","ex02","ex03","ex04","ex05","ex06","ex07"],"u04c-res":["rs01","rs02"],"dr-2017":["c1p1","c1p2","c2p1","c2p2","s1p1","s2p1"],"dr-2018":["c1p1","c1p2","c2p1","c2p2","s1p1","s2p1"],"dr-2019":["c1p1","c1p2","c2p1","c2p2","c2p3","s1p1","s2p1"],"dr-2020":["c1p1","c1p2","c2p1","c2p2","s1p1","s1p2","s2p1","s2p2"],"dr-2021":["c1p1","c1p2","c1p3","c2p1","c2p2","s1p1","s1p2","s2p1","s2p2"],"dr-2022":["c1p1","c1p2","c2p1","c2p2","c2p3","s1p1","s1p2","s2p1","s2p2"],"dr-2023":["c1p1","c1p2","c1p3","c2p1","c2p2","c2p3","s1p1","s1p2","s2p1","s2p2"],"dr-2024":["c1p1","c1p2","c2p1","c2p2","s1p1","s1p2","s2p1","s2p2"],"dr-2025":["c1p1","c1p2","c2p1","c2p2","s1p1","s1p2","s2p1","s2p2"],"dr-2026":["c1p1","c1p2","c1p3","c2p1","c2p2","c2p3","s1p1","s1p2","s2p1","s2p2"],"ec-2017":["c1p1","c1p2","c1p3","c2p1","c2p2","c2p3","s1p1","s1p2","s2p1","s2p2"],"ec-2018":["c1p1","c1p2","c2p1","c2p2","c2p3","s1p1","s1p2","s2p1","s2p2"],"ec-2019":["c1p1","c1p2","c1p3","c2p1","c2p2","c2p3","s1p1","s1p2","s2p1","s2p2"],"ec-2020":["c1p1","c1p2","c1p3","c1p4","c2p1","c2p2","c2p3","s1p1","s1p2","s2p1","s2p2"],"ec-2021":["c1p1","c1p2","c1p3","c2p1","c2p2","c2p3","s1p1","s1p2","s2p1","s2p2"],"ec-2022":["c1p1","c1p2","c1p3","c1p4","c2p1","c2p2","s1p1","s1p2","s2p1","s2p2"],"ec-2023":["c1p1","c1p2","c1p3","c1p4","c2p1","c2p2","c2p3","s1p1","s1p2","s2p1","s2p2"],"ec-2024":["c1p1","c1p2","c2p1","s1p1","s1p2","s2p1","s2p2"],"ec-2025":["c1p1","c1p2","c1p3","c2p1","c2p2","c2p3","s1p1","s1p2","s2p1","s2p2"],"ec-2026":["c1p1","c1p2","c1p3","c2p1","c2p2","c2p3","s1p1","s1p2","s2p1","s2p2"],"ma-2017":["c1e2","c1e4","c2e2","c2e4","s1e2","s1e4","s2e2","s2e4"],"ma-2018":["c1e3","c1e4","c2e3","c2e4","s1e3","s1e4","s2e3","s2e4"],"ma-2019":["c1e1","c1e4","c2e2","c2e4","s1e1","s1e4","s2e2","s2e4"],"ma-2020":["c1e1","c1e2","c1e3","c1e4","c2e1","c2e2","c2e3","c2e4","s1e1","s1e2","s1e3","s1e4","s2e1","s2e2","s2e3","s2e4"],"ma-2021":["c1e1","c1e2","c1e3","c1e4","c2e1","c2e2","c2e3","c2e4","s1e1","s1e2","s1e3","s1e4","s2e1","s2e2","s2e3","s2e4"],"ma-2022":["c1e1","c1e2","c1e3","c1e4","c2e1","c2e2","c2e3","c2e4","s1e1","s1e2","s1e3","s1e4","s2e1","s2e2","s2e3","s2e4"],"ma-2023":["c1e1","c1e2","c1e3","c1e4","c2e1","c2e2","c2e3","c2e4","s1e1","s1e2","s1e3","s1e4","s2e1","s2e2","s2e3","s2e4"],"ma-2024":["c1e1","c1e2","c1e3","c1e4","c2e1","c2e2","c2e3","c2e4","s1e1","s1e2","s1e3","s1e4","s2e1","s2e2","s2e3","s2e4"],"ma-2025":["c1e1","c1e2","c1e3","c1e4","c2e1","c2e2","c2e3","c2e4","s1e1","s1e2","s1e3","s1e4","s2e1","s2e2","s2e3","s2e4"],"ma-2026":["c1e1","c1e2","c1e3","c1e4","c2e1","c2e2","c2e3","c2e4","s1e1","s1e2","s1e3","s1e4","s2e1","s2e2","s2e3","s2e4"]}/*/IMGS*/;
 const imgUrl = (pack, key) => 'img/' + pack + '/' + key + '.webp';
 const hasImg = (pack, key) => !!(IMGS[pack] && IMGS[pack].includes(key));
 function imgOk(el) { el.parentNode.classList.remove('ld'); }
@@ -523,6 +540,9 @@ function track(path, title, event) {
 const PAGE_NAMES = { ex: 'التمارين', bac: 'البكالوريات', res: 'الملخص', quiz: 'الاختبار', calc: 'الحاسبات' };
 function trackRoute(parts) {
   if (!parts.length) return track('/', 'الصفحة الرئيسية');
+  if (parts[0] === 'acc') return track('/acc', 'المحاسبة · الوحدات');
+  if (parts[0] === 'm') return track('/' + parts.join('/'), 'الرياضيات' + (parts[1] ? ' · المحور ' + parts[1] : '') + (parts[2] ? ' · ' + parts[2] : ''));
+  if (BACS[parts[0]]) return track('/' + parts.join('/'), BACS[parts[0]].name + (parts[1] ? ' · ' + parts[1] : ''));
   if (parts[0] === 'ft') { const t = test(parts[1]); if (t) track('/' + parts.join('/'), 'فروض · ' + t.title + ' ' + t.id + (parts[2] ? ' · الموضوع ' + parts[2] : '')); return; }
   const u = unit(parts[0]); if (!u) return;
   let title = 'الوحدة ' + u.num;
@@ -537,7 +557,13 @@ async function render() {
   const key = parts.join('/'); if (key !== lastTracked) { lastTracked = key; trackRoute(parts); }
   const v = $('view');
   window.scrollTo(0, 0);
+  setAccent();
   if (!parts.length) return renderHome(v);
+  if (V2()) {
+    if (parts[0] === 'acc') return renderAcc(v);
+    if (parts[0] === 'm') return parts[2] ? renderMathEx(v, parts[1], parts[2]) : parts[1] ? renderMathAxis(v, parts[1]) : renderMath(v);
+    if (BACS[parts[0]]) return parts[1] ? renderBs(v, parts[0], parts[1]) : renderBsList(v, parts[0]);
+  }
   if (parts[0] === 'ft') { const t = test(parts[1]); if (!t) return go('#/'); return parts[2] ? renderTestSubj(v, t, parts[2]) : renderTest(v, t); }
   const u = unit(parts[0]);
   if (!u) return go('#/');
@@ -551,14 +577,8 @@ async function render() {
 }
 
 /* ---------- Accueil ---------- */
-function renderHome(v) {
-  setTop('أستاذ الشارع', 'تسيير واقتصاد · BAC 2027', false);
-  let count = '';
-  if (CONFIG.bacDate) {
-    const days = Math.ceil((new Date(CONFIG.bacDate) - new Date()) / 86400000);
-    if (days > 0) count = `<div class="count"><b>${days}</b>يوم متبقي على البكالوريا 💪</div>`;
-  }
-  const units = UNITS.filter(visible).map(u => {
+function unitCards() {
+  return UNITS.filter(visible).map(u => {
     const total = u.axes[u.axes.length - 1].to, d = doneSet(u.id).size;
     return `<button class="card" onclick="go('#/${u.id}')">
       <span class="unit-num">الوحدة ${u.num}</span>${isNew(u) ? '<span class="new-tag">جديد 🔥</span>' : ''}
@@ -568,15 +588,24 @@ function renderHome(v) {
       <div class="muted" style="margin-top:6px">أنجزت ${d} / ${total}</div>
     </button>`;
   }).join('');
+}
+
+function renderHome(v) {
+  setTop('أستاذ الشارع', 'تسيير واقتصاد · BAC 2027', false);
+  let count = '';
+  if (CONFIG.bacDate) {
+    const days = Math.ceil((new Date(CONFIG.bacDate) - new Date()) / 86400000);
+    if (days > 0) count = `<div class="count"><b>${days}</b>يوم متبقي على البكالوريا 💪</div>`;
+  }
+  const units = V2() ? homeSubjects() : '<h2 class="sec">📚 الوحدات</h2>' + unitCards() + '<div class="card soon"><h3>وحدات أخرى</h3><div class="muted">قريباً إن شاء الله…</div></div>';
     v.innerHTML = `
     <div class="hero"><img src="icon-512.png" alt=""><h1>أستاذ الشارع</h1><p>تمارين، حلول نموذجية، بكالوريات واختبارات — في جيبك</p></div>
     ${count}
     <button class="btn-pink w100" style="margin:4px 0 6px" onclick="shareApp()">📤 شارك التطبيق مع صحابك</button>
     <div class="social">${[['tiktok','TikTok'],['instagram','Instagram'],['facebook','Facebook']].filter(([k]) => CONFIG[k]).map(([k, n]) => `<a href="${CONFIG[k]}" target="_blank" rel="noopener" onclick="track('social-${k}','${n} من الصفحة الرئيسية',true)"><span><img src="${SOCIAL_ICONS[k]}" alt="${n}"></span>${n}</a>`).join('')}</div>
     ${iosHelp()}
-    <h2 class="sec">📚 الوحدات</h2>
+    ${V2() ? continueBtn() : ''}
     ${units}
-    <div class="card soon"><h3>وحدات أخرى</h3><div class="muted">قريباً إن شاء الله…</div></div>
     ${TESTS.length ? `<h2 class="sec">📝 فروض و اختبارات</h2>` + TESTS.map(t => {
       const d = new Set(store.get('ft_' + t.id, [])).size;
       return `<button class="card" onclick="go('#/ft/${t.id}')">
@@ -695,6 +724,7 @@ async function renderExercise(v, u, k) {
   const n = +k, total = u.axes[u.axes.length - 1].to;
   const axis = u.axes.find(a => n >= a.from && n <= a.to);
   setTop('التمرين ' + k, axis ? axis.title.split(':')[0] : '', true);
+  remember('المحاسبة · الوحدة ' + u.num + ' · التمرين ' + k);
   v.innerHTML = '<p class="empty">⏳ جاري التحميل…</p>';
   const exHtml = await img(u.id + '-ex', 'ex' + k, 'التمرين ' + k);
   const c = u.corr[k];
@@ -743,6 +773,7 @@ function renderBacList(v, u) {
 async function renderBac(v, u, k) {
   const b = u.bac.find(x => x.k === k); if (!b) return go('#/' + u.id + '/bac');
   setTop('بكالوريا ' + b.year, b.subj, true);
+  remember('المحاسبة · الوحدة ' + u.num + ' · بكالوريا ' + b.year);
   v.innerHTML = '<p class="empty">⏳ جاري التحميل…</p>';
   const s = await img(u.id + '-bac', 'bs' + k, 'الموضوع');
   const done = new Set(store.get('bac_' + u.id, [])).has(k);
@@ -779,6 +810,7 @@ function renderTest(v, t) {
 async function renderTestSubj(v, t, k) {
   const s = t.subjects.find(x => x.k === k); if (!s) return go('#/ft/' + t.id);
   setTop(t.title + ' · ' + s.subj, t.units, true);
+  remember(t.title + ' · ' + s.subj);
   v.innerHTML = '<p class="empty">⏳ جاري التحميل…</p>';
   const pages = (await Promise.all(s.pages.map(p => img(t.pack, p, 'الموضوع')))).join('');
   const done = new Set(store.get('ft_' + t.id, [])).has(k);
@@ -802,6 +834,154 @@ async function showTestSol(id, k) {
 }
 function markTest(id, k) {
   const s = new Set(store.get('ft_' + id, [])); s.has(k) ? s.delete(k) : s.add(k); store.set('ft_' + id, [...s]);
+  const on = s.has(k), b = $('doneBtn');
+  b.className = (on ? 'btn-ok' : 'btn-line') + ' w100'; b.innerText = on ? '✅ أنجزت هذا الموضوع' : '☐ علّم هذا الموضوع كمُنجز';
+}
+
+
+/* ============================================================
+   المواد الأخرى (الرياضيات، الاقتصاد، القانون) + الصفحة الرئيسية الجديدة
+   تظهر للتلاميذ ابتداءً من CONFIG.v2From (قبلها: فقط بـ ?preview)
+   ============================================================ */
+const V2 = () => PREVIEW || (!!CONFIG.v2From && Date.now() >= Date.parse(CONFIG.v2From));
+const ACC_COLOR = '#38bdf8', MATH_COLOR = '#ff9f1c';
+function setAccent(c) { document.documentElement.style.setProperty('--pink', c || '#ff007f'); }
+const SUBJ_ORD = ['', 'الأول', 'الثاني', 'الثالث', 'الرابع'];
+const exParts = k => { const [y, s, e] = k.split('-'); return { y, s, e }; };
+const exLabel = k => { const { y, s, e } = exParts(k); return `BAC ${y} · الموضوع ${SUBJ_ORD[s]} · التمرين ${SUBJ_ORD[e]}`; };
+function remember(t) { if (location.hash && location.hash !== '#/') store.set('last', { h: location.hash, t }); }
+
+/* ---------- الصفحة الرئيسية الجديدة ---------- */
+function subjCard(href, color, icon, chip, title, line, d, total) {
+  return `<button class="card subj" style="--c:${color}" onclick="go('${href}')">
+    <span class="subj-ic">${icon}</span><span class="chip">${chip}</span>
+    <h3>${title}</h3><div class="muted">${line}</div>
+    ${total ? `<div class="bar"><i style="width:${Math.round(d / total * 100)}%"></i></div><div class="muted" style="margin-top:6px">أنجزت ${d} / ${total}</div>` : ''}
+  </button>`;
+}
+function homeSubjects() {
+  const us = UNITS.filter(visible);
+  const accTotal = us.reduce((a, u) => a + u.axes[u.axes.length - 1].to, 0), accDone = us.reduce((a, u) => a + doneSet(u.id).size, 0);
+  const accNew = us.some(isNew);
+  const mTotal = MATH.reduce((a, x) => a + x.items.length, 0), mDone = store.get('mx', []).length;
+  const bs = id => { const b = BACS[id], n = Object.keys(b.pages).length * 2; return subjCard('#/' + id, b.color, b.icon, 'بكالوريات محلولة', b.name, `${n} موضوع BAC (2017–2026) · مع التصحيح الرسمي`, store.get('bs_' + id, []).length, n); };
+  return `<h2 class="sec">📚 المواد</h2>
+    ${subjCard('#/acc', ACC_COLOR, '📘', 'دروس كاملة' + (accNew ? ' · جديد 🔥' : ''), 'التسيير المحاسبي والمالي', `${us.length} وحدات · ملخصات · تمارين محلولة · بكالوريات`, accDone, accTotal)}
+    ${subjCard('#/m', MATH_COLOR, '📐', 'بكالوريات محلولة', 'الرياضيات', `${mTotal} تمرين BAC (2017–2026) · مقسومة على الدروس`, mDone, mTotal)}
+    ${bs('e')}${bs('d')}`;
+}
+function continueBtn() {
+  const l = store.get('last', null);
+  if (!l || !l.h) return '';
+  return `<button class="btn-line w100 cont" onclick="go('${esc(l.h)}')">▶️ كمّل وين حبست<small>${esc(l.t)}</small></button>`;
+}
+function renderAcc(v) {
+  setTop('التسيير المحاسبي والمالي', 'الوحدات', true);
+  v.innerHTML = unitCards() + '<div class="card soon"><h3>وحدات أخرى</h3><div class="muted">قريباً إن شاء الله…</div></div>';
+}
+
+/* ---------- الرياضيات ---------- */
+const mDone = () => new Set(store.get('mx', []));
+function renderMath(v) {
+  setAccent(MATH_COLOR);
+  setTop('الرياضيات', 'بكالوريات محلولة · مقسومة على الدروس', true);
+  const done = mDone();
+  v.innerHTML = '<p class="hint">تمارين البكالوريا 2017 – 2026 مع التصحيح الرسمي<br>اختار الدرس اللي راك تراجع فيه 👇</p>' + MATH.map(a => {
+    const d = a.items.filter(k => done.has(k)).length;
+    return `<button class="card" onclick="go('#/m/${a.id}')"><span class="unit-num">المحور 0${a.id}</span>
+      <h3>${esc(a.title)}</h3><div class="muted">${nEx(a.items.length)} BAC · ${esc(a.sub)}</div>
+      <div class="bar"><i style="width:${Math.round(d / a.items.length * 100)}%"></i></div><div class="muted" style="margin-top:6px">أنجزت ${d} / ${a.items.length}</div></button>`;
+  }).join('');
+}
+function renderMathAxis(v, id) {
+  const a = MATH.find(x => x.id === id); if (!a) return go('#/m');
+  setAccent(MATH_COLOR);
+  setTop(a.title, 'الرياضيات · المحور 0' + a.id, true);
+  const done = mDone(); let y0 = '', h = '<p class="hint">✓ = تمرين أنجزته · حاول وحدك قبل ما تشوف الحل 💪</p>';
+  for (const k of a.items) {
+    const { y, s, e } = exParts(k);
+    if (y !== y0) { h += `<h2 class="sec">BAC ${y}</h2>`; y0 = y; }
+    h += `<div class="list-item ${done.has(k) ? 'done' : ''}" onclick="go('#/m/${a.id}/${k}')">
+      <div><b>الموضوع ${SUBJ_ORD[s]} · التمرين ${SUBJ_ORD[e]}</b>${MATH_EQ.includes(k) ? '<div><span class="tag">معادلات ومتراجحات</span></div>' : ''}</div>
+      <span>${done.has(k) ? '✅' : '‹'}</span></div>`;
+  }
+  v.innerHTML = h;
+}
+async function renderMathEx(v, id, k) {
+  const a = MATH.find(x => x.id === id); if (!a || !a.items.includes(k)) return go('#/m');
+  setAccent(MATH_COLOR);
+  setTop(a.title, 'الرياضيات · المحور 0' + a.id, true);
+  remember('الرياضيات · ' + exLabel(k));
+  v.innerHTML = '<p class="empty">⏳ جاري التحميل…</p>';
+  const { y, s, e } = exParts(k);
+  const exHtml = await img('ma-' + y, `s${s}e${e}`, exLabel(k));
+  const done = mDone().has(k);
+  const i = a.items.indexOf(k), prev = a.items[i - 1], next = a.items[i + 1];
+  v.innerHTML = `<p class="hint"><span class="tag">${exLabel(k)}</span></p>${exHtml}
+    <p class="hint">حاول تحل وحدك قبل ما تشوف الحل 💪 · اضغط على الصورة لتكبيرها</p>
+    <button class="btn-pink w100" id="solBtn" onclick="showMathSol('${k}')">💡 اظهر الحل (التصحيح الرسمي)</button><div id="sol"></div>
+    <button class="${done ? 'btn-ok' : 'btn-line'} w100" style="margin-top:10px" id="doneBtn" onclick="markMath('${k}')">${done ? '✅ أنجزت هذا التمرين' : '☐ علّم هذا التمرين كمُنجز'}</button>
+    <div class="nav">
+      <button ${prev ? `onclick="go('#/m/${id}/${prev}')"` : 'disabled style="opacity:.3"'}>→ السابق</button>
+      <button onclick="go('#/m/${id}')">☰ القائمة</button>
+      <button ${next ? `onclick="go('#/m/${id}/${next}')"` : 'disabled style="opacity:.3"'}>التالي ←</button>
+    </div>`;
+}
+async function showMathSol(k) {
+  const { y, s, e } = exParts(k);
+  track('math-sol/' + k, 'عرض الحل · الرياضيات · ' + exLabel(k), true);
+  $('solBtn').style.display = 'none';
+  $('sol').innerHTML = '<p class="empty">⏳ جاري تحميل الحل…</p>';
+  $('sol').innerHTML = '<h2 class="sec">💡 الحل (التصحيح الرسمي)</h2>' + await img('ma-' + y, `c${s}e${e}`, 'الحل') + '<p class="hint">اضغط على الحل لتكبيره 🔍</p>' + tiktokCard('math');
+}
+function markMath(k) {
+  const s = mDone(); s.has(k) ? s.delete(k) : s.add(k); store.set('mx', [...s]);
+  const on = s.has(k), b = $('doneBtn');
+  b.className = (on ? 'btn-ok' : 'btn-line') + ' w100'; b.innerText = on ? '✅ أنجزت هذا التمرين' : '☐ علّم هذا التمرين كمُنجز';
+  if (on) toast('أحسنت! 👏');
+}
+
+/* ---------- الاقتصاد والقانون : مواضيع كاملة ---------- */
+const bsYears = id => Object.keys(BACS[id].pages).sort((a, b) => b - a);
+const bsKeys = id => bsYears(id).flatMap(y => [y + '-1', y + '-2']);
+function renderBsList(v, id) {
+  const b = BACS[id]; setAccent(b.color);
+  setTop(b.name, 'بكالوريات محلولة · 2017 – 2026', true);
+  const done = new Set(store.get('bs_' + id, []));
+  v.innerHTML = '<p class="hint">مواضيع البكالوريا كاملة مع التصحيح الرسمي<br>اختار موضوع واحد وحلّو كيما نهار الباك 💪</p>' + bsYears(id).map(y => `<h2 class="sec">BAC ${y}</h2>` + [1, 2].map(s => {
+    const k = y + '-' + s;
+    return `<div class="list-item ${done.has(k) ? 'done' : ''}" onclick="go('#/${id}/${k}')"><div><b>الموضوع ${SUBJ_ORD[s]}</b></div><span>${done.has(k) ? '✅' : '‹'}</span></div>`;
+  }).join('')).join('');
+}
+async function renderBs(v, id, k) {
+  const b = BACS[id], [y, s] = k.split('-'); if (!b.pages[y] || !['1', '2'].includes(s)) return go('#/' + id);
+  setAccent(b.color);
+  setTop(b.name + ' · BAC ' + y, 'الموضوع ' + SUBJ_ORD[s], true);
+  remember(b.name + ' · BAC ' + y + ' · الموضوع ' + SUBJ_ORD[s]);
+  v.innerHTML = '<p class="empty">⏳ جاري التحميل…</p>';
+  const n = b.pages[y][s - 1];
+  const pages = (await Promise.all(Array.from({ length: n }, (_, i) => img(b.pack + '-' + y, `s${s}p${i + 1}`, 'الموضوع')))).join('');
+  const keys = bsKeys(id), i = keys.indexOf(k), prev = keys[i - 1], next = keys[i + 1];
+  const done = new Set(store.get('bs_' + id, [])).has(k);
+  v.innerHTML = `<p class="hint"><span class="tag">BAC ${y} · الموضوع ${SUBJ_ORD[s]}</span></p>${pages}
+    <button class="btn-pink w100" id="solBtn" onclick="showBsSol('${id}','${k}')">💡 اظهر التصحيح الرسمي</button><div id="sol"></div>
+    <button class="${done ? 'btn-ok' : 'btn-line'} w100" style="margin-top:10px" id="doneBtn" onclick="markBs('${id}','${k}')">${done ? '✅ أنجزت هذا الموضوع' : '☐ علّم هذا الموضوع كمُنجز'}</button>
+    <div class="nav">
+      <button ${prev ? `onclick="go('#/${id}/${prev}')"` : 'disabled style="opacity:.3"'}>→ السابق</button>
+      <button onclick="go('#/${id}')">☰ القائمة</button>
+      <button ${next ? `onclick="go('#/${id}/${next}')"` : 'disabled style="opacity:.3"'}>التالي ←</button>
+    </div>`;
+}
+async function showBsSol(id, k) {
+  const b = BACS[id], [y, s] = k.split('-');
+  track('bs-sol/' + id + '/' + k, 'عرض التصحيح · ' + b.name + ' · ' + k, true);
+  $('solBtn').style.display = 'none';
+  $('sol').innerHTML = '<p class="empty">⏳ جاري تحميل التصحيح…</p>';
+  const pages = (await Promise.all(Array.from({ length: b.pages[y][+s + 1] }, (_, i) => img(b.pack + '-' + y, `c${s}p${i + 1}`, 'التصحيح')))).join('');
+  $('sol').innerHTML = '<h2 class="sec">💡 التصحيح الرسمي وسلم التنقيط</h2>' + pages + '<p class="hint">اضغط على التصحيح لتكبيره 🔍</p>' + tiktokCard('bs');
+}
+function markBs(id, k) {
+  const s = new Set(store.get('bs_' + id, [])); s.has(k) ? s.delete(k) : s.add(k); store.set('bs_' + id, [...s]);
   const on = s.has(k), b = $('doneBtn');
   b.className = (on ? 'btn-ok' : 'btn-line') + ' w100'; b.innerText = on ? '✅ أنجزت هذا الموضوع' : '☐ علّم هذا الموضوع كمُنجز';
 }

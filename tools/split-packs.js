@@ -19,6 +19,13 @@ for (const f of fs.readdirSync(root).filter(f => /^(u\d+[a-z]?-[a-z]+|ft-\d+)\.j
   }
   console.log(name, list[name].length, 'images');
 }
+// Dossiers d'images sans fichier .js (ex: img/ma-2026, img/dr-2026, img/ec-2026) : on les garde tels quels
+for (const d of fs.readdirSync(path.join(root, 'img')).sort()) {
+  const dir = path.join(root, 'img', d);
+  if (list[d] || !fs.statSync(dir).isDirectory()) continue;
+  list[d] = fs.readdirSync(dir).filter(f => f.endsWith('.webp')).map(f => f.replace('.webp', '')).sort();
+  console.log(d, list[d].length, 'images (dossier)');
+}
 const idx = path.join(root, 'index.html');
 const html = fs.readFileSync(idx, 'utf8');
 const re = /\/\*IMGS\*\/[\s\S]*?\/\*\/IMGS\*\//;
