@@ -147,7 +147,7 @@ const CONFIG = {
 const UNITS = [
  {
   id: 'u02', num: '02', title: 'الاهتلاكات ونقص قيمة التثبيتات',
-  sub: 'التسيير المحاسبي والمالي',
+  sub: 'الدرس 01: الاهتلاكات ونقص قيمة التثبيتات',
   axes: [
     { title: 'المحور الأول: أساسيات الاهتلاك الخطي', from: 1, to: 12 },
     { title: 'المحور الثاني: الاهتلاك المتناقص والمتزايد', from: 13, to: 24 },
@@ -219,7 +219,7 @@ const UNITS = [
     { k:'08', year:2026, subj:"", topics:"التنازل عن 145 سند + قيود التسوية" },
   ],
   resPages: ['rs01','rs02'],
-  calcs: [], calcHint: '',
+  calcs: ['smv','smc'], calcHint: 'خسارة القيمة (زيادة، إنقاص، إلغاء) والتنازل مع القيود',
   quiz: [
     { q:"سندات المساهمة تُسجّل عند الحيازة بتكلفة الحيازة في:", o:["ح/262 سندات المساهمة الأخرى", "ح/503 الأسهم الأخرى", "ح/506 السندات وقسائم الخزينة", "ح/512 بنوك الحسابات الجارية"], a:0, e:"سندات المساهمة تثبيتات مالية تحوزها المؤسسة لمدة طويلة ← ح/262." },
     { q:"أول معاينة لخسارة القيمة على سندات المساهمة. القيد:", o:["من ح/686 إلى ح/296", "من ح/296 إلى ح/786", "من ح/665 إلى ح/262", "من ح/686 إلى ح/262"], a:0, e:"ح/686 المخصصات – العناصر المالية مدين، و ح/296 خسائر القيمة عن المساهمات دائن." },
@@ -365,7 +365,7 @@ const UNITS = [
     { k:'06', year:2014, subj:"الموضوع الأول", topics:"قيد التنازل كما سجّله المحاسب + قيد التسوية" },
   ],
   resPages: ['rs01','rs02'],
-  calcs: [], calcHint: '',
+  calcs: ['vmc','vme'], calcHint: 'نتيجة التنازل وفارق التقييم في 31/12 مع القيود',
   quiz: [
     { q:"أهم حسابات القيم المنقولة للتوظيف:", o:["ح/503 و ح/506", "ح/262 و ح/296", "ح/512 و ح/411", "ح/665 و ح/765"], a:0, e:"ح/503 الأسهم الأخرى أو السندات المخولة حقاً في الملكية، و ح/506 السندات وقسائم الخزينة والصندوق قصيرة الأجل." },
     { q:"اقتناء أسهم للتوظيف بشيك بنكي. القيد:", o:["من ح/503 إلى ح/512", "من ح/512 إلى ح/503", "من ح/262 إلى ح/512", "من ح/503 إلى ح/767"], a:0, e:"تُسجّل بتكلفة الشراء (العدد × سعر الشراء): ح/503 مدين و ح/512 دائن." },
@@ -874,7 +874,18 @@ const CALCS = [
   ['inter', '🔄', 'الجرد المتناوب', 'مخ1، مخ2 وترصيد ح/38'],
   ['achat', '📦', 'تسوية ح/38', 'عدم استلام الفاتورة أو المخزون'],
   ['cli', '👥', 'تسوية زبون', 'الرصيد HT، خسارة القيمة، التعديل، الإفلاس والقيود'],
+  ['smv', '⚠️', 'خسارة قيمة سندات المساهمة', 'إثبات، زيادة، إنقاص أو إلغاء (296)'],
+  ['smc', '🤝', 'التنازل عن سندات المساهمة', 'نتيجة التنازل (767 / 667) والقيد'],
+  ['vmc', '🤝', 'التنازل عن القيم المنقولة', 'سعر البيع − القيمة المحاسبية والقيد'],
+  ['vme', '📊', 'فارق التقييم في 31/12', 'فائض قيمة (765) أو ناقص قيمة (665)'],
 ];
+const A262 = ['262', 'سندات المساهمة الأخرى'], A296 = ['296', 'خسائر القيمة عن المساهمات'],
+  A686F = ['686', 'المخصصات للاهتلاكات والمؤونات وخسائر القيمة – العناصر المالية'], A786F = ['786', 'الاسترجاعات عن المؤونات وخسائر القيمة – العناصر المالية'],
+  A512 = ['512', 'بنوك الحسابات الجارية'], A667 = ['667', 'الخسائر الصافية عن عمليات التنازل عن أصول مالية'], A767 = ['767', 'الأرباح الصافية عن عمليات التنازل عن أصول مالية'],
+  A765 = ['765', 'فارق التقييم عن أصول مالية – فوائض القيمة'], A665 = ['665', 'فارق التقييم عن أصول مالية – نواقص القيمة'];
+const VMP = { '503': 'الأسهم الأخرى أو السندات المخولة حقاً في الملكية', '506': 'السندات، قسائم الخزينة وقسائم الصندوق قصيرة الأجل' };
+const vmpSel = `<label class="f">الحساب</label><select id="c-acc">${Object.entries(VMP).map(([k, v]) => `<option value="${k}">${k} — ${v}</option>`).join('')}</select>`;
+const dateTxt = v => { const [y, m, d] = v.split('-').map(Number); return dmy(y, m, d); };
 const STOCKS = {
   '30':  { name: 'مخزونات البضائع', p60: ['600', 'مشتريات البضائع المبيعة'], p38: ['380', 'البضائع المخزنة'], p37: ['370', 'البضائع بالخارج'], p39: ['390', 'خسائر القيمة عن مخزونات البضائع'] },
   '31':  { name: 'المواد الأولية واللوازم', p60: ['601', 'المواد الأولية'], p38: ['381', 'المواد الأولية واللوازم المخزنة'], p37: ['371', 'المواد الأولية واللوازم بالخارج'], p39: ['391', 'خسائر القيمة عن المواد الأولية واللوازم'] },
@@ -906,6 +917,10 @@ function renderCalc(v, u, which) {
   if (which === 'pro') form = numIn('c-ma', 'المبلغ القابل للاهتلاك MA (دج)', '2400000') + numIn('c-n', 'المدة النفعية N (سنوات)', '5') + numIn('c-y', 'سنة الحيازة', '2024') + assetSel + '<p class="hint" style="text-align:right">الحاسبة تفترض الحيازة في بداية السنة (سنوات كاملة).</p>';
   if (which === 'pv') form = numIn('c-ma', 'المبلغ القابل للاهتلاك MA (دج)') + numIn('c-sa', 'مجموع الاهتلاكات ΣA بعد تسجيل قسط السنة (دج)') + numIn('c-pv0', 'خسارة قيمة سابقة (دج) — اتركها فارغة إن لم توجد', '0') + numIn('c-pvn', 'القيمة القابلة للتحصيل PVN (دج)') + `<div class="row"><div>${numIn('c-nr', 'السنوات المتبقية Nr (اختياري)')}</div><div>${numIn('c-y', 'السنة', '2024')}</div></div>` + assetSel;
   if (which === 'ces') form = numIn('c-ma', 'المبلغ القابل للاهتلاك MA (دج)') + numIn('c-sa', 'مجموع الاهتلاكات ΣA إلى تاريخ التنازل (دج)') + numIn('c-pv0', 'خسائر القيمة المسجلة (دج) — 0 إن لم توجد', '0') + numIn('c-price', 'سعر التنازل (دج)') + dateIn('c-date', 'تاريخ التنازل', '2024-06-30') + `<label class="f">طريقة التحصيل</label><select id="c-pay"><option value="512">512 — البنوك، الحسابات الجارية</option><option value="53">53 — الصندوق</option><option value="462">462 — حسابات دائنة عن عمليات التنازل (على الحساب)</option></select>` + assetSel;
+  if (which === 'smv') form = `<div class="row"><div>${numIn('c-n', 'عدد السندات المتبقية', '300')}</div><div>${numIn('c-cost', 'تكلفة الحيازة للسند (دج)', '1500')}</div></div>` + numIn('c-mkt', 'سعر السوق للسند في 31/12 (دج)', '1350') + numIn('c-prev', 'خ ق السابقة للسندات المتبقية فقط (دج) — 0 إن لم توجد', '0') + yearIn;
+  if (which === 'smc') form = `<div class="row"><div>${numIn('c-n', 'عدد السندات المتنازل عنها', '100')}</div><div>${numIn('c-cost', 'تكلفة الحيازة للسند (دج)', '1500')}</div></div>` + `<div class="row"><div>${numIn('c-px', 'سعر التنازل للسند (دج)', '1450')}</div><div>${numIn('c-pv', 'خ ق السابقة للسند (دج) — 0 إن لم توجد', '100')}</div></div>` + dateIn('c-date', 'تاريخ التنازل', new Date().getFullYear() + '-10-15');
+  if (which === 'vmc') form = vmpSel + `<div class="row"><div>${numIn('c-n', 'عدد السندات المتنازل عنها', '200')}</div><div>${numIn('c-px', 'سعر البيع للسند (دج)', '1080')}</div></div>` + numIn('c-book', 'القيمة المحاسبية للسند (دج)', '1000') + '<p class="hint" style="text-align:right">القيمة المحاسبية = سعر الشراء إذا اقتُنيت هذه السنة، أو سعر السوق في 31/12 من السنة السابقة إذا اقتُنيت قبلها.</p>' + dateIn('c-date', 'تاريخ التنازل', new Date().getFullYear() + '-10-15');
+  if (which === 'vme') form = vmpSel + `<div class="row"><div>${numIn('c-n', 'عدد السندات المتبقية', '300')}</div><div>${numIn('c-book', 'القيمة المحاسبية للسند (دج)', '1000')}</div></div>` + numIn('c-mkt', 'سعر السوق للسند في 31/12 (دج)', '970') + yearIn;
   v.innerHTML = `<div class="card" style="cursor:default">${form}<button class="btn-pink w100" style="margin-top:16px" onclick="calc_${which}()">احسب ✔</button></div><div class="res" id="out"></div>`;
   if (which === 'cli') { const t = () => { $('prevWrap').style.display = $('c-type').value === 'd' ? 'block' : 'none'; $('pctWrap').style.display = ['ok', 'bk'].includes($('c-sit').value) ? 'none' : 'block'; }; $('c-type').onchange = t; $('c-sit').onchange = t; t(); }
   if (which === 'inter') { const t = () => $('buyWrap').style.display = $('c-stock').value === '355' ? 'none' : 'block'; $('c-stock').onchange = t; }
@@ -1067,6 +1082,58 @@ function calc_dep() {
   if (adj < 0) html += '<h2 class="sec">قيد التسوية</h2>' + journal(yEnd(y), [[...st.p39, -adj]], [[...A785, -adj]], (cur ? 'إنقاص' : 'إلغاء') + ' خسارة القيمة – ' + st.name);
   html += `<h2 class="sec">في الميزانية الختامية</h2><div class="tbl-wrap"><table class="acc"><tr><th>الأصول</th><th>إجمالي ${y}</th><th>اهتلاك و خ ق</th><th>صافي ${y}</th></tr>
     <tr><td class="lbl">${st.name}</td><td>${fmt(phy)}</td><td>${cur ? fmt(cur) : '-'}</td><td>${fmt(phy - cur)}</td></tr></table></div>`;
+  $('out').innerHTML = html;
+}
+function calc_smv() {
+  const n = num('c-n'), cost = num('c-cost'), mkt = num('c-mkt'), prev = isFinite(num('c-prev')) ? num('c-prev') : 0, y = num('c-y');
+  if (!need(n, cost, mkt, prev, y)) return;
+  const cur = mkt < cost ? (cost - mkt) * n : 0, adj = cur - prev;
+  let html = `<div class="formula">خ ق ${y} = (تكلفة الحيازة − سعر السوق) × العدد ${mkt < cost ? `= ${L(`(${fmt(cost)} − ${fmt(mkt)}) × ${fmt(n)} = ${fmt(cur)} DA`)}` : `← سعر السوق (${fmt(mkt)}) ≥ تكلفة الحيازة ← ${L('خ ق = 0')}`}<br>
+    التعديل = خ ق الحالية − خ ق السابقة = ${L(`${fmt(cur)} − ${fmt(prev)} = ${adj > 0 ? '+' : ''}${fmt(adj)} DA`)}</div>`;
+  let kind;
+  if (!adj) kind = 'لا تغيير ← لا يُسجَّل أي قيد';
+  else if (adj > 0) kind = prev ? `زيادة خسارة القيمة بـ ${fmt(adj)} دج` : `إثبات خسارة القيمة لأول مرة بـ ${fmt(adj)} دج`;
+  else kind = cur ? `إنقاص خسارة القيمة بـ ${fmt(-adj)} دج` : `إلغاء كل الخسارة السابقة بـ ${fmt(-adj)} دج`;
+  html += `<div class="verdict ${adj > 0 ? 'bad' : adj < 0 ? 'ok' : 'info'}">${kind}</div>`;
+  if (adj > 0) html += '<h2 class="sec">قيد التسوية</h2>' + journal(yEnd(y), [[...A686F, adj]], [[...A296, adj]], (prev ? 'زيادة' : 'معاينة') + ' خسارة القيمة لسندات المساهمة');
+  if (adj < 0) html += '<h2 class="sec">قيد التسوية</h2>' + journal(yEnd(y), [[...A296, -adj]], [[...A786F, -adj]], (cur ? 'إنقاص' : 'إلغاء') + ' خسارة القيمة لسندات المساهمة');
+  html += `<h2 class="sec">في الميزانية الختامية (الأصول غير الجارية)</h2><div class="tbl-wrap"><table class="acc"><tr><th>الأصول</th><th>الإجمالي</th><th>خ ق (296)</th><th>الصافي</th></tr>
+    <tr><td class="lbl">سندات المساهمة الأخرى</td><td>${fmt(n * cost)}</td><td>${cur ? fmt(cur) : '-'}</td><td>${fmt(n * cost - cur)}</td></tr></table></div>`;
+  $('out').innerHTML = html;
+}
+function calc_smc() {
+  const n = num('c-n'), cost = num('c-cost'), px = num('c-px'), pv = isFinite(num('c-pv')) ? num('c-pv') : 0;
+  if (!need(n, cost, px, pv) || !$('c-date').value) return need(NaN);
+  const sale = n * px, pvT = n * pv, gross = n * cost, res = sale + pvT - gross;
+  let html = `<div class="formula">نتيجة التنازل = (مبلغ التنازل + خ ق المتراكمة) − تكلفة الحيازة<br>${L(`(${fmt(sale)} + ${fmt(pvT)}) − ${fmt(gross)} = ${res > 0 ? '+' : ''}${fmt(res)} DA`)}</div>`;
+  html += `<div class="verdict ${res > 0 ? 'ok' : res < 0 ? 'bad' : 'info'}">${res > 0 ? `ربح ${fmt(res)} دج ← ح/767 (دائن)` : res < 0 ? `خسارة ${fmt(-res)} دج ← ح/667 (مدين)` : 'لا ربح ولا خسارة'}</div>`;
+  const dr = [[...A512, sale]]; if (pvT) dr.push([...A296, pvT]); if (res < 0) dr.push([...A667, -res]);
+  const cr = [[...A262, gross]]; if (res > 0) cr.push([...A767, res]);
+  html += '<h2 class="sec">قيد التنازل</h2>' + journal(dateTxt($('c-date').value), dr, cr, 'التنازل عن سندات المساهمة');
+  if (pvT) html += '<p class="hint" style="text-align:right">خسارة القيمة الخاصة بالسندات المتنازل عنها تُرصَّد في قيد التنازل نفسه (296 مدين). في 31/12 نقارن مع الخسارة السابقة للسندات المتبقية فقط.</p>';
+  $('out').innerHTML = html;
+}
+function calc_vmc() {
+  const acc = $('c-acc').value, n = num('c-n'), px = num('c-px'), book = num('c-book');
+  if (!need(n, px, book) || !$('c-date').value) return need(NaN);
+  const sale = n * px, bk = n * book, res = sale - bk;
+  let html = `<div class="formula">نتيجة التنازل = سعر البيع − القيمة المحاسبية<br>${L(`(${fmt(n)} × ${fmt(px)}) − (${fmt(n)} × ${fmt(book)}) = ${fmt(sale)} − ${fmt(bk)} = ${res > 0 ? '+' : ''}${fmt(res)} DA`)}</div>`;
+  html += `<div class="verdict ${res > 0 ? 'ok' : res < 0 ? 'bad' : 'info'}">${res > 0 ? `ربح ${fmt(res)} دج ← ح/767 (دائن)` : res < 0 ? `خسارة ${fmt(-res)} دج ← ح/667 (مدين)` : 'لا ربح ولا خسارة'}</div>`;
+  const dr = [[...A512, sale]]; if (res < 0) dr.push([...A667, -res]);
+  const cr = [[acc, VMP[acc], bk]]; if (res > 0) cr.push([...A767, res]);
+  html += '<h2 class="sec">قيد التنازل</h2>' + journal(dateTxt($('c-date').value), dr, cr, 'التنازل ' + (res > 0 ? 'بربح' : res < 0 ? 'بخسارة' : '') + ' عن قيم منقولة للتوظيف');
+  $('out').innerHTML = html;
+}
+function calc_vme() {
+  const acc = $('c-acc').value, n = num('c-n'), book = num('c-book'), mkt = num('c-mkt'), y = num('c-y');
+  if (!need(n, book, mkt, y)) return;
+  const d = (mkt - book) * n;
+  let html = `<div class="formula">فارق التقييم = (سعر السوق − القيمة المحاسبية) × العدد المتبقي<br>${L(`(${fmt(mkt)} − ${fmt(book)}) × ${fmt(n)} = ${d > 0 ? '+' : ''}${fmt(d)} DA`)}</div>`;
+  html += `<div class="verdict ${d > 0 ? 'ok' : d < 0 ? 'bad' : 'info'}">${d > 0 ? `فائض قيمة ${fmt(d)} دج ← ح/765` : d < 0 ? `ناقص قيمة ${fmt(-d)} دج ← ح/665` : 'لا فارق ← لا يُسجَّل أي قيد'}</div>`;
+  if (d > 0) html += '<h2 class="sec">قيد التسوية</h2>' + journal(yEnd(y), [[acc, VMP[acc], d]], [[...A765, d]], 'تسجيل فائض القيمة');
+  if (d < 0) html += '<h2 class="sec">قيد التسوية</h2>' + journal(yEnd(y), [[...A665, -d]], [[acc, VMP[acc], -d]], 'تسجيل ناقص القيمة');
+  html += `<h2 class="sec">في الميزانية الختامية (الأصول الجارية)</h2><div class="tbl-wrap"><table class="acc"><tr><th>الأصول</th><th>القيمة</th></tr>
+    <tr><td class="lbl">${VMP[acc]}</td><td>${L(`${fmt(n)} × ${fmt(mkt)} = ${fmt(n * mkt)}`)}</td></tr></table></div><p class="hint" style="text-align:right">القيم المنقولة للتوظيف ما يُستعمل معها حتى حساب لخسائر القيمة.</p>`;
   $('out').innerHTML = html;
 }
 function calc_inter() {
