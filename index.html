@@ -46,6 +46,8 @@ a{color:var(--pink)}
 .card h3{font-size:18px;margin-bottom:4px}
 .card .muted{color:var(--muted);font-size:13px}
 .card.soon{opacity:.45;cursor:default}
+.new-tag{display:inline-block;background:#ff6a00;color:#fff;border-radius:8px;padding:2px 8px;font-size:12px;font-weight:700;margin-inline-start:6px;animation:newpulse 1.6s ease-in-out infinite}
+@keyframes newpulse{50%{opacity:.55}}
 .unit-num{display:inline-block;background:var(--pink);color:#fff;border-radius:8px;padding:2px 8px;font-size:12px;margin-bottom:6px}
 .bar{height:8px;background:#333;border-radius:9px;margin-top:10px;overflow:hidden}
 .bar i{display:block;height:100%;background:var(--pink);border-radius:9px}
@@ -404,6 +406,10 @@ const num = id => { const v = String($(id).value).replace(/[\s,]/g, '').replace(
 const PREVIEW = /[?&]preview\b/.test(location.search);
 const visible = u => !u.from || PREVIEW || Date.now() >= Date.parse(u.from);
 const unit = id => UNITS.find(u => u.id === id && visible(u));
+// علامة "جديد 🔥": تظهر على درس عنده تاريخ from، حتى يدخل له التلميذ أو تمر 7 أيام
+const NEW_DAYS = 7;
+const isNew = u => u.from && Date.now() - Date.parse(u.from) < NEW_DAYS * 864e5 && !store.get('seen_' + u.id, false);
+const markSeen = u => { if (u.from && !PREVIEW) store.set('seen_' + u.id, true); };
 const nEx = n => n + (n >= 3 && n <= 10 ? ' تمارين' : ' تمرين');
 const store = {
   get(k, d) { try { const v = localStorage.getItem('elv_' + k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
@@ -549,7 +555,7 @@ function renderHome(v) {
   const units = UNITS.filter(visible).map(u => {
     const total = u.axes[u.axes.length - 1].to, d = doneSet(u.id).size;
     return `<button class="card" onclick="go('#/${u.id}')">
-      <span class="unit-num">الوحدة ${u.num}</span>
+      <span class="unit-num">الوحدة ${u.num}</span>${isNew(u) ? '<span class="new-tag">جديد 🔥</span>' : ''}
       <h3>${esc(u.title)}</h3>
       <div class="muted">${esc(u.sub)} · ${nEx(total)} · ${u.bac.length} بكالوريا</div>
       <div class="bar"><i style="width:${Math.round(d / total * 100)}%"></i></div>
@@ -624,6 +630,7 @@ function iosHelp() {
 
 /* ---------- Unité ---------- */
 function renderUnit(v, u) {
+  markSeen(u);
   setTop('الوحدة ' + u.num, u.title, true);
   const total = u.axes[u.axes.length - 1].to, d = doneSet(u.id).size;
   const best = store.get('quiz_' + u.id, null);
