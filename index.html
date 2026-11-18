@@ -405,6 +405,12 @@ const TESTS = [
 ];
 const test = id => TESTS.find(t => t.id === id);
 
+/* ---------- وضعيات شاملة (أعمال نهاية السنة) : الصور في img/ws/ (sNNa… = الوضعية، cNNa… = التصحيح) ---------- */
+const WS = { from: '2026-11-29T17:00:00+01:00', pack: 'ws', title: 'وضعيات شاملة', sub: 'أعمال نهاية السنة · الوحدات 02 → 06',
+  items: [{"k": "01", "name": "روسيكادا", "type": "إنتاجية، تصبير الطماطم", "pts": 8, "s": 1, "c": 2}, {"k": "02", "name": "القل", "type": "إنتاجية، تحويل الفلين", "pts": 8, "s": 1, "c": 2}, {"k": "03", "name": "سطورة", "type": "إنتاجية، تصبير السردين", "pts": 6, "s": 1, "c": 2}, {"k": "04", "name": "فلفلة", "type": "تجارية، بيع مواد البناء", "pts": 8, "s": 1, "c": 2}, {"k": "05", "name": "الحومة", "type": "تجارية، توزيع المواد الغذائية", "pts": 8, "s": 1, "c": 2}, {"k": "06", "name": "الزنقة", "type": "تجارية، بيع الأجهزة الكهرومنزلية", "pts": 8, "s": 1, "c": 2}, {"k": "07", "name": "البلاصة", "type": "إنتاجية، صناعة الأثاث الخشبي", "pts": 8, "s": 1, "c": 2}, {"k": "08", "name": "الشارع الكبير", "type": "تجارية، بيع مواد التجميل", "pts": 6, "s": 1, "c": 1}, {"k": "09", "name": "الماجنتا", "type": "إنتاجية، الطباعة والتغليف", "pts": 8, "s": 1, "c": 2}, {"k": "10", "name": "الوردة السوداء", "type": "تجارية، بيع النباتات والورود", "pts": 8, "s": 1, "c": 2}, {"k": "11", "name": "الكورنيش", "type": "تجارية، بيع الأسماك المجمدة", "pts": 8, "s": 1, "c": 2}, {"k": "12", "name": "الحدائق", "type": "إنتاجية، صناعة العصائر", "pts": 8, "s": 1, "c": 2}, {"k": "13", "name": "سيدي مزغيش", "type": "إنتاجية، عصر زيت الزيتون", "pts": 6, "s": 1, "c": 1}, {"k": "14", "name": "الزرامنة", "type": "تجارية، بيع قطع غيار السيارات", "pts": 8, "s": 1, "c": 2}, {"k": "15", "name": "عين زويت", "type": "إنتاجية، صناعة الآجر", "pts": 8, "s": 1, "c": 2}, {"k": "16", "name": "النجاح", "type": "", "pts": 8, "s": 2, "c": 3}, {"k": "17", "name": "الواحة", "type": "", "pts": 6, "s": 1, "c": 2}, {"k": "18", "name": "الصفاء", "type": "", "pts": 8, "s": 1, "c": 2}, {"k": "19", "name": "الأوراس", "type": "", "pts": 6, "s": 1, "c": 2}, {"k": "20", "name": "الزيتونة", "type": "", "pts": 8, "s": 2, "c": 3}, {"k": "21", "name": "الرمال", "type": "", "pts": 6, "s": 1, "c": 2}, {"k": "22", "name": "الساحل", "type": "", "pts": 8, "s": 2, "c": 3}, {"k": "23", "name": "البيان", "type": "", "pts": 6, "s": 1, "c": 2}, {"k": "24", "name": "الأصيل", "type": "", "pts": 8, "s": 2, "c": 3}, {"k": "25", "name": "التل", "type": "", "pts": 8, "s": 1, "c": 2}, {"k": "26", "name": "المنار", "type": "", "pts": 6, "s": 2, "c": 2}, {"k": "27", "name": "الإتقان", "type": "", "pts": 8, "s": 2, "c": 3}] };
+const wsOn = () => PREVIEW || Date.now() >= Date.parse(WS.from);
+const wsNew = () => Date.now() - Date.parse(WS.from) < NEW_DAYS * 864e5 && !store.get('seen_ws', false);
+
 /* ---------- الرياضيات : تمارين BAC مقسومة على الدروس (الصور في img/ma-<عام>/) ---------- */
 const MATH = [{"id": "1", "title": "المتتاليات العددية", "sub": "كل السنوات", "items": ["2026-1-2", "2026-2-2", "2025-1-1", "2025-2-3", "2024-1-1", "2024-2-3", "2023-1-1", "2023-2-1", "2022-1-3", "2022-2-1", "2022-2-2", "2021-1-1", "2021-2-1", "2020-1-2", "2020-1-3", "2020-2-2", "2020-2-3", "2019-1-1", "2019-2-2", "2018-1-3", "2018-2-3", "2017-1-2", "2017-2-2"]}, {"id": "2", "title": "دراسة الدوال", "sub": "ناطقة · كثيرات حدود · قراءة بيانية", "items": ["2026-1-4", "2026-2-3", "2025-1-2", "2024-1-3", "2022-1-2", "2022-1-4", "2022-2-4", "2021-1-2", "2021-1-4", "2021-2-2", "2021-2-4", "2020-1-1", "2019-1-4"]}, {"id": "3", "title": "الدالة اللوغاريتمية", "sub": "دراسة دالة · معادلات ومتراجحات", "items": ["2026-1-3", "2025-1-3", "2025-2-4", "2024-1-4", "2024-2-2", "2023-1-2", "2023-2-3", "2023-2-4", "2020-1-4", "2020-2-4", "2018-1-4", "2017-1-4"]}, {"id": "4", "title": "الدالة الأسية", "sub": "دراسة دالة", "items": ["2026-2-4", "2025-1-4", "2025-2-2", "2024-2-4", "2023-1-4", "2019-2-4", "2018-2-4", "2017-2-4"]}, {"id": "5", "title": "QCM و صحيح / خطأ", "sub": "أسئلة متنوعة من كل الدروس", "items": ["2026-1-1", "2026-2-1", "2025-2-1", "2024-1-2", "2024-2-1", "2023-1-3", "2023-2-2", "2022-1-1", "2022-2-3", "2021-1-3", "2021-2-3", "2020-2-1"]}];
 const MATH_EQ = ['2023-1-2', '2023-2-3', '2024-2-2'];  // معادلات ومتراجحات
@@ -441,7 +447,7 @@ const store = {
 function toast(t) { const el = $('toast'); el.innerText = t; el.classList.add('show'); clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove('show'), 2200); }
 
 /* Chargement des images : une image = un petit fichier img/<pack>/<clé>.webp (généré par tools/split-packs.js) */
-const IMGS = /*IMGS*/{"ft-01":["ts1","ts2","tc1a","tc1b","tc1c","tc2a","tc2b","tc2c"],"u02-bac":["bs01","bs02","bs03","bs04","bs05","bs06","bs07","bs08","bs09","bs10","bs11","bc01","bc02","bc03","bc04","bc05","bc06","bc07","bc08","bc09","bc10","bc11"],"u02-co":["co01","co02","co03","co04","co05","co06","co07","co08","co09","co10","co11","co12","co13","co14","co15","co16","co17","co18","co19","co20","co21","co22","co23","co24","co25","co26","co27","co28","co29","co30","co31","co32","co33","co34","co35","co36","co42","co43","co44","co45","co46","co47","co48"],"u02-ex":["ex01","ex02","ex03","ex04","ex05","ex06","ex07","ex08","ex09","ex10","ex11","ex12","ex13","ex14","ex15","ex16","ex17","ex18","ex19","ex20","ex21","ex22","ex23","ex24","ex25","ex26","ex27","ex28","ex29","ex30","ex31","ex32","ex33","ex34","ex35","ex36","ex37","ex38","ex39","ex40","ex41","ex42","ex43","ex44","ex45","ex46","ex47","ex48"],"u02-res":["rs00","rs01","rs02","rs03","rs04","rs05","rs06","rs07","rs08"],"u02b-bac":["bc01","bc02","bc03","bc04","bc05","bc06","bc07","bc08","bs01","bs02","bs03","bs04","bs05","bs06","bs07","bs08"],"u02b-co":["co01","co02","co03","co04","co05","co06","co07"],"u02b-ex":["ex01","ex02","ex03","ex04","ex05","ex06","ex07"],"u02b-res":["rs01","rs02"],"u03-bac":["bs01","bs02","bs03","bs04","bs05","bs06","bs07","bs08","bs09","bs10","bs11","bs12","bs13","bc01","bc02","bc03","bc04","bc05","bc06","bc07","bc08","bc09","bc10","bc11","bc12","bc13"],"u03-co":["co01","co02","co03","co04","co05","co06","co07","co08","co09"],"u03-ex":["ex01","ex02","ex03","ex04","ex05","ex06","ex07","ex08","ex09"],"u03-res":["rs01","rs02","rs03","rs04","rs05","rs06","rs07","rs08","rs09","rs10","rs11","rs12","rs13","rs14","rs15","rs16"],"u04-bac":["bs01","bs02","bs03","bs04","bs05","bs06","bs07","bs08","bs09","bs10","bs11","bs12","bs13","bc01","bc02","bc03","bc04","bc05","bc06","bc07","bc08","bc09","bc10","bc11","bc12","bc13"],"u04-co":["co01","co02","co03","co04","co05","co06","co07","co08","co09","co10","co11","co12"],"u04-ex":["ex01","ex02","ex03","ex04","ex05","ex06","ex07","ex08","ex09","ex10","ex11","ex12"],"u04-res":["rs01","rs02","rs03","rs04","rs05"],"u04b-bac":["bc01","bc02","bc03","bc04","bc05","bc06","bs01","bs02","bs03","bs04","bs05","bs06"],"u04b-co":["co01","co02","co03","co04","co05","co06","co07","co08","co09","co10"],"u04b-ex":["ex01","ex02","ex03","ex04","ex05","ex06","ex07","ex08","ex09","ex10"],"u04b-res":["rs01","rs02","rs03","rs04"],"u04c-bac":["bc01","bc02","bc03","bc04","bc05","bc06","bs01","bs02","bs03","bs04","bs05","bs06"],"u04c-co":["co01","co02","co03","co04","co05","co06","co07"],"u04c-ex":["ex01","ex02","ex03","ex04","ex05","ex06","ex07"],"u04c-res":["rs01","rs02"],"dr-2017":["c1p1","c1p2","c2p1","c2p2","s1p1","s2p1"],"dr-2018":["c1p1","c1p2","c2p1","c2p2","s1p1","s2p1"],"dr-2019":["c1p1","c1p2","c2p1","c2p2","c2p3","s1p1","s2p1"],"dr-2020":["c1p1","c1p2","c2p1","c2p2","s1p1","s1p2","s2p1","s2p2"],"dr-2021":["c1p1","c1p2","c1p3","c2p1","c2p2","s1p1","s1p2","s2p1","s2p2"],"dr-2022":["c1p1","c1p2","c2p1","c2p2","c2p3","s1p1","s1p2","s2p1","s2p2"],"dr-2023":["c1p1","c1p2","c1p3","c2p1","c2p2","c2p3","s1p1","s1p2","s2p1","s2p2"],"dr-2024":["c1p1","c1p2","c2p1","c2p2","s1p1","s1p2","s2p1","s2p2"],"dr-2025":["c1p1","c1p2","c2p1","c2p2","s1p1","s1p2","s2p1","s2p2"],"dr-2026":["c1p1","c1p2","c1p3","c2p1","c2p2","c2p3","s1p1","s1p2","s2p1","s2p2"],"ec-2017":["c1p1","c1p2","c1p3","c2p1","c2p2","c2p3","s1p1","s1p2","s2p1","s2p2"],"ec-2018":["c1p1","c1p2","c2p1","c2p2","c2p3","s1p1","s1p2","s2p1","s2p2"],"ec-2019":["c1p1","c1p2","c1p3","c2p1","c2p2","c2p3","s1p1","s1p2","s2p1","s2p2"],"ec-2020":["c1p1","c1p2","c1p3","c1p4","c2p1","c2p2","c2p3","s1p1","s1p2","s2p1","s2p2"],"ec-2021":["c1p1","c1p2","c1p3","c2p1","c2p2","c2p3","s1p1","s1p2","s2p1","s2p2"],"ec-2022":["c1p1","c1p2","c1p3","c1p4","c2p1","c2p2","s1p1","s1p2","s2p1","s2p2"],"ec-2023":["c1p1","c1p2","c1p3","c1p4","c2p1","c2p2","c2p3","s1p1","s1p2","s2p1","s2p2"],"ec-2024":["c1p1","c1p2","c2p1","s1p1","s1p2","s2p1","s2p2"],"ec-2025":["c1p1","c1p2","c1p3","c2p1","c2p2","c2p3","s1p1","s1p2","s2p1","s2p2"],"ec-2026":["c1p1","c1p2","c1p3","c2p1","c2p2","c2p3","s1p1","s1p2","s2p1","s2p2"],"ma-2017":["c1e2","c1e4","c2e2","c2e4","s1e2","s1e4","s2e2","s2e4"],"ma-2018":["c1e3","c1e4","c2e3","c2e4","s1e3","s1e4","s2e3","s2e4"],"ma-2019":["c1e1","c1e4","c2e2","c2e4","s1e1","s1e4","s2e2","s2e4"],"ma-2020":["c1e1","c1e2","c1e3","c1e4","c2e1","c2e2","c2e3","c2e4","s1e1","s1e2","s1e3","s1e4","s2e1","s2e2","s2e3","s2e4"],"ma-2021":["c1e1","c1e2","c1e3","c1e4","c2e1","c2e2","c2e3","c2e4","s1e1","s1e2","s1e3","s1e4","s2e1","s2e2","s2e3","s2e4"],"ma-2022":["c1e1","c1e2","c1e3","c1e4","c2e1","c2e2","c2e3","c2e4","s1e1","s1e2","s1e3","s1e4","s2e1","s2e2","s2e3","s2e4"],"ma-2023":["c1e1","c1e2","c1e3","c1e4","c2e1","c2e2","c2e3","c2e4","s1e1","s1e2","s1e3","s1e4","s2e1","s2e2","s2e3","s2e4"],"ma-2024":["c1e1","c1e2","c1e3","c1e4","c2e1","c2e2","c2e3","c2e4","s1e1","s1e2","s1e3","s1e4","s2e1","s2e2","s2e3","s2e4"],"ma-2025":["c1e1","c1e2","c1e3","c1e4","c2e1","c2e2","c2e3","c2e4","s1e1","s1e2","s1e3","s1e4","s2e1","s2e2","s2e3","s2e4"],"ma-2026":["c1e1","c1e2","c1e3","c1e4","c2e1","c2e2","c2e3","c2e4","s1e1","s1e2","s1e3","s1e4","s2e1","s2e2","s2e3","s2e4"]}/*/IMGS*/;
+const IMGS = /*IMGS*/{"ft-01":["ts1","ts2","tc1a","tc1b","tc1c","tc2a","tc2b","tc2c"],"u02-bac":["bs01","bs02","bs03","bs04","bs05","bs06","bs07","bs08","bs09","bs10","bs11","bc01","bc02","bc03","bc04","bc05","bc06","bc07","bc08","bc09","bc10","bc11"],"u02-co":["co01","co02","co03","co04","co05","co06","co07","co08","co09","co10","co11","co12","co13","co14","co15","co16","co17","co18","co19","co20","co21","co22","co23","co24","co25","co26","co27","co28","co29","co30","co31","co32","co33","co34","co35","co36","co42","co43","co44","co45","co46","co47","co48"],"u02-ex":["ex01","ex02","ex03","ex04","ex05","ex06","ex07","ex08","ex09","ex10","ex11","ex12","ex13","ex14","ex15","ex16","ex17","ex18","ex19","ex20","ex21","ex22","ex23","ex24","ex25","ex26","ex27","ex28","ex29","ex30","ex31","ex32","ex33","ex34","ex35","ex36","ex37","ex38","ex39","ex40","ex41","ex42","ex43","ex44","ex45","ex46","ex47","ex48"],"u02-res":["rs00","rs01","rs02","rs03","rs04","rs05","rs06","rs07","rs08"],"u02b-bac":["bc01","bc02","bc03","bc04","bc05","bc06","bc07","bc08","bs01","bs02","bs03","bs04","bs05","bs06","bs07","bs08"],"u02b-co":["co01","co02","co03","co04","co05","co06","co07"],"u02b-ex":["ex01","ex02","ex03","ex04","ex05","ex06","ex07"],"u02b-res":["rs01","rs02"],"u03-bac":["bs01","bs02","bs03","bs04","bs05","bs06","bs07","bs08","bs09","bs10","bs11","bs12","bs13","bc01","bc02","bc03","bc04","bc05","bc06","bc07","bc08","bc09","bc10","bc11","bc12","bc13"],"u03-co":["co01","co02","co03","co04","co05","co06","co07","co08","co09"],"u03-ex":["ex01","ex02","ex03","ex04","ex05","ex06","ex07","ex08","ex09"],"u03-res":["rs01","rs02","rs03","rs04","rs05","rs06","rs07","rs08","rs09","rs10","rs11","rs12","rs13","rs14","rs15","rs16"],"u04-bac":["bs01","bs02","bs03","bs04","bs05","bs06","bs07","bs08","bs09","bs10","bs11","bs12","bs13","bc01","bc02","bc03","bc04","bc05","bc06","bc07","bc08","bc09","bc10","bc11","bc12","bc13"],"u04-co":["co01","co02","co03","co04","co05","co06","co07","co08","co09","co10","co11","co12"],"u04-ex":["ex01","ex02","ex03","ex04","ex05","ex06","ex07","ex08","ex09","ex10","ex11","ex12"],"u04-res":["rs01","rs02","rs03","rs04","rs05"],"u04b-bac":["bc01","bc02","bc03","bc04","bc05","bc06","bs01","bs02","bs03","bs04","bs05","bs06"],"u04b-co":["co01","co02","co03","co04","co05","co06","co07","co08","co09","co10"],"u04b-ex":["ex01","ex02","ex03","ex04","ex05","ex06","ex07","ex08","ex09","ex10"],"u04b-res":["rs01","rs02","rs03","rs04"],"u04c-bac":["bc01","bc02","bc03","bc04","bc05","bc06","bs01","bs02","bs03","bs04","bs05","bs06"],"u04c-co":["co01","co02","co03","co04","co05","co06","co07"],"u04c-ex":["ex01","ex02","ex03","ex04","ex05","ex06","ex07"],"u04c-res":["rs01","rs02"],"dr-2017":["c1p1","c1p2","c2p1","c2p2","s1p1","s2p1"],"dr-2018":["c1p1","c1p2","c2p1","c2p2","s1p1","s2p1"],"dr-2019":["c1p1","c1p2","c2p1","c2p2","c2p3","s1p1","s2p1"],"dr-2020":["c1p1","c1p2","c2p1","c2p2","s1p1","s1p2","s2p1","s2p2"],"dr-2021":["c1p1","c1p2","c1p3","c2p1","c2p2","s1p1","s1p2","s2p1","s2p2"],"dr-2022":["c1p1","c1p2","c2p1","c2p2","c2p3","s1p1","s1p2","s2p1","s2p2"],"dr-2023":["c1p1","c1p2","c1p3","c2p1","c2p2","c2p3","s1p1","s1p2","s2p1","s2p2"],"dr-2024":["c1p1","c1p2","c2p1","c2p2","s1p1","s1p2","s2p1","s2p2"],"dr-2025":["c1p1","c1p2","c2p1","c2p2","s1p1","s1p2","s2p1","s2p2"],"dr-2026":["c1p1","c1p2","c1p3","c2p1","c2p2","c2p3","s1p1","s1p2","s2p1","s2p2"],"ec-2017":["c1p1","c1p2","c1p3","c2p1","c2p2","c2p3","s1p1","s1p2","s2p1","s2p2"],"ec-2018":["c1p1","c1p2","c2p1","c2p2","c2p3","s1p1","s1p2","s2p1","s2p2"],"ec-2019":["c1p1","c1p2","c1p3","c2p1","c2p2","c2p3","s1p1","s1p2","s2p1","s2p2"],"ec-2020":["c1p1","c1p2","c1p3","c1p4","c2p1","c2p2","c2p3","s1p1","s1p2","s2p1","s2p2"],"ec-2021":["c1p1","c1p2","c1p3","c2p1","c2p2","c2p3","s1p1","s1p2","s2p1","s2p2"],"ec-2022":["c1p1","c1p2","c1p3","c1p4","c2p1","c2p2","s1p1","s1p2","s2p1","s2p2"],"ec-2023":["c1p1","c1p2","c1p3","c1p4","c2p1","c2p2","c2p3","s1p1","s1p2","s2p1","s2p2"],"ec-2024":["c1p1","c1p2","c2p1","s1p1","s1p2","s2p1","s2p2"],"ec-2025":["c1p1","c1p2","c1p3","c2p1","c2p2","c2p3","s1p1","s1p2","s2p1","s2p2"],"ec-2026":["c1p1","c1p2","c1p3","c2p1","c2p2","c2p3","s1p1","s1p2","s2p1","s2p2"],"ma-2017":["c1e2","c1e4","c2e2","c2e4","s1e2","s1e4","s2e2","s2e4"],"ma-2018":["c1e3","c1e4","c2e3","c2e4","s1e3","s1e4","s2e3","s2e4"],"ma-2019":["c1e1","c1e4","c2e2","c2e4","s1e1","s1e4","s2e2","s2e4"],"ma-2020":["c1e1","c1e2","c1e3","c1e4","c2e1","c2e2","c2e3","c2e4","s1e1","s1e2","s1e3","s1e4","s2e1","s2e2","s2e3","s2e4"],"ma-2021":["c1e1","c1e2","c1e3","c1e4","c2e1","c2e2","c2e3","c2e4","s1e1","s1e2","s1e3","s1e4","s2e1","s2e2","s2e3","s2e4"],"ma-2022":["c1e1","c1e2","c1e3","c1e4","c2e1","c2e2","c2e3","c2e4","s1e1","s1e2","s1e3","s1e4","s2e1","s2e2","s2e3","s2e4"],"ma-2023":["c1e1","c1e2","c1e3","c1e4","c2e1","c2e2","c2e3","c2e4","s1e1","s1e2","s1e3","s1e4","s2e1","s2e2","s2e3","s2e4"],"ma-2024":["c1e1","c1e2","c1e3","c1e4","c2e1","c2e2","c2e3","c2e4","s1e1","s1e2","s1e3","s1e4","s2e1","s2e2","s2e3","s2e4"],"ma-2025":["c1e1","c1e2","c1e3","c1e4","c2e1","c2e2","c2e3","c2e4","s1e1","s1e2","s1e3","s1e4","s2e1","s2e2","s2e3","s2e4"],"ma-2026":["c1e1","c1e2","c1e3","c1e4","c2e1","c2e2","c2e3","c2e4","s1e1","s1e2","s1e3","s1e4","s2e1","s2e2","s2e3","s2e4"],"ws":["c01a","c01b","c02a","c02b","c03a","c03b","c04a","c04b","c05a","c05b","c06a","c06b","c07a","c07b","c08a","c09a","c09b","c10a","c10b","c11a","c11b","c12a","c12b","c13a","c14a","c14b","c15a","c15b","c16a","c16b","c16c","c17a","c17b","c18a","c18b","c19a","c19b","c20a","c20b","c20c","c21a","c21b","c22a","c22b","c22c","c23a","c23b","c24a","c24b","c24c","c25a","c25b","c26a","c26b","c27a","c27b","c27c","s01a","s02a","s03a","s04a","s05a","s06a","s07a","s08a","s09a","s10a","s11a","s12a","s13a","s14a","s15a","s16a","s16b","s17a","s18a","s19a","s20a","s20b","s21a","s22a","s22b","s23a","s24a","s24b","s25a","s26a","s26b","s27a","s27b"]}/*/IMGS*/;
 const imgUrl = (pack, key) => 'img/' + pack + '/' + key + '.webp';
 const hasImg = (pack, key) => !!(IMGS[pack] && IMGS[pack].includes(key));
 function imgOk(el) { el.parentNode.classList.remove('ld'); }
@@ -543,6 +549,7 @@ function trackRoute(parts) {
   if (parts[0] === 'acc') return track('/acc', 'المحاسبة · الوحدات');
   if (parts[0] === 'm') return track('/' + parts.join('/'), 'الرياضيات' + (parts[1] ? ' · المحور ' + parts[1] : '') + (parts[2] ? ' · ' + parts[2] : ''));
   if (BACS[parts[0]]) return track('/' + parts.join('/'), BACS[parts[0]].name + (parts[1] ? ' · ' + parts[1] : ''));
+  if (parts[0] === 'ws') return track('/' + parts.join('/'), 'وضعيات شاملة' + (parts[1] ? ' · الوضعية ' + parts[1] : ''));
   if (parts[0] === 'ft') { const t = test(parts[1]); if (t) track('/' + parts.join('/'), 'فروض · ' + t.title + ' ' + t.id + (parts[2] ? ' · الموضوع ' + parts[2] : '')); return; }
   const u = unit(parts[0]); if (!u) return;
   let title = 'الوحدة ' + u.num;
@@ -564,6 +571,7 @@ async function render() {
     if (parts[0] === 'm') return parts[2] ? renderMathEx(v, parts[1], parts[2]) : parts[1] ? renderMathAxis(v, parts[1]) : renderMath(v);
     if (BACS[parts[0]]) return parts[1] ? renderBs(v, parts[0], parts[1]) : renderBsList(v, parts[0]);
   }
+  if (parts[0] === 'ws' && wsOn()) return parts[1] ? renderWs(v, parts[1]) : renderWsList(v);
   if (parts[0] === 'ft') { const t = test(parts[1]); if (!t) return go('#/'); return parts[2] ? renderTestSubj(v, t, parts[2]) : renderTest(v, t); }
   const u = unit(parts[0]);
   if (!u) return go('#/');
@@ -832,6 +840,61 @@ async function showTestSol(id, k) {
   $('sol').innerHTML = '<h2 class="sec">💡 التصحيح النموذجي وسلم التنقيط</h2>' + pages + '<p class="hint">اضغط على التصحيح لتكبيره 🔍</p>' + tiktokCard('test');
   track('ft-sol-' + id + '-' + k, 'فتح تصحيح ' + t.title + ' ' + id + ' · الموضوع ' + k, true);
 }
+/* ---------- وضعيات شاملة ---------- */
+const wsDone = () => new Set(store.get('ws_done', []));
+function wsCard() {
+  if (!wsOn()) return '';
+  const d = wsDone().size, n = WS.items.length;
+  return `<h2 class="sec">🧩 ${WS.title}</h2><button class="card" onclick="go('#/ws')">
+    <span class="unit-num">${n} وضعية</span>${wsNew() ? '<span class="new-tag">جديد 🔥</span>' : ''}
+    <h3>${WS.title} · أعمال نهاية السنة</h3>
+    <div class="muted">على نمط البكالوريا · الوحدات 02 → 06 · مع التصحيح النموذجي</div>
+    <div class="bar"><i style="width:${Math.round(d / n * 100)}%"></i></div>
+    <div class="muted" style="margin-top:6px">أنجزت ${d} / ${n}</div>
+  </button>`;
+}
+const wsLine = s => `0${s.pts} نقاط` + (s.type ? ' · ' + s.type : '');
+const wsTime = s => s.pts === 8 ? 'حوالي 60 دقيقة' : 'حوالي 45 دقيقة';
+function renderWsList(v) {
+  store.set('seen_ws', true);
+  setTop('🧩 ' + WS.title, WS.sub, true);
+  const done = wsDone();
+  v.innerHTML = `<p class="hint">حلّ كل وضعية في الوقت تاعها كيما في البكالوريا: حوالي 60 دقيقة لـ 08 نقاط و 45 دقيقة لـ 06 نقاط ⏱️<br>ومن بعد قارن مع التصحيح النموذجي 💪</p>` + WS.items.map(s => `
+    <div class="list-item ${done.has(s.k) ? 'done' : ''}" onclick="go('#/ws/${s.k}')">
+      <div><b>الوضعية ${s.k} · مؤسسة "${esc(s.name)}"</b><div class="hint" style="text-align:right;margin:4px 0 0">${esc(wsLine(s))}</div></div>
+      <span>${done.has(s.k) ? '✅' : '‹'}</span></div>`).join('');
+}
+const wsKeys = (p, k, n) => Array.from({ length: n }, (_, i) => p + k + 'abc'[i]);
+async function renderWs(v, k) {
+  const i = WS.items.findIndex(x => x.k === k); if (i < 0) return go('#/ws');
+  const s = WS.items[i], prev = WS.items[i - 1], next = WS.items[i + 1];
+  setTop('الوضعية ' + s.k + ' · ' + s.name, WS.title, true);
+  remember('وضعيات شاملة · الوضعية ' + s.k);
+  v.innerHTML = '<p class="empty">⏳ جاري التحميل…</p>';
+  const pages = (await Promise.all(wsKeys('s', k, s.s).map(p => img(WS.pack, p, 'الوضعية')))).join('');
+  const done = wsDone().has(k);
+  v.innerHTML = `<p class="hint">⏱️ ${wsTime(s)} · ${esc(wsLine(s))}</p>${pages}
+    <button class="btn-pink w100" id="solBtn" onclick="showWsSol('${k}')">💡 اظهر التصحيح النموذجي</button><div id="sol"></div>
+    <button class="${done ? 'btn-ok' : 'btn-line'} w100" style="margin-top:10px" id="doneBtn" onclick="markWs('${k}')">${done ? '✅ أنجزت هذه الوضعية' : '☐ علّم هذه الوضعية كمُنجزة'}</button>
+    <div class="nav">
+      <button ${prev ? `onclick="go('#/ws/${prev.k}')"` : 'disabled style="opacity:.3"'}>→ السابقة</button>
+      <button onclick="go('#/ws')">☰ القائمة</button>
+      <button ${next ? `onclick="go('#/ws/${next.k}')"` : 'disabled style="opacity:.3"'}>التالية ←</button>
+    </div>`;
+}
+async function showWsSol(k) {
+  const s = WS.items.find(x => x.k === k);
+  $('solBtn').style.display = 'none';
+  $('sol').innerHTML = '<p class="empty">⏳ جاري التحميل…</p>';
+  const pages = (await Promise.all(wsKeys('c', k, s.c).map(p => img(WS.pack, p, 'التصحيح')))).join('');
+  $('sol').innerHTML = '<h2 class="sec">💡 التصحيح النموذجي</h2>' + pages + '<p class="hint">اضغط على التصحيح لتكبيره 🔍</p>' + tiktokCard('ws');
+  track('ws-sol-' + k, 'فتح تصحيح الوضعية الشاملة ' + k, true);
+}
+function markWs(k) {
+  const s = wsDone(); s.has(k) ? s.delete(k) : s.add(k); store.set('ws_done', [...s]);
+  const on = s.has(k), b = $('doneBtn');
+  b.className = (on ? 'btn-ok' : 'btn-line') + ' w100'; b.innerText = on ? '✅ أنجزت هذه الوضعية' : '☐ علّم هذه الوضعية كمُنجزة';
+}
 function markTest(id, k) {
   const s = new Set(store.get('ft_' + id, [])); s.has(k) ? s.delete(k) : s.add(k); store.set('ft_' + id, [...s]);
   const on = s.has(k), b = $('doneBtn');
@@ -862,7 +925,7 @@ function subjCard(href, color, icon, chip, title, line, d, total) {
 function homeSubjects() {
   const us = UNITS.filter(visible);
   const accTotal = us.reduce((a, u) => a + u.axes[u.axes.length - 1].to, 0), accDone = us.reduce((a, u) => a + doneSet(u.id).size, 0);
-  const accNew = us.some(isNew);
+  const accNew = us.some(isNew) || (wsOn() && wsNew());
   const mTotal = MATH.reduce((a, x) => a + x.items.length, 0), mDone = store.get('mx', []).length;
   const bs = id => { const b = BACS[id], n = Object.keys(b.pages).length * 2; return subjCard('#/' + id, b.color, b.icon, 'بكالوريات محلولة', b.name, `${n} موضوع BAC (2017–2026) · مع التصحيح الرسمي`, store.get('bs_' + id, []).length, n); };
   return `<h2 class="sec">📚 المواد</h2>
@@ -877,7 +940,7 @@ function continueBtn() {
 }
 function renderAcc(v) {
   setTop('التسيير المحاسبي والمالي', 'الوحدات', true);
-  v.innerHTML = unitCards() + '<div class="card soon"><h3>وحدات أخرى</h3><div class="muted">قريباً إن شاء الله…</div></div>';
+  v.innerHTML = unitCards() + wsCard() + '<div class="card soon"><h3>وحدات أخرى</h3><div class="muted">قريباً إن شاء الله…</div></div>';
 }
 
 /* ---------- الرياضيات ---------- */
