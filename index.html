@@ -412,7 +412,7 @@ const UNITS = [
     { k:'12', year:2019, subj:'الموضوع الثاني', topics:'إلغاء مؤونة الأخطار (ربح القضية)' },
   ],
   resPages: ['rs01'],
-  calcs: [], calcHint: '',
+  calcs: ['prov'], calcHint: 'مبلغ التعديل وطبيعته (تكوين، زيادة، إنقاص، إلغاء) مع القيد',
   quiz: [
     { q:"مؤونة الأخطار (نزاع قضائي مع عامل مفصول) تُسجّل في الحساب:", o:["ح/151", "ح/158", "ح/491", "ح/681"], a:0, e:"ح/151 مؤونات الأخطار: خصم غير جاري لمواجهة خسارة محتملة ناتجة عن نزاع مع الغير." },
     { q:"أشغال ترميم كبرى عن طريق مقاول ستُنجز في الدورات المقبلة. نكوّن مؤونة في:", o:["ح/158", "ح/151", "ح/611", "ح/29"], a:0, e:"ح/158 المؤونات الأخرى للأعباء – الخصوم غير الجارية." },
@@ -449,7 +449,7 @@ const UNITS = [
     { k:'12', year:2019, subj:'الموضوع الثاني', topics:'أعباء معاينة مسبقا – تخفيضات ستُكتسب – منتوجات معاينة مسبقا' },
   ],
   resPages: ['rs01'],
-  calcs: [], calcHint: '',
+  calcs: ['cca'], calcHint: 'الجزء الخاص بالسنة المقبلة مع قيد التسوية',
   quiz: [
     { q:"مبدأ استقلالية الدورات يعني:", o:["كل سنة مالية تتحمّل أعباءها ومنتوجاتها فقط", "نسجّل الأعباء عند الدفع فقط", "نؤجّل كل الأعباء للسنة المقبلة", "نسجّل المنتوجات عند القبض فقط"], a:0, e:"نُبعد ما يخص السنة المقبلة، ونُضيف ما يخص السنة الحالية ولم يُسجَّل بعد." },
     { q:"قسط تأمين سنوي 72,000 دج سُدّد في 2026/09/01. الجزء الخاص بسنة 2027:", o:["48,000 دج", "24,000 دج", "72,000 دج", "36,000 دج"], a:0, e:"من 2027/01/01 إلى 2027/08/31 = 8 أشهر ← 72,000 × 8/12 = 48,000 دج." },
@@ -1198,6 +1198,8 @@ const CALCS = [
   ['smc', '🤝', 'التنازل عن سندات المساهمة', 'نتيجة التنازل (767 / 667) والقيد'],
   ['vmc', '🤝', 'التنازل عن القيم المنقولة', 'سعر البيع − القيمة المحاسبية والقيد'],
   ['vme', '📊', 'فارق التقييم في 31/12', 'فائض قيمة (765) أو ناقص قيمة (665)'],
+  ['prov', '⚖️', 'تعديل المؤونة', 'تكوين، زيادة، إنقاص أو إلغاء (683 / 783) والقيد'],
+  ['cca', '📅', 'المعاينة مسبقا', 'الجزء الخاص بالسنة المقبلة والقيد (486 / 487)'],
 ];
 const A262 = ['262', 'سندات المساهمة الأخرى'], A296 = ['296', 'خسائر القيمة عن المساهمات'],
   A686F = ['686', 'المخصصات للاهتلاكات والمؤونات وخسائر القيمة – العناصر المالية'], A786F = ['786', 'الاسترجاعات عن المؤونات وخسائر القيمة – العناصر المالية'],
@@ -1241,8 +1243,11 @@ function renderCalc(v, u, which) {
   if (which === 'smc') form = `<div class="row"><div>${numIn('c-n', 'عدد السندات المتنازل عنها', '100')}</div><div>${numIn('c-cost', 'تكلفة الحيازة للسند (دج)', '1500')}</div></div>` + `<div class="row"><div>${numIn('c-px', 'سعر التنازل للسند (دج)', '1450')}</div><div>${numIn('c-pv', 'خ ق السابقة للسند (دج) — 0 إن لم توجد', '100')}</div></div>` + dateIn('c-date', 'تاريخ التنازل', new Date().getFullYear() + '-10-15');
   if (which === 'vmc') form = vmpSel + `<div class="row"><div>${numIn('c-n', 'عدد السندات المتنازل عنها', '200')}</div><div>${numIn('c-px', 'سعر البيع للسند (دج)', '1080')}</div></div>` + numIn('c-book', 'القيمة المحاسبية للسند (دج)', '1000') + '<p class="hint" style="text-align:right">القيمة المحاسبية = سعر الشراء إذا اقتُنيت هذه السنة، أو سعر السوق في 31/12 من السنة السابقة إذا اقتُنيت قبلها.</p>' + dateIn('c-date', 'تاريخ التنازل', new Date().getFullYear() + '-10-15');
   if (which === 'vme') form = vmpSel + `<div class="row"><div>${numIn('c-n', 'عدد السندات المتبقية', '300')}</div><div>${numIn('c-book', 'القيمة المحاسبية للسند (دج)', '1000')}</div></div>` + numIn('c-mkt', 'سعر السوق للسند في 31/12 (دج)', '970') + yearIn;
+  if (which === 'prov') form = `<label class="f">نوع المؤونة</label><select id="c-acc"><option value="151">151 — مؤونات الأخطار (نزاع)</option><option value="158">158 — المؤونات الأخرى للأعباء</option></select>` + `<div class="row"><div>${numIn('c-prev', 'المؤونة الموجودة (السابقة) (دج)', '80000')}</div><div>${numIn('c-new', 'المبلغ المقدَّر في 31/12 (دج)', '110000')}</div></div>` + yearIn + '<p class="hint" style="text-align:right">مؤونة جديدة لأول مرة ← دخّل 0 في المؤونة السابقة.<br>زال السبب (ربح القضية، إلغاء الأشغال) ← دخّل 0 في المبلغ المقدَّر.</p>';
+  if (which === 'cca') form = `<label class="f">العملية</label><select id="c-acc"><option value="616">عبء — 616 أقساط التأمينات</option><option value="613">عبء — 613 الإيجارات</option><option value="615">عبء — 615 الصيانة والتصليحات والرعاية</option><option value="706">منتوج — 706 تقديم الخدمات الأخرى (إيجار مقبوض…)</option></select>` + numIn('c-amt', 'المبلغ الكلي المسجّل (دج)', '72000') + `<label class="f">كيفاش معطاة المدة في التمرين؟</label><select id="c-mode"><option value="d">بتاريخين: من … إلى …</option><option value="n">بتاريخ البداية والمدة بالأشهر</option></select>` + `<div id="mD">${dateIn('c-d1', 'من تاريخ', '2026-09-01')}${dateIn('c-d2', 'إلى تاريخ', '2027-08-31')}</div>` + `<div id="mN" style="display:none"><div class="row"><div><label class="f">شهر البداية</label><select id="c-m"><option value="1">01</option><option value="2">02</option><option value="3">03</option><option value="4">04</option><option value="5">05</option><option value="6">06</option><option value="7">07</option><option value="8">08</option><option value="9" selected>09</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select></div><div>${numIn('c-y', 'السنة', String(new Date().getFullYear()))}</div></div>${numIn('c-dur', 'المدة الكلية (بالأشهر)', '12')}</div>` + '<p class="hint" style="text-align:right">مثال: تأمين 72,000 دج للفترة من 2026/09/01 إلى 2027/08/31 (يعني سنة كاملة).</p>';
   v.innerHTML = `<div class="card" style="cursor:default">${form}<button class="btn-pink w100" style="margin-top:16px" onclick="calc_${which}()">احسب ✔</button></div><div class="res" id="out"></div>`;
   if (which === 'cli') { const t = () => { $('prevWrap').style.display = $('c-type').value === 'd' ? 'block' : 'none'; $('pctWrap').style.display = ['ok', 'bk'].includes($('c-sit').value) ? 'none' : 'block'; }; $('c-type').onchange = t; $('c-sit').onchange = t; t(); }
+  if (which === 'cca') $('c-mode').onchange = () => { const d = $('c-mode').value === 'd'; $('mD').style.display = d ? 'block' : 'none'; $('mN').style.display = d ? 'none' : 'block'; };
   if (which === 'inter') { const t = () => $('buyWrap').style.display = $('c-stock').value === '355' ? 'none' : 'block'; $('c-stock').onchange = t; }
 }
 function need(...vals) { if (vals.some(x => !isFinite(x) || x < 0)) { $('out').innerHTML = '<div class="verdict bad">⚠️ تأكد من إدخال كل القيم بشكل صحيح.</div>'; return false; } return true; }
@@ -1431,6 +1436,43 @@ function calc_smc() {
   const cr = [[...A262, gross]]; if (res > 0) cr.push([...A767, res]);
   html += '<h2 class="sec">قيد التنازل</h2>' + journal(dateTxt($('c-date').value), dr, cr, 'التنازل عن سندات المساهمة');
   if (pvT) html += '<p class="hint" style="text-align:right">خسارة القيمة الخاصة بالسندات المتنازل عنها تُرصَّد في قيد التنازل نفسه (296 مدين). في 31/12 نقارن مع الخسارة السابقة للسندات المتبقية فقط.</p>';
+  $('out').innerHTML = html;
+}
+const PROV = { '151': 'مؤونات الأخطار', '158': 'المؤونات الأخرى للأعباء – الخصوم غير الجارية' };
+const A683 = ['683', 'المخصصات للاهتلاكات والمؤونات وخسائر القيمة – الأصول غير الجارية'], A783 = ['783', 'الاسترجاعات عن خسائر القيمة والمؤونات – الأصول غير الجارية'];
+function calc_prov() {
+  const acc = $('c-acc').value, prev = num('c-prev'), nw = num('c-new'), y = num('c-y');
+  if (!need(prev, nw, y)) return;
+  const d = nw - prev, A = [acc, PROV[acc]];
+  let html = `<div class="formula">مبلغ التعديل = المؤونة المقدَّرة في نهاية السنة − المؤونة الموجودة<br>${L(`${fmt(nw)} − ${fmt(prev)} = ${d > 0 ? '+' : ''}${fmt(d)} DA`)}</div>`;
+  if (prev === 0 && nw > 0) html += `<div class="verdict info">تكوين مؤونة لأول مرة ← ${fmt(nw)} دج عبر ح/683</div>` + '<h2 class="sec">قيد التسوية</h2>' + journal(yEnd(y), [[...A683, nw]], [[...A, nw]], 'تكوين ' + PROV[acc]);
+  else if (d > 0) html += `<div class="verdict bad">فرق موجب ← زيادة المؤونة بـ ${fmt(d)} دج (الفرق فقط، ماشي المبلغ الجديد كامل)</div>` + '<h2 class="sec">قيد التسوية</h2>' + journal(yEnd(y), [[...A683, d]], [[...A, d]], 'زيادة ' + PROV[acc]);
+  else if (nw === 0 && prev > 0) html += `<div class="verdict ok">زال السبب ← إلغاء كامل المؤونة ${fmt(prev)} دج عبر ح/783</div>` + '<h2 class="sec">قيد التسوية</h2>' + journal(yEnd(y), [[...A, prev]], [[...A783, prev]], 'إلغاء ' + PROV[acc]);
+  else if (d < 0) html += `<div class="verdict ok">فرق سالب ← إنقاص المؤونة بـ ${fmt(-d)} دج عبر ح/783</div>` + '<h2 class="sec">قيد التسوية</h2>' + journal(yEnd(y), [[...A, -d]], [[...A783, -d]], 'إنقاص ' + PROV[acc]);
+  else html += '<div class="verdict info">لا فرق ← لا يُسجَّل أي قيد</div>';
+  html += `<p class="hint" style="text-align:right">رصيد ح/${acc} بعد الجرد = ${L(fmt(nw) + ' DA')}</p>`;
+  $('out').innerHTML = html;
+}
+const moTxt = n => n === 1 ? 'شهر واحد' : n === 2 ? 'شهران' : n <= 10 ? n + ' أشهر' : n + ' شهرا';
+const CCA = { '616': 'أقساط التأمينات', '613': 'الإيجارات', '615': 'الصيانة والتصليحات والرعاية', '706': 'تقديم الخدمات الأخرى' };
+function calc_cca() {
+  const acc = $('c-acc').value, amt = num('c-amt');
+  let m, y, dur;
+  if ($('c-mode').value === 'd') {
+    const a = $('c-d1').value, b = $('c-d2').value; if (!a || !b) return need(NaN);
+    const [y1, m1, d1] = a.split('-').map(Number), [y2, m2, d2] = b.split('-').map(Number);
+    m = m1; y = y1; dur = (y2 - y1) * 12 + (m2 - m1) + (d2 >= d1 - 1 ? 1 : 0);
+    if (dur <= 0) { $('out').innerHTML = '<div class="verdict bad">⚠️ تاريخ النهاية لازم يكون بعد تاريخ البداية.</div>'; return; }
+  } else { m = +$('c-m').value; y = num('c-y'); dur = num('c-dur'); }
+  if (!need(amt, y, dur) || !dur) return need(NaN);
+  const cur = Math.min(13 - m, dur), next = dur - cur, part = Math.round(amt * next / dur * 100) / 100, prod = acc === '706';
+  let html = ($('c-mode').value === 'd' ? `<div class="formula">المدة الكلية من ${dateTxt($('c-d1').value)} إلى ${dateTxt($('c-d2').value)} = ${moTxt(dur)}</div>` : '') + `<div class="formula">الأشهر من ${dmy(y, m, 1)} إلى ${yEnd(y)} = ${moTxt(cur)} (تخص ${L(y)})<br>الأشهر الباقية = ${L(`${fmt(dur)} − ${cur} = ${fmt(next)}`)} ← ${moTxt(next)} (تخص السنة المقبلة)<br>الجزء الخاص بالسنة المقبلة = ${L(`${fmt(amt)} × ${fmt(next)}/${fmt(dur)} = ${fmt(part)} DA`)}</div>`;
+  if (next <= 0) { $('out').innerHTML = html + '<div class="verdict info">كل المدة تخص السنة الحالية ← لا يوجد قيد تسوية</div>'; return; }
+  html += `<div class="verdict ${prod ? 'ok' : 'bad'}">${prod ? `منتوجات معاينة مسبقا ${fmt(part)} دج ← ح/487 (خصوم)` : `أعباء معاينة مسبقا ${fmt(part)} دج ← ح/486 (أصول)`}</div>`;
+  html += '<h2 class="sec">قيد التسوية</h2>' + (prod
+    ? journal(yEnd(y), [[acc, CCA[acc], part]], [['487', 'منتوجات معاينة مسبقا', part]], 'إثبات المنتوجات المعاينة مسبقا')
+    : journal(yEnd(y), [['486', 'أعباء معاينة مسبقا', part]], [[acc, CCA[acc], part]], 'إثبات الأعباء المعاينة مسبقا'));
+  html += `<p class="hint" style="text-align:right">${prod ? 'نُنقص المنتوج' : 'نُنقص العبء'} بالجزء اللي يخص السنة المقبلة فقط ← يبقى في ح/${acc} ${L(fmt(amt - part) + ' DA')} يخص ${L(y)}.</p>`;
   $('out').innerHTML = html;
 }
 function calc_vmc() {
